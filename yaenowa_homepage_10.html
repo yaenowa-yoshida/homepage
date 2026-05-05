@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>株式会社ヤエノワ | システム要件定義・設計の専門家</title>
+<meta name="description" content="株式会社ヤエノワは、金融系ITシステムで培った専門知識をもとに、システム要件定義・設計を専門とする会社です。ご縁と共創を軸に、ITの力でビジネスの未来をともに描きます。">
+<meta name="keywords" content="システム要件定義,システム設計,ITコンサルティング,EC連携,OMS,基幹システム,ヤエノワ,株式会社ヤエノワ">
+<meta name="author" content="株式会社ヤエノワ">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://yaenowa.co.jp/">
+
+<!-- OGP（SNSシェア用） -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="株式会社ヤエノワ | システム要件定義・設計の専門家">
+<meta property="og:description" content="金融系ITシステムで培った専門知識をもとに、システム要件定義・設計を専門とする会社です。ご縁と共創を軸に、ITの力でビジネスの未来をともに描きます。">
+<meta property="og:url" content="https://yaenowa.co.jp/">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/LOGO.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="株式会社ヤエノワ | システム要件定義・設計の専門家">
+<meta name="twitter:description" content="金融系ITシステムで培った専門知識をもとに、システム要件定義・設計を専門とする会社です。">
+<meta name="twitter:image" content="https://yaenowa.co.jp/LOGO.png">
+
+<!-- 構造化データ（Googleリッチリザルト用） -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "株式会社ヤエノワ",
+  "url": "https://yaenowa.co.jp",
+  "logo": "https://yaenowa.co.jp/LOGO.png",
+  "foundingDate": "2025-04-03",
+  "description": "システム要件定義・設計を専門とするITコンサルティング会社",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "JP"
+  },
+  "founder": {
+    "@type": "Person",
+    "name": "吉田 勝大",
+    "jobTitle": "代表取締役"
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #1a1a18;
+    --ink-mid: #3d3d38;
+    --ink-light: #6b6b64;
+    --paper: #fdf8f6;
+    --paper-mid: #f5ede8;
+    --paper-dark: #ddc8be;
+    --accent: #7a3a4a;
+    --accent-gold: #b06070;
+    --accent-pale: #f0d8d8;
+    --sakura-deep: #c0606a;
+    --sakura-mid: #e8a0a8;
+    --sakura-light: #f5d8dc;
+    --sakura-pale: #fdf0f2;
+    --ring: rgba(122,58,74,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(247,244,238,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--paper-dark);
+  }
+
+  .nav-logo {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent-gold); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 8rem 4rem 4rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* 背景の同心円（環のモチーフ） */
+  .ring-svg {
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    opacity: 0.08;
+    width: 900px;
+    height: 900px;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .hero-text {}
+
+  .hero-en {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.35em;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+  }
+
+  .hero-title .kanji-accent {
+    color: var(--accent-gold);
+  }
+
+  .hero-subtitle {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.05rem;
+    color: var(--ink-mid);
+    line-height: 2.0;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.85rem 2rem;
+    background: var(--accent);
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .hero-cta:hover { background: var(--ink); transform: translateY(-2px); }
+  .hero-cta svg { width: 14px; height: 14px; }
+
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* 環のビジュアル */
+  .ring-visual {
+    position: relative;
+    width: 340px;
+    height: 340px;
+  }
+
+  /* ── SECTION COMMON ── */
+  section {
+    padding: 7rem 4rem;
+  }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin-bottom: 3rem;
+    line-height: 1.4;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent-gold);
+    margin: 1.5rem 0 2.5rem;
+  }
+
+  /* ── ABOUT ── */
+  .about {
+    background: var(--paper-mid);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .about-left {}
+
+  .about-philosophy {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.5rem;
+    line-height: 2.0;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    margin-bottom: 2rem;
+  }
+
+  .about-philosophy .em {
+    color: var(--accent-gold);
+    font-weight: 600;
+  }
+
+  .about-body {
+    font-size: 0.92rem;
+    color: var(--ink-mid);
+    line-height: 2.0;
+  }
+
+  .about-right {}
+
+  .name-origin {
+    background: var(--paper);
+    border: 0.5px solid var(--paper-dark);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .name-origin-title {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.3em;
+    color: var(--accent-gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .kanji-breakdown {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .kanji-item {
+    text-align: center;
+  }
+
+  .kanji-char {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 2.5rem;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .kanji-reading {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-light);
+  }
+
+  .kanji-meaning {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.8rem;
+    color: var(--ink-mid);
+    margin-top: 0.3rem;
+  }
+
+  .kanji-sep {
+    font-size: 1.5rem;
+    color: var(--paper-dark);
+    align-self: center;
+  }
+
+  .origin-text {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.9rem;
+    line-height: 2.0;
+    color: var(--ink-mid);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── PROFILE ── */
+  .profile {}
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .profile-card {
+    background: var(--paper-mid);
+    border: 0.5px solid var(--paper-dark);
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 90px;
+    height: 90px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.8rem;
+    color: var(--paper);
+    letter-spacing: 0.05em;
+  }
+
+  .profile-name-ja {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+
+  .profile-name-en {
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .profile-role {
+    font-size: 0.78rem;
+    color: var(--accent-gold);
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0;
+    border-top: 0.5px solid var(--paper-dark);
+    border-bottom: 0.5px solid var(--paper-dark);
+    margin: 0.8rem 0;
+  }
+
+  .profile-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1.2rem;
+  }
+
+  .profile-tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    background: var(--accent-pale);
+    color: var(--accent);
+    padding: 0.25rem 0.7rem;
+  }
+
+  .profile-detail {}
+
+  .profile-intro {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.1rem;
+    line-height: 2.1;
+    color: var(--ink);
+    margin-bottom: 2rem;
+    letter-spacing: 0.06em;
+  }
+
+  .profile-body {
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 2.0;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── WORKS ── */
+  .works {
+    background: var(--paper-mid);
+  }
+
+  .works-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .work-item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 3rem;
+    padding: 2.5rem 0;
+    border-bottom: 0.5px solid var(--paper-dark);
+    align-items: start;
+  }
+
+  .work-item:first-child {
+    border-top: 0.5px solid var(--paper-dark);
+  }
+
+  .work-meta {}
+
+  .work-client {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+  }
+
+  .work-content {}
+
+  .work-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.06em;
+  }
+
+  .work-desc {
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+    line-height: 2.0;
+    margin-bottom: 1rem;
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tech-tag {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.6rem;
+    border: 0.5px solid var(--paper-dark);
+    color: var(--ink-light);
+  }
+
+  /* ── VISION ── */
+  .vision {
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vision-bg-rings {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+  }
+
+  .vision .section-label { color: var(--accent-gold); }
+  .vision .section-title { color: var(--paper); }
+  .vision .divider { background: var(--accent-gold); }
+
+  .vision-content {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+  }
+
+  .vision-quote {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    line-height: 2.0;
+    letter-spacing: 0.1em;
+    color: var(--paper);
+    margin-bottom: 2.5rem;
+  }
+
+  .vision-quote em {
+    color: var(--accent-gold);
+    font-style: normal;
+  }
+
+  .vision-body {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.95rem;
+    line-height: 2.2;
+    color: rgba(247,244,238,0.75);
+    letter-spacing: 0.06em;
+  }
+
+
+  /* ── CONTACT ── */
+  .contact {
+    background: var(--paper-mid);
+    text-align: center;
+  }
+
+  .contact .section-inner {
+    max-width: 600px;
+  }
+
+  .contact .divider {
+    margin: 1.5rem auto 2.5rem;
+  }
+
+  .contact-body {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1rem;
+    line-height: 2.2;
+    color: var(--ink-mid);
+    margin-bottom: 3rem;
+    letter-spacing: 0.06em;
+  }
+
+  .contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 2.5rem;
+    background: var(--accent);
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 0.82rem;
+    letter-spacing: 0.2em;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .contact-btn:hover { background: var(--ink); transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: rgba(247,244,238,0.5);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--paper);
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes rotateRing {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  @keyframes rotateRingRev {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(-360deg); }
+  }
+
+  @keyframes petalFall {
+    0%   { transform: translateY(-60px) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.4; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  @keyframes petalSway {
+    0%,100% { margin-left: 0; }
+    25%     { margin-left: 40px; }
+    75%     { margin-left: -30px; }
+  }
+
+  .fade-up {
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards;
+  }
+
+  .fade-up:nth-child(1) { animation-delay: 0.1s; }
+  .fade-up:nth-child(2) { animation-delay: 0.3s; }
+  .fade-up:nth-child(3) { animation-delay: 0.5s; }
+  .fade-up:nth-child(4) { animation-delay: 0.7s; }
+
+  .ring-anim-1 {
+    transform-origin: center;
+    animation: rotateRing 40s linear infinite;
+  }
+  .ring-anim-2 {
+    transform-origin: center;
+    animation: rotateRingRev 60s linear infinite;
+  }
+  .ring-anim-3 {
+    transform-origin: center;
+    animation: rotateRing 25s linear infinite;
+  }
+
+  /* ── PAIN POINTS ── */
+  .pain {
+    background: var(--paper);
+  }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .pain-item {
+    background: var(--paper-mid);
+    border: 0.5px solid var(--paper-dark);
+    border-left: 2px solid var(--sakura-mid);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .pain-icon {
+    display: flex;
+    align-items: center;
+  }
+
+  .pain-text {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.92rem;
+    line-height: 1.9;
+    color: var(--ink-mid);
+    letter-spacing: 0.04em;
+  }
+
+  .pain-text strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .pain-answer {
+    text-align: center;
+    padding: 2rem;
+    background: var(--accent);
+  }
+
+  .pain-answer p {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.12em;
+    color: var(--paper);
+  }
+
+  .work-value {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.85rem;
+    color: var(--accent-gold);
+    letter-spacing: 0.06em;
+    font-style: italic;
+  }
+
+  /* ── SAKURA PETALS ── */
+  .sakura-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    overflow: hidden;
+  }
+
+  .petal {
+    position: absolute;
+    top: -60px;
+    animation: petalFall linear infinite, petalSway ease-in-out infinite;
+  }
+
+  /* 桜の区切り装飾 */
+  .sakura-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0 2.5rem;
+  }
+
+  .sakura-divider-line {
+    width: 40px;
+    height: 1px;
+    background: var(--sakura-mid);
+  }
+
+  .sakura-divider svg {
+    flex-shrink: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    section { padding: 5rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    .hero-content { grid-template-columns: 1fr; gap: 3rem; }
+    .ring-visual { width: 240px; height: 240px; }
+    .pain-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .profile-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .partner-box { grid-template-columns: 1fr; gap: 2rem; }
+    .work-item { grid-template-columns: 1fr; gap: 1rem; }
+    footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 散る花びらレイヤー -->
+<div class="sakura-layer" id="sakura-layer"></div>
+
+<script>
+(function(){
+  const layer = document.getElementById('sakura-layer');
+  const count = 14;
+  for(let i = 0; i < count; i++){
+    const size = 10 + Math.random() * 14;
+    const left = Math.random() * 100;
+    const dur = 8 + Math.random() * 12;
+    const delay = Math.random() * 15;
+    const swayDur = 3 + Math.random() * 4;
+    const rotate = Math.random() * 360;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('viewBox','0 0 40 40');
+    svg.style.cssText = `width:${size}px;height:${size}px;left:${left}%;position:absolute;top:-60px;animation:petalFall ${dur}s ${delay}s linear infinite, petalSway ${swayDur}s ${delay}s ease-in-out infinite;`;
+    const colors = ['#f0c8cc','#e8b8c0','#dda0a8','#f5d8dc'];
+    const c = colors[Math.floor(Math.random()*colors.length)];
+    const inner = colors[Math.floor(Math.random()*colors.length)];
+    svg.innerHTML = `<g transform="translate(20,20) rotate(${rotate})">
+      <ellipse cx="0" cy="-9" rx="4" ry="7" fill="${c}" transform="rotate(0)"/>
+      <ellipse cx="0" cy="-9" rx="4" ry="7" fill="${c}" transform="rotate(72)"/>
+      <ellipse cx="0" cy="-9" rx="4" ry="7" fill="${c}" transform="rotate(144)"/>
+      <ellipse cx="0" cy="-9" rx="4" ry="7" fill="${c}" transform="rotate(216)"/>
+      <ellipse cx="0" cy="-9" rx="4" ry="7" fill="${c}" transform="rotate(288)"/>
+      <ellipse cx="0" cy="-6" rx="2.5" ry="4.5" fill="${inner}" transform="rotate(36)"/>
+      <ellipse cx="0" cy="-6" rx="2.5" ry="4.5" fill="${inner}" transform="rotate(108)"/>
+      <ellipse cx="0" cy="-6" rx="2.5" ry="4.5" fill="${inner}" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-6" rx="2.5" ry="4.5" fill="${inner}" transform="rotate(252)"/>
+      <ellipse cx="0" cy="-6" rx="2.5" ry="4.5" fill="${inner}" transform="rotate(324)"/>
+      <circle cx="0" cy="0" r="3" fill="#fdf0f2"/>
+    </g>`;
+    layer.appendChild(svg);
+  }
+})();
+</script>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" style="display:flex;align-items:center;gap:0.5rem;">
+    <img src="LOGO.png" alt="ヤエノワロゴ" style="height:36px;width:auto;">
+    ヤエノワ
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">会社について</a></li>
+    <li><a href="#profile">代表紹介</a></li>
+    <li><a href="#pain">お悩み</a></li>
+    <li><a href="#works">対応領域</a></li>
+    <li><a href="#vision">ビジョン</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <svg class="ring-svg" viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg">
+      <g class="ring-anim-1">
+        <circle cx="450" cy="450" r="420" fill="none" stroke="#c0606a" stroke-width="0.8" stroke-dasharray="6 18"/>
+      </g>
+      <g class="ring-anim-2">
+        <circle cx="450" cy="450" r="340" fill="none" stroke="#c0606a" stroke-width="0.8" stroke-dasharray="4 24"/>
+      </g>
+      <g class="ring-anim-3">
+        <circle cx="450" cy="450" r="260" fill="none" stroke="#c0606a" stroke-width="0.8" stroke-dasharray="8 12"/>
+      </g>
+      <circle cx="450" cy="450" r="180" fill="none" stroke="#c0606a" stroke-width="0.8"/>
+      <circle cx="450" cy="450" r="100" fill="none" stroke="#c0606a" stroke-width="0.8" stroke-dasharray="3 10"/>
+    </svg>
+    <!-- 背景に漂う八重桜シルエット -->
+    <svg style="position:absolute;top:8%;left:5%;opacity:0.07;width:120px;" viewBox="0 0 80 80">
+      <g transform="translate(40,40)">
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(0)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(288)"/>
+        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(36)"/>
+        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(108)"/>
+        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(180)"/>
+        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(252)"/>
+        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(324)"/>
+        <circle cx="0" cy="0" r="6" fill="#c0606a"/>
+      </g>
+    </svg>
+    <svg style="position:absolute;bottom:15%;right:8%;opacity:0.06;width:180px;" viewBox="0 0 80 80">
+      <g transform="translate(40,40)">
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(0)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(288)"/>
+        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(36)"/>
+        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(108)"/>
+        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(180)"/>
+        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(252)"/>
+        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(324)"/>
+        <circle cx="0" cy="0" r="6" fill="#c0606a"/>
+      </g>
+    </svg>
+    <svg style="position:absolute;top:55%;left:2%;opacity:0.05;width:80px;" viewBox="0 0 80 80">
+      <g transform="translate(40,40)">
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(20)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(92)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(164)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(236)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(308)"/>
+        <circle cx="0" cy="0" r="5" fill="#7a3a4a"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-text">
+      <p class="hero-en fade-up">Yaenowa Co., Ltd.</p>
+      <h1 class="hero-title fade-up">人と人の縁が<br>重なり合い、<br><span class="kanji-accent">新たな価値</span>を。</h1>
+      <p class="hero-subtitle fade-up">
+        ご縁と共創を軸に、<br>
+        ITの力でビジネスの未来をともに描く。
+      </p>
+      <a href="#works" class="hero-cta fade-up">
+        対応領域を見る
+        <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 7H11M8 4L11 7L8 10" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="hero-visual" style="position:relative;display:flex;justify-content:center;align-items:center;">
+      <!-- 回転する環だけ残す -->
+      <svg style="position:absolute;width:340px;height:340px;" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg">
+        <g style="transform-origin: 170px 170px; animation: rotateRing 30s linear infinite;">
+          <circle cx="170" cy="170" r="155" fill="none" stroke="#e8a0a8" stroke-width="0.6" stroke-dasharray="5 15"/>
+          <g transform="translate(170,15)"><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(288)"/><circle cx="0" cy="0" r="1.5" fill="#f5d8dc"/></g>
+          <g transform="translate(310,230)"><ellipse cx="0" cy="-3" rx="1.5" ry="2.5" fill="#dda0a8" transform="rotate(0)"/><ellipse cx="0" cy="-3" rx="1.5" ry="2.5" fill="#dda0a8" transform="rotate(72)"/><ellipse cx="0" cy="-3" rx="1.5" ry="2.5" fill="#dda0a8" transform="rotate(144)"/><ellipse cx="0" cy="-3" rx="1.5" ry="2.5" fill="#dda0a8" transform="rotate(216)"/><ellipse cx="0" cy="-3" rx="1.5" ry="2.5" fill="#dda0a8" transform="rotate(288)"/><circle cx="0" cy="0" r="1.2" fill="#f5d8dc"/></g>
+          <g transform="translate(60,290)"><ellipse cx="0" cy="-3.5" rx="2" ry="2.8" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-3.5" rx="2" ry="2.8" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-3.5" rx="2" ry="2.8" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-3.5" rx="2" ry="2.8" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-3.5" rx="2" ry="2.8" fill="#e8a0a8" transform="rotate(288)"/><circle cx="0" cy="0" r="1.3" fill="#f5d8dc"/></g>
+        </g>
+        <g style="transform-origin: 170px 170px; animation: rotateRingRev 20s linear infinite;">
+          <circle cx="170" cy="170" r="115" fill="none" stroke="#c0606a" stroke-width="0.7" stroke-dasharray="3 20"/>
+          <g transform="translate(170,55)"><ellipse cx="0" cy="-3" rx="1.8" ry="2.8" fill="#c0606a" transform="rotate(0)"/><ellipse cx="0" cy="-3" rx="1.8" ry="2.8" fill="#c0606a" transform="rotate(72)"/><ellipse cx="0" cy="-3" rx="1.8" ry="2.8" fill="#c0606a" transform="rotate(144)"/><ellipse cx="0" cy="-3" rx="1.8" ry="2.8" fill="#c0606a" transform="rotate(216)"/><ellipse cx="0" cy="-3" rx="1.8" ry="2.8" fill="#c0606a" transform="rotate(288)"/><circle cx="0" cy="0" r="1.2" fill="#f5d8dc"/></g>
+          <g transform="translate(275,245)"><ellipse cx="0" cy="-2.5" rx="1.5" ry="2.2" fill="#b05868" transform="rotate(0)"/><ellipse cx="0" cy="-2.5" rx="1.5" ry="2.2" fill="#b05868" transform="rotate(72)"/><ellipse cx="0" cy="-2.5" rx="1.5" ry="2.2" fill="#b05868" transform="rotate(144)"/><ellipse cx="0" cy="-2.5" rx="1.5" ry="2.2" fill="#b05868" transform="rotate(216)"/><ellipse cx="0" cy="-2.5" rx="1.5" ry="2.2" fill="#b05868" transform="rotate(288)"/><circle cx="0" cy="0" r="1" fill="#f5d8dc"/></g>
+        </g>
+        <g style="transform-origin: 170px 170px; animation: rotateRing 45s linear infinite;">
+          <circle cx="170" cy="170" r="75" fill="none" stroke="#e8a0a8" stroke-width="0.8"/>
+        </g>
+      </svg>
+      <!-- 中心にロゴ画像 -->
+      <img src="LOGO.png" alt="八重ノ環ロゴ" style="position:relative;z-index:2;width:160px;height:auto;">
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-left">
+        <p class="section-label">About</p>
+        <h2 class="section-title">株式会社<br>ヤエノワ</h2>
+        <div class="divider"></div>
+        <p class="about-philosophy">
+          <span class="em">ご縁</span>と<span class="em">共創</span>を軸に、<br>
+          信頼関係の上に立ち、<br>
+          ともに価値を創っていく。
+        </p>
+        <p class="about-body">
+          株式会社ヤエノワは、長年にわたる金融系ITシステムの設計・構築・実装を通じて培った専門知識をもとに、システム要件定義・設計の専門家集団として活動しています。<br><br>
+          「どんなビジネスであっても、根っこにあるのは人と人との関係性」という信念のもと、パートナーとともに事業の発展に寄与し続けます。
+        </p>
+      </div>
+
+      <div class="about-right">
+        <div class="name-origin">
+          <p class="name-origin-title">社名の由来 ── 八重ノ環</p>
+          <div class="kanji-breakdown">
+            <div class="kanji-item">
+              <span class="kanji-char">八</span>
+              <span class="kanji-reading">ya</span>
+              <p class="kanji-meaning">数多く</p>
+            </div>
+            <span class="kanji-sep">＋</span>
+            <div class="kanji-item">
+              <span class="kanji-char">重</span>
+              <span class="kanji-reading">e</span>
+              <p class="kanji-meaning">幾重にも重なる</p>
+            </div>
+            <span class="kanji-sep">＋</span>
+            <div class="kanji-item">
+              <span class="kanji-char">環</span>
+              <span class="kanji-reading">wa</span>
+              <p class="kanji-meaning">つながり・輪・循環</p>
+            </div>
+          </div>
+          <p class="origin-text">
+            人と人の縁が何重にも重なり合いながら、新たな価値を創り出していく──。その願いを、そのまま社名に込めました。
+          </p>
+        </div>
+
+        <div style="background: var(--paper); border: 0.5px solid var(--paper-dark); padding: 2rem 2.5rem;">
+          <p style="font-size: 0.7rem; letter-spacing: 0.3em; color: var(--accent-gold); margin-bottom: 1rem;">Company Info</p>
+          <table style="width: 100%; font-size: 0.85rem; border-collapse: collapse;">
+            <tr style="border-bottom: 0.5px solid var(--paper-dark);">
+              <td style="padding: 0.7rem 0; color: var(--ink-light); width: 35%; font-size: 0.78rem; letter-spacing: 0.05em;">会社名</td>
+              <td style="padding: 0.7rem 0; color: var(--ink); font-family: 'Shippori Mincho', serif;">株式会社ヤエノワ</td>
+            </tr>
+            <tr style="border-bottom: 0.5px solid var(--paper-dark);">
+              <td style="padding: 0.7rem 0; color: var(--ink-light); font-size: 0.78rem; letter-spacing: 0.05em;">代表取締役</td>
+              <td style="padding: 0.7rem 0; color: var(--ink); font-family: 'Shippori Mincho', serif;">吉田 勝大</td>
+            </tr>
+            <tr style="border-bottom: 0.5px solid var(--paper-dark);">
+              <td style="padding: 0.7rem 0; color: var(--ink-light); font-size: 0.78rem; letter-spacing: 0.05em;">設立</td>
+              <td style="padding: 0.7rem 0; color: var(--ink);">2025年4月3日</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.7rem 0; color: var(--ink-light); font-size: 0.78rem; letter-spacing: 0.05em;">事業内容</td>
+              <td style="padding: 0.7rem 0; color: var(--ink);">システム要件定義・設計<br>ITコンサルティング</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section class="profile" id="profile">
+  <div class="section-inner">
+    <p class="section-label">Representative</p>
+    <h2 class="section-title">代表紹介</h2>
+    <div class="divider"></div>
+
+    <div class="profile-grid">
+      <div>
+        <div class="profile-card">
+          <div class="avatar">吉</div>
+          <p class="profile-name-ja">吉田 勝大</p>
+          <p class="profile-name-en">Yoshida Katsuhiro</p>
+          <p class="profile-role">代表取締役</p>
+          <div class="profile-tag-list">
+            <span class="profile-tag">要件定義</span>
+            <span class="profile-tag">システム設計</span>
+            <span class="profile-tag">金融系IT</span>
+            <span class="profile-tag">EC・OMS</span>
+            <span class="profile-tag">SAP連携</span>
+            <span class="profile-tag">PM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-detail">
+        <p class="profile-intro">
+          銀行・クレジットカードなど金融系システムの設計・構築・実装・テストを通じて、ITの深い専門知識を積み上げてきました。現在はその経験を活かし、システム要件定義・設計を専門として活動しています。
+        </p>
+        <p class="profile-body">
+          大規模な基幹系システムの上流工程から、ECプラットフォームとのシステム連携設計まで、幅広いプロジェクトで実績を持ちます。技術的な知見はもちろん、関係者との丁寧なコミュニケーションを通じたプロジェクト推進を得意としています。
+        </p>
+        <p class="profile-body">
+          パートナー企業と準委任契約を結び、大手ブランドのシステム刷新・ECインフラ構築などのプロジェクトをリードしています。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN POINTS -->
+<section class="pain" id="pain">
+  <div class="section-inner">
+    <p class="section-label">For You</p>
+    <h2 class="section-title">こんなお悩み<br>ありませんか？</h2>
+    <div class="divider"></div>
+
+    <div class="pain-grid">
+      <div class="pain-item">
+        <div class="pain-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="13" stroke="#e8a0a8" stroke-width="0.8"/>
+            <path d="M9 14h10M14 9v10" stroke="#c0606a" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <p class="pain-text">システム化したいが、<br><strong>何から始めればいいかわからない</strong></p>
+      </div>
+      <div class="pain-item">
+        <div class="pain-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="13" stroke="#e8a0a8" stroke-width="0.8"/>
+            <path d="M9 14h10M14 9v10" stroke="#c0606a" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <p class="pain-text">ベンダーの言っていることが<br><strong>理解できず判断に迷う</strong></p>
+      </div>
+      <div class="pain-item">
+        <div class="pain-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="13" stroke="#e8a0a8" stroke-width="0.8"/>
+            <path d="M9 14h10M14 9v10" stroke="#c0606a" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <p class="pain-text">要件定義・設計を<br><strong>任せられる人材がいない</strong></p>
+      </div>
+    </div>
+
+    <div class="pain-answer">
+      <p>その課題、上流工程の専門家が一緒に整理します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section class="works" id="works">
+  <div class="section-inner">
+    <p class="section-label">Works</p>
+    <h2 class="section-title">主な対応領域</h2>
+    <div class="divider"></div>
+
+    <div class="works-list">
+
+      <div class="work-item">
+        <div class="work-meta">
+          <p class="work-client">受発注・<br>EC基盤構築</p>
+        </div>
+        <div class="work-content">
+          <p class="work-title">小売店向け発注サイトの要件定義・設計・ディレクション</p>
+          <p class="work-desc">
+            製造・流通業における小売店向け発注サイトの上流工程を担当。要件定義から設計・構築ディレクションまでを一貫して実施。基幹システムや倉庫管理システムとの連携設計も含め、エンドツーエンドでリード。<br>
+            <span class="work-value">「何を作るか」が曖昧な段階から入り込み、関係者の言語を揃えながらプロジェクトを前進させます。</span>
+          </p>
+          <div class="tech-tags">
+            <span class="tech-tag">要件定義</span>
+            <span class="tech-tag">システム設計</span>
+            <span class="tech-tag">基幹システム連携</span>
+            <span class="tech-tag">WMS連携</span>
+            <span class="tech-tag">ディレクション</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <div class="work-meta">
+          <p class="work-client">基幹システム<br>移行PM</p>
+        </div>
+        <div class="work-content">
+          <p class="work-title">基幹システム移行に伴うEC連携切替のプロジェクトマネジメント</p>
+          <p class="work-desc">
+            アパレル業界における基幹システム刷新プロジェクトにて、複数ブランドECサイトの連携切替PMを担当。新旧システム間の接続設計・関係者調整・推進を一手に担いスムーズな移行を実現。<br>
+            <span class="work-value">移行リスクを最小化しながら、ビジネスを止めずに前に進める設計を得意としています。</span>
+          </p>
+          <div class="tech-tags">
+            <span class="tech-tag">PM</span>
+            <span class="tech-tag">基幹システム移行</span>
+            <span class="tech-tag">EC連携設計</span>
+            <span class="tech-tag">アパレルEC</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <div class="work-meta">
+          <p class="work-client">OMS移行・<br>モールEC接続</p>
+        </div>
+        <div class="work-content">
+          <p class="work-title">OMS移行に伴うモールEC接続の運用設計・システム設計</p>
+          <p class="work-desc">
+            既存OMSから新OMSへの移行プロジェクトにおいて、複数のモールECサイトとの接続設計を担当。運用設計からシステム設計まで一貫して実施し、円滑な移行を実現。<br>
+            <span class="work-value">複雑なモール連携も、運用視点を持ちながら現場が動かせる設計に落とし込みます。</span>
+          </p>
+          <div class="tech-tags">
+            <span class="tech-tag">OMS設計</span>
+            <span class="tech-tag">モールEC連携</span>
+            <span class="tech-tag">運用設計</span>
+            <span class="tech-tag">システム設計</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="vision" id="vision">
+  <svg class="vision-bg-rings" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMid slice">
+    <circle cx="1000" cy="300" r="450" fill="none" stroke="#f5d8dc" stroke-width="1"/>
+    <circle cx="1000" cy="300" r="330" fill="none" stroke="#f5d8dc" stroke-width="1"/>
+    <circle cx="1000" cy="300" r="210" fill="none" stroke="#f5d8dc" stroke-width="1"/>
+    <circle cx="1000" cy="300" r="90" fill="none" stroke="#f5d8dc" stroke-width="1"/>
+    <!-- 大きな桜シルエット -->
+    <g transform="translate(1000,300)" opacity="0.06">
+      <ellipse cx="0" cy="-80" rx="35" ry="58" fill="#f5d8dc" transform="rotate(0)"/>
+      <ellipse cx="0" cy="-80" rx="35" ry="58" fill="#f5d8dc" transform="rotate(72)"/>
+      <ellipse cx="0" cy="-80" rx="35" ry="58" fill="#f5d8dc" transform="rotate(144)"/>
+      <ellipse cx="0" cy="-80" rx="35" ry="58" fill="#f5d8dc" transform="rotate(216)"/>
+      <ellipse cx="0" cy="-80" rx="35" ry="58" fill="#f5d8dc" transform="rotate(288)"/>
+      <ellipse cx="0" cy="-50" rx="22" ry="40" fill="#e8a0a8" transform="rotate(36)"/>
+      <ellipse cx="0" cy="-50" rx="22" ry="40" fill="#e8a0a8" transform="rotate(108)"/>
+      <ellipse cx="0" cy="-50" rx="22" ry="40" fill="#e8a0a8" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-50" rx="22" ry="40" fill="#e8a0a8" transform="rotate(252)"/>
+      <ellipse cx="0" cy="-50" rx="22" ry="40" fill="#e8a0a8" transform="rotate(324)"/>
+      <circle cx="0" cy="0" r="28" fill="#f5d8dc"/>
+    </g>
+  </svg>
+
+  <div class="section-inner">
+    <div class="vision-content">
+      <p class="section-label">Vision</p>
+      <h2 class="section-title">私たちのビジョン</h2>
+      <div class="divider"></div>
+
+      <p class="vision-quote">
+        人のご縁が重なり合い、<br>
+        <em>新たな価値を創り出す社会</em>へ。
+      </p>
+
+      <p class="vision-body">
+        どんなビジネスであっても、根っこにあるのは「人と人との関係性」。プロジェクトも、仕組みも、組織も、すべては"誰と、どう関わるか"で変わるものだと思っています。<br><br>
+        だからこそ、私は会社の軸に「ご縁」と「共創」を据えました。信頼関係の上に立ち、共に価値を創っていく。そんな会社であり続けたいと願っています。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-inner">
+    <p class="section-label">Contact</p>
+    <h2 class="section-title">お問い合わせ</h2>
+    <div class="divider"></div>
+    <p class="contact-body">
+      ご依頼・ご相談・ご協業のご提案など、<br>
+      まずはお気軽にご連絡ください。<br>
+      ご縁を大切に、誠実にお応えします。
+    </p>
+    <a href="mailto:yoshida+contact@yaenowa.co.jp" class="contact-btn" id="mail-btn">
+      メールでお問い合わせ
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 7H11M8 4L11 7L8 10" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+    </a>
+    <p style="margin-top:1.2rem; font-size:0.78rem; color:var(--ink-light); font-family:'Shippori Mincho',serif; letter-spacing:0.08em;">
+      メーラーが開かない場合は
+      <button onclick="copyMail()" id="copy-btn" style="background:none;border:none;cursor:pointer;color:var(--accent-gold);font-size:0.78rem;font-family:'Shippori Mincho',serif;letter-spacing:0.08em;text-decoration:underline;padding:0;">アドレスをコピー</button>
+    </p>
+  </div>
+</section>
+
+<script>
+function copyMail() {
+  navigator.clipboard.writeText('yoshida+contact@yaenowa.co.jp').then(function() {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'コピーしました ✓';
+    btn.style.color = 'var(--sakura-deep)';
+    setTimeout(function(){ btn.textContent = 'アドレスをコピー'; btn.style.color = 'var(--accent-gold)'; }, 2500);
+  });
+}
+</script>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">株式会社ヤエノワ</span>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+</body>
+</html>
