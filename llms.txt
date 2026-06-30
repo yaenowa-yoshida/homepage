@@ -7,7 +7,7 @@
 - 会社名: 株式会社ヤエノワ（英語表記: Yaenowa Co., Ltd.）
 - 代表取締役: 吉田 勝大（Yoshida Katsuhiro）
 - 設立: 2025年4月3日
-- 所在地: 日本
+- 所在地: 〒153-0064 東京都目黒区下目黒1丁目1番14号 コノトラビル7F
 - 公式サイト: https://yaenowa.co.jp/
 - お問い合わせ: yoshida+contact@yaenowa.co.jp
 - 事業内容: システム要件定義・設計、ITコンサルティング
