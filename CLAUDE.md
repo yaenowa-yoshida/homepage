@@ -56,9 +56,14 @@
 
 ## 既知の未対応事項（TODO）
 
-- **DNS**: apex（`yaenowa.co.jp`）を GitHub Pages に向ける A レコード設定の確認（`185.199.108-111.153`）。
 - プライバシーポリシーページ（必要に応じて）。
 - 専用OGP画像（1200×630）の用意（現状はロゴ流用）。
+
+## 確認済み事項
+
+- **DNS（apex）**: `yaenowa.co.jp` の A レコードは GitHub Pages のIP（`185.199.108-111.153`）を
+  正しく指している。`www.yaenowa.co.jp` も github.io へ向いており、追加のDNS作業は不要。
+  （補足: 変更時は GitHub の Settings → Pages の Custom domain = `yaenowa.co.jp` と Enforce HTTPS を確認）
 
 ## 開発フロー
 
