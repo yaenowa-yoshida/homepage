@@ -64,6 +64,8 @@
   `twitter:image` が参照。キャッチコピーやデザインを変えたら本画像も再生成して差し替える。
   （注: JSON-LD の `logo` は実ロゴ `LOGO.png` のままにする。OGPバナーとは別物）
 - `privacy.html` … プライバシーポリシー（個人情報保護方針）。フッターからリンク。
+  公開URLは拡張子なしの `/privacy`（GitHub Pages は `privacy.html` を `/privacy` で配信する）。
+  リンク・canonical・og:url・sitemap は `/privacy` で統一すること。
   内容を変える際は実態（取得方法・利用目的・クッキー/外部サービスの利用状況）と
   一致させること。アクセス解析やフォームを導入したら本ページを必ず更新する。
 
