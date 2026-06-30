@@ -25,25 +25,148 @@
 <meta name="twitter:description" content="金融系ITシステムで培った専門知識をもとに、システム要件定義・設計を専門とする会社です。">
 <meta name="twitter:image" content="https://yaenowa.co.jp/LOGO.png">
 
-<!-- 構造化データ（Googleリッチリザルト用） -->
+<!-- 構造化データ（Googleリッチリザルト / AIO 用） -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "株式会社ヤエノワ",
-  "url": "https://yaenowa.co.jp",
-  "logo": "https://yaenowa.co.jp/LOGO.png",
-  "foundingDate": "2025-04-03",
-  "description": "システム要件定義・設計を専門とするITコンサルティング会社",
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "JP"
-  },
-  "founder": {
-    "@type": "Person",
-    "name": "吉田 勝大",
-    "jobTitle": "代表取締役"
-  }
+  "@graph": [
+    {
+      "@type": ["Organization", "ProfessionalService"],
+      "@id": "https://yaenowa.co.jp/#organization",
+      "name": "株式会社ヤエノワ",
+      "alternateName": "Yaenowa Co., Ltd.",
+      "url": "https://yaenowa.co.jp/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://yaenowa.co.jp/LOGO.png"
+      },
+      "image": "https://yaenowa.co.jp/LOGO.png",
+      "foundingDate": "2025-04-03",
+      "description": "金融系ITシステムで培った専門知識をもとに、システム要件定義・設計を専門とするITコンサルティング会社。ご縁と共創を軸に、上流工程からプロジェクトをリードします。",
+      "slogan": "人と人の縁が重なり合い、新たな価値を。",
+      "email": "yoshida+contact@yaenowa.co.jp",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "JP"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "日本"
+      },
+      "knowsAbout": [
+        "システム要件定義",
+        "システム設計",
+        "ITコンサルティング",
+        "金融系ITシステム",
+        "基幹システム移行",
+        "EC連携",
+        "OMS",
+        "WMS連携",
+        "SAP連携",
+        "プロジェクトマネジメント"
+      ],
+      "founder": { "@id": "https://yaenowa.co.jp/#founder" },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "yoshida+contact@yaenowa.co.jp",
+        "contactType": "sales",
+        "availableLanguage": ["Japanese"]
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "対応領域",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "システム要件定義・設計",
+              "description": "システム化の上流工程。要件定義から基本設計までを一貫して支援します。"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "ITコンサルティング",
+              "description": "ベンダー選定・判断支援を含む、経営とITの橋渡し。"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "基幹システム移行・EC連携のプロジェクトマネジメント",
+              "description": "新旧システム間の接続設計・関係者調整・推進を担うPM。"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "OMS・モールEC連携の運用設計・システム設計",
+              "description": "受注管理システム移行と複数モールEC接続の設計。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://yaenowa.co.jp/#founder",
+      "name": "吉田 勝大",
+      "alternateName": "Yoshida Katsuhiro",
+      "jobTitle": "代表取締役",
+      "worksFor": { "@id": "https://yaenowa.co.jp/#organization" },
+      "knowsAbout": [
+        "要件定義",
+        "システム設計",
+        "金融系IT",
+        "EC・OMS",
+        "SAP連携",
+        "プロジェクトマネジメント"
+      ],
+      "description": "銀行・クレジットカードなど金融系システムの設計・構築・実装・テストを通じて専門知識を積み上げ、現在はシステム要件定義・設計を専門に活動。"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://yaenowa.co.jp/#website",
+      "url": "https://yaenowa.co.jp/",
+      "name": "株式会社ヤエノワ",
+      "inLanguage": "ja",
+      "publisher": { "@id": "https://yaenowa.co.jp/#organization" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://yaenowa.co.jp/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "システム化したいが、何から始めればいいかわからない。",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "上流工程の専門家が、目的の整理から要件定義・設計までを一緒に進めます。「何を作るか」が曖昧な段階から入り込み、関係者の言語を揃えながらプロジェクトを前進させます。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ベンダーの言っていることが理解できず判断に迷う。",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "発注者側の立場で技術的な内容を翻訳・整理し、意思決定を支援します。ITコンサルティングとして経営とITの橋渡しを行います。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "要件定義・設計を任せられる人材がいない。",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "金融系ITや大規模基幹系の上流工程で実績を持つ専門家が、要件定義・設計を代行・伴走します。"
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -709,6 +832,21 @@
     font-weight: 600;
   }
 
+  .pain-resolve {
+    font-size: 0.82rem;
+    line-height: 1.9;
+    color: var(--ink-light);
+    letter-spacing: 0.03em;
+    padding-top: 0.9rem;
+    margin-top: auto;
+    border-top: 0.5px solid var(--paper-dark);
+  }
+
+  .pain-resolve::before {
+    content: "→ ";
+    color: var(--accent-gold);
+  }
+
   .pain-answer {
     text-align: center;
     padding: 2rem;
@@ -1065,6 +1203,7 @@
           </svg>
         </div>
         <p class="pain-text">システム化したいが、<br><strong>何から始めればいいかわからない</strong></p>
+        <p class="pain-resolve">目的の整理から要件定義・設計までを一緒に進めます。「何を作るか」が曖昧な段階から伴走します。</p>
       </div>
       <div class="pain-item">
         <div class="pain-icon">
@@ -1074,6 +1213,7 @@
           </svg>
         </div>
         <p class="pain-text">ベンダーの言っていることが<br><strong>理解できず判断に迷う</strong></p>
+        <p class="pain-resolve">発注者側の立場で技術的な内容を翻訳・整理し、意思決定を支援します。</p>
       </div>
       <div class="pain-item">
         <div class="pain-icon">
@@ -1083,6 +1223,7 @@
           </svg>
         </div>
         <p class="pain-text">要件定義・設計を<br><strong>任せられる人材がいない</strong></p>
+        <p class="pain-resolve">金融系IT・大規模基幹系の上流工程で実績を持つ専門家が代行・伴走します。</p>
       </div>
     </div>
 
