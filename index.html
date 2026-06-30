@@ -3,12 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>document.documentElement.className += ' js';</script>
 <title>株式会社ヤエノワ | システム要件定義・設計の専門家</title>
 <meta name="description" content="株式会社ヤエノワは、金融系ITシステムで培った専門知識をもとに、システム要件定義・設計を専門とする会社です。ご縁と共創を軸に、ITの力でビジネスの未来をともに描きます。">
 <meta name="keywords" content="システム要件定義,システム設計,ITコンサルティング,EC連携,OMS,基幹システム,ヤエノワ,株式会社ヤエノワ">
 <meta name="author" content="株式会社ヤエノワ">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://yaenowa.co.jp/">
+
+<!-- ファビコン / ブラウザ表示 -->
+<link rel="icon" href="LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="LOGO.png">
+<meta name="theme-color" content="#7a3a4a">
 
 <!-- OGP（SNSシェア用） -->
 <meta property="og:type" content="website">
@@ -239,6 +245,31 @@
     transition: color 0.3s;
   }
   .nav-links a:hover { color: var(--accent); }
+
+  /* ハンバーガーボタン（モバイル用・デフォルト非表示） */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 110;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background: var(--ink);
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
   /* ── HERO ── */
   .hero {
@@ -792,6 +823,18 @@
     animation: rotateRing 25s linear infinite;
   }
 
+  /* スクロール表示演出（JS有効時のみ隠す＝JS無効でも表示される） */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    will-change: opacity, transform;
+  }
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   /* ── PAIN POINTS ── */
   .pain {
     background: var(--paper);
@@ -906,7 +949,6 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
-    .nav-links { gap: 1.5rem; }
     section { padding: 5rem 1.5rem; }
     .hero { padding: 7rem 1.5rem 4rem; }
     .hero-content { grid-template-columns: 1fr; gap: 3rem; }
@@ -917,13 +959,47 @@
     .partner-box { grid-template-columns: 1fr; gap: 2rem; }
     .work-item { grid-template-columns: 1fr; gap: 1rem; }
     footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+
+    /* モバイルナビ（ハンバーガー） */
+    .nav-toggle { display: flex; }
+    .nav-links {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: min(75vw, 280px);
+      flex-direction: column;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem 2.5rem;
+      background: rgba(247,244,238,0.98);
+      backdrop-filter: blur(10px);
+      border-left: 0.5px solid var(--paper-dark);
+      transform: translateX(100%);
+      transition: transform 0.35s ease;
+      box-shadow: -8px 0 24px rgba(26,26,24,0.06);
+    }
+    nav.nav-open .nav-links { transform: translateX(0); }
+    .nav-links a { font-size: 0.95rem; }
+  }
+
+  /* 動きを抑えたいユーザーへの配慮 */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    #sakura-layer { display: none; }
   }
 </style>
 </head>
 <body>
 
 <!-- 散る花びらレイヤー -->
-<div class="sakura-layer" id="sakura-layer"></div>
+<div class="sakura-layer" id="sakura-layer" aria-hidden="true"></div>
 
 <script>
 (function(){
@@ -966,7 +1042,10 @@
     <img src="LOGO.png" alt="ヤエノワロゴ" style="height:36px;width:auto;">
     ヤエノワ
   </a>
-  <ul class="nav-links">
+  <button class="nav-toggle" id="nav-toggle" aria-label="メニューを開く" aria-controls="nav-links" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
     <li><a href="#about">会社について</a></li>
     <li><a href="#profile">代表紹介</a></li>
     <li><a href="#pain">お悩み</a></li>
@@ -978,7 +1057,7 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg">
+  <div class="hero-bg" aria-hidden="true">
     <svg class="ring-svg" viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg">
       <g class="ring-anim-1">
         <circle cx="450" cy="450" r="420" fill="none" stroke="#c0606a" stroke-width="0.8" stroke-dasharray="6 18"/>
@@ -1053,7 +1132,7 @@
 
     <div class="hero-visual" style="position:relative;display:flex;justify-content:center;align-items:center;">
       <!-- 回転する環だけ残す -->
-      <svg style="position:absolute;width:340px;height:340px;" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg">
+      <svg style="position:absolute;width:340px;height:340px;" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <g style="transform-origin: 170px 170px; animation: rotateRing 30s linear infinite;">
           <circle cx="170" cy="170" r="155" fill="none" stroke="#e8a0a8" stroke-width="0.6" stroke-dasharray="5 15"/>
           <g transform="translate(170,15)"><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(288)"/><circle cx="0" cy="0" r="1.5" fill="#f5d8dc"/></g>
@@ -1077,7 +1156,7 @@
 
 <!-- ABOUT -->
 <section class="about" id="about">
-  <div class="section-inner">
+  <div class="section-inner reveal">
     <div class="about-grid">
       <div class="about-left">
         <p class="section-label">About</p>
@@ -1149,7 +1228,7 @@
 
 <!-- PROFILE -->
 <section class="profile" id="profile">
-  <div class="section-inner">
+  <div class="section-inner reveal">
     <p class="section-label">Representative</p>
     <h2 class="section-title">代表紹介</h2>
     <div class="divider"></div>
@@ -1189,14 +1268,14 @@
 
 <!-- PAIN POINTS -->
 <section class="pain" id="pain">
-  <div class="section-inner">
+  <div class="section-inner reveal">
     <p class="section-label">For You</p>
     <h2 class="section-title">こんなお悩み<br>ありませんか？</h2>
     <div class="divider"></div>
 
     <div class="pain-grid">
       <div class="pain-item">
-        <div class="pain-icon">
+        <div class="pain-icon" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="14" cy="14" r="13" stroke="#e8a0a8" stroke-width="0.8"/>
             <path d="M9 14h10M14 9v10" stroke="#c0606a" stroke-width="1.2"/>
@@ -1206,7 +1285,7 @@
         <p class="pain-resolve">目的の整理から要件定義・設計までを一緒に進めます。「何を作るか」が曖昧な段階から伴走します。</p>
       </div>
       <div class="pain-item">
-        <div class="pain-icon">
+        <div class="pain-icon" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="14" cy="14" r="13" stroke="#e8a0a8" stroke-width="0.8"/>
             <path d="M9 14h10M14 9v10" stroke="#c0606a" stroke-width="1.2"/>
@@ -1216,7 +1295,7 @@
         <p class="pain-resolve">発注者側の立場で技術的な内容を翻訳・整理し、意思決定を支援します。</p>
       </div>
       <div class="pain-item">
-        <div class="pain-icon">
+        <div class="pain-icon" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="14" cy="14" r="13" stroke="#e8a0a8" stroke-width="0.8"/>
             <path d="M9 14h10M14 9v10" stroke="#c0606a" stroke-width="1.2"/>
@@ -1235,7 +1314,7 @@
 
 <!-- WORKS -->
 <section class="works" id="works">
-  <div class="section-inner">
+  <div class="section-inner reveal">
     <p class="section-label">Works</p>
     <h2 class="section-title">主な対応領域</h2>
     <div class="divider"></div>
@@ -1306,7 +1385,7 @@
 
 <!-- VISION -->
 <section class="vision" id="vision">
-  <svg class="vision-bg-rings" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMid slice">
+  <svg class="vision-bg-rings" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
     <circle cx="1000" cy="300" r="450" fill="none" stroke="#f5d8dc" stroke-width="1"/>
     <circle cx="1000" cy="300" r="330" fill="none" stroke="#f5d8dc" stroke-width="1"/>
     <circle cx="1000" cy="300" r="210" fill="none" stroke="#f5d8dc" stroke-width="1"/>
@@ -1327,7 +1406,7 @@
     </g>
   </svg>
 
-  <div class="section-inner">
+  <div class="section-inner reveal">
     <div class="vision-content">
       <p class="section-label">Vision</p>
       <h2 class="section-title">私たちのビジョン</h2>
@@ -1350,7 +1429,7 @@
 
 <!-- CONTACT -->
 <section class="contact" id="contact">
-  <div class="section-inner">
+  <div class="section-inner reveal">
     <p class="section-label">Contact</p>
     <h2 class="section-title">お問い合わせ</h2>
     <div class="divider"></div>
@@ -1381,6 +1460,50 @@ function copyMail() {
     setTimeout(function(){ btn.textContent = 'アドレスをコピー'; btn.style.color = 'var(--accent-gold)'; }, 2500);
   });
 }
+</script>
+
+<!-- モバイルナビ & スクロール表示演出 -->
+<script>
+(function(){
+  // ── ハンバーガーメニュー ──
+  const nav = document.querySelector('nav');
+  const toggle = document.getElementById('nav-toggle');
+  const links = document.getElementById('nav-links');
+  function closeMenu(){
+    nav.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'メニューを開く');
+  }
+  toggle.addEventListener('click', function(){
+    const open = nav.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
+  });
+  // メニュー内リンクをタップしたら閉じる
+  links.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMenu);
+  });
+  // Escキーで閉じる
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  // ── スクロール表示演出 ──
+  const targets = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach(function(el){ el.classList.add('is-visible'); });
+    return;
+  }
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  targets.forEach(function(el){ io.observe(el); });
+})();
 </script>
 
 <!-- FOOTER -->
