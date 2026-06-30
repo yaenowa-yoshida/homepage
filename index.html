@@ -1065,6 +1065,19 @@
     .nav-links a { font-size: 0.95rem; }
   }
 
+  /* スマホ幅：社名由来の「八＋重＋環」を縦並びに整える */
+  @media (max-width: 600px) {
+    .kanji-breakdown {
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .kanji-sep {
+      align-self: center;
+      line-height: 1;
+    }
+  }
+
   /* 動きを抑えたいユーザーへの配慮 */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
