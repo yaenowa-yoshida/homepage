@@ -921,6 +921,50 @@
     font-style: italic;
   }
 
+  /* ── STRENGTHS（選ばれる理由） ── */
+  .strengths {
+    background: var(--paper-mid);
+  }
+
+  .strengths-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .strength-item {
+    background: var(--paper);
+    border: 0.5px solid var(--paper-dark);
+    border-top: 2px solid var(--accent-gold);
+    padding: 2.2rem 1.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .strength-num {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.7rem;
+    line-height: 1;
+    color: var(--accent-gold);
+    letter-spacing: 0.05em;
+  }
+
+  .strength-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+
+  .strength-desc {
+    font-size: 0.88rem;
+    line-height: 1.95;
+    color: var(--ink-mid);
+    letter-spacing: 0.02em;
+  }
+
   /* ── SAKURA PETALS ── */
   .sakura-layer {
     position: fixed;
@@ -962,6 +1006,7 @@
     .hero-content { grid-template-columns: 1fr; gap: 3rem; }
     .ring-visual { width: 240px; height: 240px; }
     .pain-grid { grid-template-columns: 1fr; }
+    .strengths-grid { grid-template-columns: 1fr; }
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
     .profile-grid { grid-template-columns: 1fr; gap: 2rem; }
     .partner-box { grid-template-columns: 1fr; gap: 2rem; }
@@ -1056,6 +1101,7 @@
   <ul class="nav-links" id="nav-links">
     <li><a href="#about">会社について</a></li>
     <li><a href="#profile">代表紹介</a></li>
+    <li><a href="#strengths">選ばれる理由</a></li>
     <li><a href="#pain">お悩み</a></li>
     <li><a href="#works">対応領域</a></li>
     <li><a href="#vision">ビジョン</a></li>
@@ -1274,6 +1320,33 @@
         <p class="profile-body">
           近年は生成AIを要件定義・設計やプロジェクト推進の実務に積極的に取り入れ、活用知見を継続的にアップデートしています。技術コミュニティ <a href="https://craftstage.connpass.com/" target="_blank" rel="noopener" style="color:var(--accent-gold);text-decoration:underline;">CraftStage</a> では共同主催・登壇者として、AI・開発に関するLT（ライトニングトーク）で発信を続けています。
         </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRENGTHS（選ばれる理由） -->
+<section class="strengths" id="strengths">
+  <div class="section-inner reveal">
+    <p class="section-label">Strengths</p>
+    <h2 class="section-title">選ばれる理由</h2>
+    <div class="divider"></div>
+
+    <div class="strengths-grid">
+      <div class="strength-item">
+        <span class="strength-num">01</span>
+        <p class="strength-title">金融系ITで培った<br>堅牢性と正確性</p>
+        <p class="strength-desc">銀行・クレジットカードなど、止められない金融システムの設計・構築・実装・テストで培った品質基準とリスク管理。ミスの許されない領域で鍛えた精度で、要件の抜け漏れを未然に防ぎます。</p>
+      </div>
+      <div class="strength-item">
+        <span class="strength-num">02</span>
+        <p class="strength-title">「何を作るか」を<br>言語化する整理力</p>
+        <p class="strength-desc">曖昧な要望や現場の課題を、実装できる要件へと翻訳。立場の異なる関係者の言葉を揃え、プロジェクトが迷子にならない土台をつくります。上流工程こそが最大の価値だと考えています。</p>
+      </div>
+      <div class="strength-item">
+        <span class="strength-num">03</span>
+        <p class="strength-title">生成AIを取り入れた<br>スピードと知見</p>
+        <p class="strength-desc">生成AIを要件定義・設計の実務に取り入れ、検討の速度と質を両立。技術コミュニティでの登壇・発信を通じて、最新の活用知見を常にアップデートし続けています。</p>
       </div>
     </div>
   </div>
