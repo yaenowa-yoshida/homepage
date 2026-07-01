@@ -630,55 +630,66 @@
     margin-bottom: 2.5rem;
   }
 
-  .works-list {
+  /* 対応領域カードグリッド */
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .work-card {
+    background: var(--paper);
+    border: 0.5px solid var(--paper-dark);
+    border-top: 2px solid var(--sakura-mid);
+    padding: 2.2rem 1.7rem;
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: 1rem;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
   }
 
-  .work-item {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 3rem;
-    padding: 2.5rem 0;
-    border-bottom: 0.5px solid var(--paper-dark);
-    align-items: start;
+  .work-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 32px rgba(122,58,74,0.12);
+    border-color: var(--sakura-deep);
   }
 
-  .work-item:first-child {
-    border-top: 0.5px solid var(--paper-dark);
+  .work-card-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--sakura-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .work-meta {}
-
-  .work-client {
-    font-family: 'Zen Old Mincho', serif;
-    font-size: 1.1rem;
-    color: var(--ink);
-    letter-spacing: 0.05em;
+  .work-cat {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    color: var(--accent-gold);
   }
-
-  .work-content {}
 
   .work-title {
     font-family: 'Shippori Mincho', serif;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: var(--ink);
-    margin-bottom: 0.8rem;
-    letter-spacing: 0.06em;
+    line-height: 1.7;
+    letter-spacing: 0.04em;
   }
 
   .work-desc {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     color: var(--ink-mid);
-    line-height: 2.0;
-    margin-bottom: 1rem;
+    line-height: 1.95;
+    letter-spacing: 0.02em;
   }
 
   .tech-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    margin-top: auto;
   }
 
   .tech-tag {
@@ -941,12 +952,14 @@
   }
 
   .work-value {
-    display: inline-block;
-    margin-top: 0.8rem;
+    display: block;
+    padding-top: 0.9rem;
+    border-top: 0.5px solid var(--paper-dark);
     font-family: 'Shippori Mincho', serif;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
+    line-height: 1.85;
     color: var(--accent-gold);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     font-style: italic;
   }
 
@@ -969,6 +982,30 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+
+  .strength-item:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 32px rgba(122,58,74,0.12);
+    border-color: var(--accent);
+  }
+
+  .strength-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .strength-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--accent-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
 
   .strength-num {
@@ -1036,10 +1073,10 @@
     .ring-visual { width: 240px; height: 240px; }
     .pain-grid { grid-template-columns: 1fr; }
     .strengths-grid { grid-template-columns: 1fr; }
+    .works-grid { grid-template-columns: 1fr; }
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
     .profile-grid { grid-template-columns: 1fr; gap: 2rem; }
     .partner-box { grid-template-columns: 1fr; gap: 2rem; }
-    .work-item { grid-template-columns: 1fr; gap: 1rem; }
     footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
 
     /* モバイルナビ（ハンバーガー） */
@@ -1385,17 +1422,42 @@
 
     <div class="strengths-grid">
       <div class="strength-item">
-        <span class="strength-num">01</span>
+        <div class="strength-head">
+          <span class="strength-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 2.5 L21.5 6 V12.5 C21.5 18 17.5 22 13 23.5 C8.5 22 4.5 18 4.5 12.5 V6 Z" stroke="#7a3a4a" stroke-width="1.1" stroke-linejoin="round"/>
+              <path d="M9.5 13 L12 15.5 L16.5 10.5" stroke="#c0606a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="strength-num">01</span>
+        </div>
         <p class="strength-title">金融系ITで培った<br>堅牢性と正確性</p>
         <p class="strength-desc">銀行・クレジットカードなど、止められない金融システムの設計・構築・実装・テストで培った品質基準とリスク管理。ミスの許されない領域で鍛えた精度で、要件の抜け漏れを未然に防ぎます。</p>
       </div>
       <div class="strength-item">
-        <span class="strength-num">02</span>
+        <div class="strength-head">
+          <span class="strength-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 3.5 H15 L20 8.5 V22.5 H6 Z" stroke="#7a3a4a" stroke-width="1.1" stroke-linejoin="round"/>
+              <path d="M15 3.5 V8.5 H20" stroke="#7a3a4a" stroke-width="1.1" stroke-linejoin="round"/>
+              <path d="M9 13 H17 M9 17 H15" stroke="#c0606a" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="strength-num">02</span>
+        </div>
         <p class="strength-title">「何を作るか」を<br>言語化する整理力</p>
         <p class="strength-desc">曖昧な要望や現場の課題を、実装できる要件へと翻訳。立場の異なる関係者の言葉を揃え、プロジェクトが迷子にならない土台をつくります。上流工程こそが最大の価値だと考えています。</p>
       </div>
       <div class="strength-item">
-        <span class="strength-num">03</span>
+        <div class="strength-head">
+          <span class="strength-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 2.5 L15 9.5 L22 11.5 L15 13.5 L13 20.5 L11 13.5 L4 11.5 L11 9.5 Z" stroke="#7a3a4a" stroke-width="1.1" stroke-linejoin="round"/>
+              <path d="M19.5 17.5 L20.4 20 L22.9 20.9 L20.4 21.8 L19.5 24.3 L18.6 21.8 L16.1 20.9 L18.6 20 Z" fill="#c0606a"/>
+            </svg>
+          </span>
+          <span class="strength-num">03</span>
+        </div>
         <p class="strength-title">生成AIを取り入れた<br>スピードと知見</p>
         <p class="strength-desc">生成AIを要件定義・設計の実務に取り入れ、検討の速度と質を両立。技術コミュニティでの登壇・発信を通じて、最新の活用知見を常にアップデートし続けています。</p>
       </div>
@@ -1457,63 +1519,74 @@
     <div class="divider"></div>
     <p class="works-lead">これまでの経験をもとに、以下の領域でご支援できます。</p>
 
-    <div class="works-list">
+    <div class="works-grid">
 
-      <div class="work-item">
-        <div class="work-meta">
-          <p class="work-client">受発注・<br>EC基盤構築</p>
+      <div class="work-card">
+        <div class="work-card-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 4 H6 L8 16 H19 L21 8 H7" stroke="#7a3a4a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="9.5" cy="20" r="1.6" stroke="#c0606a" stroke-width="1.1"/>
+            <circle cx="17.5" cy="20" r="1.6" stroke="#c0606a" stroke-width="1.1"/>
+          </svg>
         </div>
-        <div class="work-content">
-          <p class="work-title">受発注・発注サイトの要件定義・設計・ディレクション</p>
-          <p class="work-desc">
-            小売店向け発注サイトなど、受発注システムの上流工程に対応します。要件定義から設計・構築ディレクションまでを一貫して支援。基幹システムや倉庫管理システム（WMS）との連携設計も含め、エンドツーエンドでリードできます。<br>
-            <span class="work-value">「何を作るか」が曖昧な段階から入り込み、関係者の言語を揃えながらプロジェクトを前進させます。</span>
-          </p>
-          <div class="tech-tags">
-            <span class="tech-tag">要件定義</span>
-            <span class="tech-tag">システム設計</span>
-            <span class="tech-tag">基幹システム連携</span>
-            <span class="tech-tag">WMS連携</span>
-            <span class="tech-tag">ディレクション</span>
-          </div>
+        <p class="work-cat">受発注・EC基盤構築</p>
+        <p class="work-title">受発注・発注サイトの要件定義・設計・ディレクション</p>
+        <p class="work-desc">
+          小売店向け発注サイトなど、受発注システムの上流工程に対応します。要件定義から設計・構築ディレクションまでを一貫して支援。基幹システムや倉庫管理システム（WMS）との連携設計も含め、エンドツーエンドでリードできます。
+        </p>
+        <span class="work-value">「何を作るか」が曖昧な段階から入り込み、関係者の言語を揃えながらプロジェクトを前進させます。</span>
+        <div class="tech-tags">
+          <span class="tech-tag">要件定義</span>
+          <span class="tech-tag">システム設計</span>
+          <span class="tech-tag">基幹システム連携</span>
+          <span class="tech-tag">WMS連携</span>
+          <span class="tech-tag">ディレクション</span>
         </div>
       </div>
 
-      <div class="work-item">
-        <div class="work-meta">
-          <p class="work-client">基幹システム<br>移行PM</p>
+      <div class="work-card">
+        <div class="work-card-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3.5" y="5" width="7" height="7" rx="1" stroke="#7a3a4a" stroke-width="1.1"/>
+            <rect x="15.5" y="14" width="7" height="7" rx="1" stroke="#7a3a4a" stroke-width="1.1"/>
+            <path d="M12 8 H18 M18 8 L15.5 5.5 M18 8 L15.5 10.5" stroke="#c0606a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 18 H8 M8 18 L10.5 15.5 M8 18 L10.5 20.5" stroke="#c0606a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <div class="work-content">
-          <p class="work-title">基幹システム移行に伴うEC連携切替のプロジェクトマネジメント</p>
-          <p class="work-desc">
-            基幹システムの刷新・移行に伴うEC連携切替のプロジェクトマネジメントに対応します。新旧システム間の接続設計・関係者調整・推進を担い、ビジネスを止めないスムーズな移行を支援。複数サイトの連携切替にも対応できます。<br>
-            <span class="work-value">移行リスクを最小化しながら、ビジネスを止めずに前に進める設計を得意としています。</span>
-          </p>
-          <div class="tech-tags">
-            <span class="tech-tag">PM</span>
-            <span class="tech-tag">基幹システム移行</span>
-            <span class="tech-tag">EC連携設計</span>
-            <span class="tech-tag">マルチサイト連携</span>
-          </div>
+        <p class="work-cat">基幹システム移行PM</p>
+        <p class="work-title">基幹システム移行に伴うEC連携切替のプロジェクトマネジメント</p>
+        <p class="work-desc">
+          基幹システムの刷新・移行に伴うEC連携切替のプロジェクトマネジメントに対応します。新旧システム間の接続設計・関係者調整・推進を担い、ビジネスを止めないスムーズな移行を支援。複数サイトの連携切替にも対応できます。
+        </p>
+        <span class="work-value">移行リスクを最小化しながら、ビジネスを止めずに前に進める設計を得意としています。</span>
+        <div class="tech-tags">
+          <span class="tech-tag">PM</span>
+          <span class="tech-tag">基幹システム移行</span>
+          <span class="tech-tag">EC連携設計</span>
+          <span class="tech-tag">マルチサイト連携</span>
         </div>
       </div>
 
-      <div class="work-item">
-        <div class="work-meta">
-          <p class="work-client">OMS移行・<br>モールEC接続</p>
+      <div class="work-card">
+        <div class="work-card-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="13" cy="6" r="2.4" stroke="#7a3a4a" stroke-width="1.1"/>
+            <circle cx="6" cy="19" r="2.4" stroke="#7a3a4a" stroke-width="1.1"/>
+            <circle cx="20" cy="19" r="2.4" stroke="#7a3a4a" stroke-width="1.1"/>
+            <path d="M13 8.4 V13 M13 13 L7 16.8 M13 13 L19 16.8" stroke="#c0606a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <div class="work-content">
-          <p class="work-title">OMS移行に伴うモールEC接続の運用設計・システム設計</p>
-          <p class="work-desc">
-            OMS（受注管理システム）の移行に伴う、複数モールECとの接続設計に対応します。運用設計からシステム設計まで一貫して支援し、円滑な移行を実現します。<br>
-            <span class="work-value">複雑なモール連携も、運用視点を持ちながら現場が動かせる設計に落とし込みます。</span>
-          </p>
-          <div class="tech-tags">
-            <span class="tech-tag">OMS設計</span>
-            <span class="tech-tag">モールEC連携</span>
-            <span class="tech-tag">運用設計</span>
-            <span class="tech-tag">システム設計</span>
-          </div>
+        <p class="work-cat">OMS移行・モールEC接続</p>
+        <p class="work-title">OMS移行に伴うモールEC接続の運用設計・システム設計</p>
+        <p class="work-desc">
+          OMS（受注管理システム）の移行に伴う、複数モールECとの接続設計に対応します。運用設計からシステム設計まで一貫して支援し、円滑な移行を実現します。
+        </p>
+        <span class="work-value">複雑なモール連携も、運用視点を持ちながら現場が動かせる設計に落とし込みます。</span>
+        <div class="tech-tags">
+          <span class="tech-tag">OMS設計</span>
+          <span class="tech-tag">モールEC連携</span>
+          <span class="tech-tag">運用設計</span>
+          <span class="tech-tag">システム設計</span>
         </div>
       </div>
 
