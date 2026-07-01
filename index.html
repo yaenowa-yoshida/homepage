@@ -1064,6 +1064,61 @@
     flex-shrink: 0;
   }
 
+  /* ── SCROLL-DRIVEN UX（スクロール連動演出） ── */
+  /* 上部スクロール進捗バー */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--sakura-mid), var(--accent-gold), var(--accent));
+    z-index: 200;
+    pointer-events: none;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      animation: progressGrow linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+
+  @keyframes progressGrow {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  /* カードのスクロール連動リフレッシュ表示（ラッパーに適用しホバーと衝突させない） */
+  .reveal-item { display: flex; }
+  .reveal-item > * { flex: 1 1 auto; width: 100%; }
+
+  @keyframes cardScrollIn {
+    from { opacity: 0; transform: translateY(46px) scale(0.965); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+  }
+
+  @keyframes parallaxRise {
+    to { transform: translate(-50%, -66%); }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal-item {
+        animation: cardScrollIn linear both;
+        animation-timeline: view();
+        animation-range: entry 4% cover 34%;
+        will-change: opacity, transform;
+      }
+      /* 背景の環がスクロールでゆっくり視差移動 */
+      .ring-svg {
+        animation: parallaxRise linear both;
+        animation-timeline: scroll(root);
+      }
+    }
+  }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
@@ -1124,11 +1179,17 @@
       scroll-behavior: auto !important;
     }
     .reveal { opacity: 1 !important; transform: none !important; }
+    .reveal-item { animation: none !important; }
+    .reveal-item > * { opacity: 1 !important; transform: none !important; }
     #sakura-layer { display: none; }
+    .scroll-progress { display: none; }
   }
 </style>
 </head>
 <body>
+
+<!-- スクロール進捗バー（スクロール連動） -->
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
 <!-- 散る花びらレイヤー -->
 <div class="sakura-layer" id="sakura-layer" aria-hidden="true"></div>
@@ -1421,6 +1482,7 @@
     <div class="divider"></div>
 
     <div class="strengths-grid">
+     <div class="reveal-item">
       <div class="strength-item">
         <div class="strength-head">
           <span class="strength-icon" aria-hidden="true">
@@ -1434,6 +1496,8 @@
         <p class="strength-title">金融系ITで培った<br>堅牢性と正確性</p>
         <p class="strength-desc">銀行・クレジットカードなど、止められない金融システムの設計・構築・実装・テストで培った品質基準とリスク管理。ミスの許されない領域で鍛えた精度で、要件の抜け漏れを未然に防ぎます。</p>
       </div>
+     </div>
+     <div class="reveal-item">
       <div class="strength-item">
         <div class="strength-head">
           <span class="strength-icon" aria-hidden="true">
@@ -1448,6 +1512,8 @@
         <p class="strength-title">「何を作るか」を<br>言語化する整理力</p>
         <p class="strength-desc">曖昧な要望や現場の課題を、実装できる要件へと翻訳。立場の異なる関係者の言葉を揃え、プロジェクトが迷子にならない土台をつくります。上流工程こそが最大の価値だと考えています。</p>
       </div>
+     </div>
+     <div class="reveal-item">
       <div class="strength-item">
         <div class="strength-head">
           <span class="strength-icon" aria-hidden="true">
@@ -1461,6 +1527,7 @@
         <p class="strength-title">生成AIを取り入れた<br>スピードと知見</p>
         <p class="strength-desc">生成AIを要件定義・設計の実務に取り入れ、検討の速度と質を両立。技術コミュニティでの登壇・発信を通じて、最新の活用知見を常にアップデートし続けています。</p>
       </div>
+     </div>
     </div>
   </div>
 </section>
@@ -1521,6 +1588,7 @@
 
     <div class="works-grid">
 
+     <div class="reveal-item">
       <div class="work-card">
         <div class="work-card-icon" aria-hidden="true">
           <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1543,7 +1611,9 @@
           <span class="tech-tag">ディレクション</span>
         </div>
       </div>
+     </div>
 
+     <div class="reveal-item">
       <div class="work-card">
         <div class="work-card-icon" aria-hidden="true">
           <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1566,7 +1636,9 @@
           <span class="tech-tag">マルチサイト連携</span>
         </div>
       </div>
+     </div>
 
+     <div class="reveal-item">
       <div class="work-card">
         <div class="work-card-icon" aria-hidden="true">
           <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1589,6 +1661,7 @@
           <span class="tech-tag">システム設計</span>
         </div>
       </div>
+     </div>
 
     </div>
   </div>
@@ -1714,6 +1787,70 @@ function copyMail() {
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
   targets.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+<!-- インタラクティブHero & スクロール進捗（連動演出） -->
+<script>
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── スクロール進捗バー（CSS scroll-timeline 非対応ブラウザ向けフォールバック） ──
+  const bar = document.getElementById('scroll-progress');
+  if (bar && !reduce && !(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'))) {
+    let ticking = false;
+    const update = function(){
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const p = max > 0 ? h.scrollTop / max : 0;
+      bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+      ticking = false;
+    };
+    window.addEventListener('scroll', function(){
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  }
+
+  // ── インタラクティブHero（細かいポインタ操作がある環境のみ） ──
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  if (reduce || !finePointer) return;
+
+  const hero = document.querySelector('.hero');
+  const visual = document.querySelector('.hero-visual');
+  const bg = document.querySelector('.hero-bg');
+  if (hero && visual) {
+    let tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+    const apply = function(){
+      cx += (tx - cx) * 0.09;
+      cy += (ty - cy) * 0.09;
+      visual.style.transform = 'translate(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px)';
+      if (bg) bg.style.transform = 'translate(' + (cx * -0.45).toFixed(2) + 'px,' + (cy * -0.45).toFixed(2) + 'px)';
+      if (Math.abs(tx - cx) > 0.15 || Math.abs(ty - cy) > 0.15) {
+        raf = requestAnimationFrame(apply);
+      } else { raf = null; }
+    };
+    const kick = function(){ if (!raf) raf = requestAnimationFrame(apply); };
+    hero.addEventListener('pointermove', function(e){
+      const r = hero.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 30;
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 30;
+      kick();
+    });
+    hero.addEventListener('pointerleave', function(){ tx = 0; ty = 0; kick(); });
+  }
+
+  // ── CTAボタンのマグネティック効果 ──
+  const cta = document.querySelector('.hero-cta');
+  if (cta) {
+    cta.addEventListener('pointermove', function(e){
+      const r = cta.getBoundingClientRect();
+      const mx = e.clientX - (r.left + r.width / 2);
+      const my = e.clientY - (r.top + r.height / 2);
+      cta.style.transform = 'translate(' + (mx * 0.32).toFixed(2) + 'px,' + (my * 0.45).toFixed(2) + 'px)';
+    });
+    cta.addEventListener('pointerleave', function(){ cta.style.transform = ''; });
+  }
 })();
 </script>
 
