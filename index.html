@@ -630,52 +630,103 @@
     margin-bottom: 2.5rem;
   }
 
-  /* 対応領域カードグリッド */
-  .works-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-
-  .work-card {
-    background: var(--paper);
-    border: 0.5px solid var(--paper-dark);
-    border-top: 2px solid var(--sakura-mid);
-    padding: 2.2rem 1.7rem;
+  /* 対応領域アコーディオン（縦積み・クリックで開閉） */
+  .works-accordion {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
   }
 
-  .work-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 14px 32px rgba(122,58,74,0.12);
-    border-color: var(--sakura-deep);
+  .acc-item {
+    background: var(--paper);
+    border: 0.5px solid var(--paper-dark);
+    border-left: 2px solid var(--sakura-mid);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .work-card-icon {
-    width: 54px;
-    height: 54px;
+  .acc-item.open {
+    border-left-color: var(--sakura-deep);
+    box-shadow: 0 10px 28px rgba(122,58,74,0.09);
+  }
+
+  .acc-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.4rem 1.8rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    transition: background 0.3s ease;
+  }
+  .acc-header:hover { background: var(--sakura-pale); }
+  .acc-header:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: -3px; }
+
+  .acc-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
     border-radius: 50%;
     background: var(--sakura-pale);
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background 0.3s ease;
+  }
+  .acc-item.open .acc-icon { background: var(--accent-pale); }
+
+  .acc-heading {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
   }
 
-  .work-cat {
-    font-size: 0.68rem;
+  .acc-cat {
+    font-size: 0.66rem;
     letter-spacing: 0.18em;
     color: var(--accent-gold);
   }
 
-  .work-title {
+  .acc-title {
     font-family: 'Shippori Mincho', serif;
     font-size: 1.05rem;
+    line-height: 1.6;
     color: var(--ink);
-    line-height: 1.7;
     letter-spacing: 0.04em;
+  }
+
+  .acc-chevron {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-gold);
+    transition: transform 0.4s ease;
+  }
+  .acc-item.open .acc-chevron { transform: rotate(180deg); }
+
+  /* パネル本体：grid-template-rows を 0fr→1fr にしてスムーズに開閉 */
+  .acc-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s ease;
+  }
+  .acc-item.open .acc-panel {
+    grid-template-rows: 1fr;
+  }
+  .acc-panel-inner {
+    overflow: hidden;
+  }
+  .acc-panel-content {
+    padding: 0 1.8rem 1.8rem 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .work-desc {
@@ -689,7 +740,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-top: auto;
   }
 
   .tech-tag {
@@ -1128,7 +1178,8 @@
     .ring-visual { width: 240px; height: 240px; }
     .pain-grid { grid-template-columns: 1fr; }
     .strengths-grid { grid-template-columns: 1fr; }
-    .works-grid { grid-template-columns: 1fr; }
+    .acc-header { padding: 1.2rem 1.2rem; gap: 0.9rem; }
+    .acc-panel-content { padding: 0 1.2rem 1.5rem 1.2rem; }
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
     .profile-grid { grid-template-columns: 1fr; gap: 2rem; }
     .partner-box { grid-template-columns: 1fr; gap: 2rem; }
@@ -1586,82 +1637,121 @@
     <div class="divider"></div>
     <p class="works-lead">これまでの経験をもとに、以下の領域でご支援できます。</p>
 
-    <div class="works-grid">
+    <div class="works-accordion">
 
-     <div class="reveal-item">
-      <div class="work-card">
-        <div class="work-card-icon" aria-hidden="true">
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 4 H6 L8 16 H19 L21 8 H7" stroke="#7a3a4a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="9.5" cy="20" r="1.6" stroke="#c0606a" stroke-width="1.1"/>
-            <circle cx="17.5" cy="20" r="1.6" stroke="#c0606a" stroke-width="1.1"/>
-          </svg>
-        </div>
-        <p class="work-cat">受発注・EC基盤構築</p>
-        <p class="work-title">受発注・発注サイトの要件定義・設計・ディレクション</p>
-        <p class="work-desc">
-          小売店向け発注サイトなど、受発注システムの上流工程に対応します。要件定義から設計・構築ディレクションまでを一貫して支援。基幹システムや倉庫管理システム（WMS）との連携設計も含め、エンドツーエンドでリードできます。
-        </p>
-        <span class="work-value">「何を作るか」が曖昧な段階から入り込み、関係者の言語を揃えながらプロジェクトを前進させます。</span>
-        <div class="tech-tags">
-          <span class="tech-tag">要件定義</span>
-          <span class="tech-tag">システム設計</span>
-          <span class="tech-tag">基幹システム連携</span>
-          <span class="tech-tag">WMS連携</span>
-          <span class="tech-tag">ディレクション</span>
+      <div class="acc-item open">
+        <button class="acc-header" id="acc-btn-1" aria-expanded="true" aria-controls="acc-panel-1">
+          <span class="acc-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 4 H6 L8 16 H19 L21 8 H7" stroke="#7a3a4a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="9.5" cy="20" r="1.6" stroke="#c0606a" stroke-width="1.1"/>
+              <circle cx="17.5" cy="20" r="1.6" stroke="#c0606a" stroke-width="1.1"/>
+            </svg>
+          </span>
+          <span class="acc-heading">
+            <span class="acc-cat">受発注・EC基盤構築</span>
+            <span class="acc-title">受発注・発注サイトの要件定義・設計・ディレクション</span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 6.5 L9 11.5 L14 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </button>
+        <div class="acc-panel" id="acc-panel-1" role="region" aria-labelledby="acc-btn-1">
+          <div class="acc-panel-inner">
+            <div class="acc-panel-content">
+              <p class="work-desc">
+                小売店向け発注サイトなど、受発注システムの上流工程に対応します。要件定義から設計・構築ディレクションまでを一貫して支援。基幹システムや倉庫管理システム（WMS）との連携設計も含め、エンドツーエンドでリードできます。
+              </p>
+              <span class="work-value">「何を作るか」が曖昧な段階から入り込み、関係者の言語を揃えながらプロジェクトを前進させます。</span>
+              <div class="tech-tags">
+                <span class="tech-tag">要件定義</span>
+                <span class="tech-tag">システム設計</span>
+                <span class="tech-tag">基幹システム連携</span>
+                <span class="tech-tag">WMS連携</span>
+                <span class="tech-tag">ディレクション</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-     </div>
 
-     <div class="reveal-item">
-      <div class="work-card">
-        <div class="work-card-icon" aria-hidden="true">
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3.5" y="5" width="7" height="7" rx="1" stroke="#7a3a4a" stroke-width="1.1"/>
-            <rect x="15.5" y="14" width="7" height="7" rx="1" stroke="#7a3a4a" stroke-width="1.1"/>
-            <path d="M12 8 H18 M18 8 L15.5 5.5 M18 8 L15.5 10.5" stroke="#c0606a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M14 18 H8 M8 18 L10.5 15.5 M8 18 L10.5 20.5" stroke="#c0606a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <p class="work-cat">基幹システム移行PM</p>
-        <p class="work-title">基幹システム移行に伴うEC連携切替のプロジェクトマネジメント</p>
-        <p class="work-desc">
-          基幹システムの刷新・移行に伴うEC連携切替のプロジェクトマネジメントに対応します。新旧システム間の接続設計・関係者調整・推進を担い、ビジネスを止めないスムーズな移行を支援。複数サイトの連携切替にも対応できます。
-        </p>
-        <span class="work-value">移行リスクを最小化しながら、ビジネスを止めずに前に進める設計を得意としています。</span>
-        <div class="tech-tags">
-          <span class="tech-tag">PM</span>
-          <span class="tech-tag">基幹システム移行</span>
-          <span class="tech-tag">EC連携設計</span>
-          <span class="tech-tag">マルチサイト連携</span>
+      <div class="acc-item">
+        <button class="acc-header" id="acc-btn-2" aria-expanded="false" aria-controls="acc-panel-2">
+          <span class="acc-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3.5" y="5" width="7" height="7" rx="1" stroke="#7a3a4a" stroke-width="1.1"/>
+              <rect x="15.5" y="14" width="7" height="7" rx="1" stroke="#7a3a4a" stroke-width="1.1"/>
+              <path d="M12 8 H18 M18 8 L15.5 5.5 M18 8 L15.5 10.5" stroke="#c0606a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 18 H8 M8 18 L10.5 15.5 M8 18 L10.5 20.5" stroke="#c0606a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="acc-heading">
+            <span class="acc-cat">基幹システム移行PM</span>
+            <span class="acc-title">基幹システム移行に伴うEC連携切替のプロジェクトマネジメント</span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 6.5 L9 11.5 L14 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </button>
+        <div class="acc-panel" id="acc-panel-2" role="region" aria-labelledby="acc-btn-2">
+          <div class="acc-panel-inner">
+            <div class="acc-panel-content">
+              <p class="work-desc">
+                基幹システムの刷新・移行に伴うEC連携切替のプロジェクトマネジメントに対応します。新旧システム間の接続設計・関係者調整・推進を担い、ビジネスを止めないスムーズな移行を支援。複数サイトの連携切替にも対応できます。
+              </p>
+              <span class="work-value">移行リスクを最小化しながら、ビジネスを止めずに前に進める設計を得意としています。</span>
+              <div class="tech-tags">
+                <span class="tech-tag">PM</span>
+                <span class="tech-tag">基幹システム移行</span>
+                <span class="tech-tag">EC連携設計</span>
+                <span class="tech-tag">マルチサイト連携</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-     </div>
 
-     <div class="reveal-item">
-      <div class="work-card">
-        <div class="work-card-icon" aria-hidden="true">
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="13" cy="6" r="2.4" stroke="#7a3a4a" stroke-width="1.1"/>
-            <circle cx="6" cy="19" r="2.4" stroke="#7a3a4a" stroke-width="1.1"/>
-            <circle cx="20" cy="19" r="2.4" stroke="#7a3a4a" stroke-width="1.1"/>
-            <path d="M13 8.4 V13 M13 13 L7 16.8 M13 13 L19 16.8" stroke="#c0606a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <p class="work-cat">OMS移行・モールEC接続</p>
-        <p class="work-title">OMS移行に伴うモールEC接続の運用設計・システム設計</p>
-        <p class="work-desc">
-          OMS（受注管理システム）の移行に伴う、複数モールECとの接続設計に対応します。運用設計からシステム設計まで一貫して支援し、円滑な移行を実現します。
-        </p>
-        <span class="work-value">複雑なモール連携も、運用視点を持ちながら現場が動かせる設計に落とし込みます。</span>
-        <div class="tech-tags">
-          <span class="tech-tag">OMS設計</span>
-          <span class="tech-tag">モールEC連携</span>
-          <span class="tech-tag">運用設計</span>
-          <span class="tech-tag">システム設計</span>
+      <div class="acc-item">
+        <button class="acc-header" id="acc-btn-3" aria-expanded="false" aria-controls="acc-panel-3">
+          <span class="acc-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="13" cy="6" r="2.4" stroke="#7a3a4a" stroke-width="1.1"/>
+              <circle cx="6" cy="19" r="2.4" stroke="#7a3a4a" stroke-width="1.1"/>
+              <circle cx="20" cy="19" r="2.4" stroke="#7a3a4a" stroke-width="1.1"/>
+              <path d="M13 8.4 V13 M13 13 L7 16.8 M13 13 L19 16.8" stroke="#c0606a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="acc-heading">
+            <span class="acc-cat">OMS移行・モールEC接続</span>
+            <span class="acc-title">OMS移行に伴うモールEC接続の運用設計・システム設計</span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 6.5 L9 11.5 L14 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </button>
+        <div class="acc-panel" id="acc-panel-3" role="region" aria-labelledby="acc-btn-3">
+          <div class="acc-panel-inner">
+            <div class="acc-panel-content">
+              <p class="work-desc">
+                OMS（受注管理システム）の移行に伴う、複数モールECとの接続設計に対応します。運用設計からシステム設計まで一貫して支援し、円滑な移行を実現します。
+              </p>
+              <span class="work-value">複雑なモール連携も、運用視点を持ちながら現場が動かせる設計に落とし込みます。</span>
+              <div class="tech-tags">
+                <span class="tech-tag">OMS設計</span>
+                <span class="tech-tag">モールEC連携</span>
+                <span class="tech-tag">運用設計</span>
+                <span class="tech-tag">システム設計</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-     </div>
 
     </div>
   </div>
@@ -1851,6 +1941,31 @@ function copyMail() {
     });
     cta.addEventListener('pointerleave', function(){ cta.style.transform = ''; });
   }
+})();
+</script>
+
+<!-- 対応領域アコーディオン -->
+<script>
+(function(){
+  const items = Array.prototype.slice.call(document.querySelectorAll('.works-accordion .acc-item'));
+  if (!items.length) return;
+  items.forEach(function(item){
+    const btn = item.querySelector('.acc-header');
+    if (!btn) return;
+    btn.addEventListener('click', function(){
+      const willOpen = !item.classList.contains('open');
+      // 1つずつ開くアコーディオン（他は閉じる）
+      items.forEach(function(other){
+        other.classList.remove('open');
+        const b = other.querySelector('.acc-header');
+        if (b) b.setAttribute('aria-expanded', 'false');
+      });
+      if (willOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
 })();
 </script>
 
