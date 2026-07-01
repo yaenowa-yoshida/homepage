@@ -289,46 +289,71 @@
   .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
   .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-  /* ── HERO ── */
+  /* ── HERO（ピン留め全画面・縁が集い環を成す） ── */
   .hero {
-    min-height: 100vh;
+    position: relative;
+    height: 100vh;            /* フォールバック：通常の1画面。対応ブラウザで縦長化＆ピン留め */
+  }
+
+  .hero-stage {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
     display: flex;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
     padding: 8rem 4rem 4rem;
   }
 
-  .hero-bg {
+  /* 全画面ビジュアル層（環・花びら・ロゴ） */
+  .hero-scene {
     position: absolute;
     inset: 0;
+    z-index: 0;
     pointer-events: none;
   }
 
-  /* 背景の同心円（環のモチーフ） */
-  .ring-svg {
+  .hero-logo {
     position: absolute;
+    left: 50%;
     top: 50%;
-    left: 55%;
+    width: 150px;
+    height: auto;
+    margin: 0;
     transform: translate(-50%, -50%);
-    opacity: 0.08;
-    width: 900px;
-    height: 900px;
+    z-index: 2;
+  }
+
+  /* スクロール誘導 */
+  .hero-scroll-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 2.2rem;
+    transform: translateX(-50%);
+    z-index: 3;
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .hero-scroll-hint span {
+    width: 1px;
+    height: 34px;
+    background: linear-gradient(var(--accent-gold), transparent);
   }
 
   .hero-content {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     max-width: 1100px;
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: center;
+    margin: 0 auto;
   }
 
-  .hero-text {}
+  .hero-text { max-width: 540px; }
 
   .hero-en {
     font-family: 'Noto Sans JP', sans-serif;
@@ -376,19 +401,6 @@
   }
   .hero-cta:hover { background: var(--ink); transform: translateY(-2px); }
   .hero-cta svg { width: 14px; height: 14px; }
-
-  .hero-visual {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  /* 環のビジュアル */
-  .ring-visual {
-    position: relative;
-    width: 340px;
-    height: 340px;
-  }
 
   /* ── SECTION COMMON ── */
   section {
@@ -1149,10 +1161,6 @@
     to   { opacity: 1; transform: translateY(0)    scale(1); }
   }
 
-  @keyframes parallaxRise {
-    to { transform: translate(-50%, -66%); }
-  }
-
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
       .reveal-item {
@@ -1161,71 +1169,66 @@
         animation-range: entry 4% cover 34%;
         will-change: opacity, transform;
       }
-      /* 背景の環がスクロールでゆっくり視差移動 */
-      .ring-svg {
-        animation: parallaxRise linear both;
-        animation-timeline: scroll(root);
-      }
     }
   }
 
-  /* ── HERO：縁が集い環を成す演出（スクロール連動） ── */
-  /* 花びら（＝人）／中心の輝き／描かれる環。共通の中心はロゴ中央 */
+  /* ── HERO：縁が集い環を成す演出（全画面・ピン留めスクロール連動） ── */
+  /* 中心＝画面中央。花びら（＝人）が四方から集まり、環を成す */
   .converge {
     position: absolute;
     left: 50%;
     top: 50%;
     pointer-events: none;
+    --cv-r: 34vmin;   /* 集結する環の半径（画面サイズに追従） */
   }
 
-  /* 集まって環になる花びら */
+  /* 花びら：既定＝環に集結した最終形（フォールバック） */
   .cv-petal {
-    width: 22px;
-    height: 22px;
-    margin: -11px 0 0 -11px;
-    opacity: 0;
-    /* 初期＝四方に散らばった状態 */
-    transform: translate(var(--sx), var(--sy)) rotate(var(--sr)) scale(0.45);
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    opacity: 0.95;
+    transform: rotate(var(--angle)) translateY(calc(-1 * var(--cv-r))) scale(1);
     z-index: 1;
   }
   .cv-petal svg { width: 100%; height: 100%; display: block; }
 
-  /* 中心のやわらかな輝き（価値が生まれる） */
+  /* 中心のやわらかな輝き（価値が生まれる）：既定＝点灯 */
   .converge-core {
-    width: 220px;
-    height: 220px;
-    margin: -110px 0 0 -110px;
+    width: 52vmin;
+    height: 52vmin;
+    margin: -26vmin 0 0 -26vmin;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(224,140,150,0.45) 0%, rgba(224,140,150,0.12) 42%, rgba(224,140,150,0) 70%);
-    opacity: 0;
-    transform: scale(0.35);
+    background: radial-gradient(circle, rgba(224,140,150,0.40) 0%, rgba(224,140,150,0.12) 40%, rgba(224,140,150,0) 68%);
+    opacity: 1;
+    transform: scale(1.05);
     z-index: 0;
   }
 
-  /* 描かれていく環の線 */
+  /* 描かれる環の線：既定＝描画済み。ビューポート最小辺に追従（viewBox 100×100） */
   .converge-ring {
-    width: 340px;
-    height: 340px;
-    margin: -170px 0 0 -170px;
+    width: 68vmin;
+    height: 68vmin;
+    margin: -34vmin 0 0 -34vmin;
     z-index: 1;
   }
   .converge-ring circle {
     fill: none;
     stroke: var(--sakura-deep);
-    stroke-width: 1;
+    stroke-width: 0.4;
     stroke-dasharray: 1;
-    stroke-dashoffset: 1;
+    stroke-dashoffset: 0;
     transform: rotate(-90deg);
-    transform-origin: 170px 170px;
+    transform-origin: 50px 50px;
   }
 
   @keyframes petalConverge {
     from { opacity: 0; transform: translate(var(--sx), var(--sy)) rotate(var(--sr)) scale(0.45); }
-    45%  { opacity: 0.95; }
+    42%  { opacity: 0.95; }
     to   { opacity: 0.95; transform: rotate(var(--angle)) translateY(calc(-1 * var(--cv-r))) scale(1); }
   }
   @keyframes coreGlow {
-    from { opacity: 0; transform: scale(0.35); }
+    from { opacity: 0; transform: scale(0.4); }
     to   { opacity: 1; transform: scale(1.05); }
   }
   @keyframes ringDraw {
@@ -1233,35 +1236,58 @@
     to   { stroke-dashoffset: 0; }
   }
 
+  /* 対応ブラウザ＋動きOK時のみ：Heroを縦長化してピン留めし、散在→集結を再生 */
   @supports (animation-timeline: scroll()) {
     @media (prefers-reduced-motion: no-preference) {
+      .hero { height: 220vh; }
+      .hero-stage {
+        position: sticky;
+        top: 0;
+      }
       .cv-petal {
-        --cv-r: 122px;
+        opacity: 0;
+        transform: translate(var(--sx), var(--sy)) rotate(var(--sr)) scale(0.45);
         animation: petalConverge linear both;
         animation-timeline: scroll(root);
-        animation-range: 0 46vh;
+        animation-range: 0 112vh;
         will-change: opacity, transform;
       }
       .converge-core {
+        opacity: 0;
         animation: coreGlow linear both;
         animation-timeline: scroll(root);
-        animation-range: 20vh 54vh;
+        animation-range: 56vh 122vh;
       }
       .converge-ring circle {
+        stroke-dashoffset: 1;
         animation: ringDraw linear both;
         animation-timeline: scroll(root);
-        animation-range: 4vh 44vh;
+        animation-range: 8vh 104vh;
+      }
+      .hero-scroll-hint {
+        animation: hintFade linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 18vh;
       }
     }
+  }
+
+  @keyframes hintFade {
+    from { opacity: 0.85; transform: translate(-50%, 0); }
+    to   { opacity: 0; transform: translate(-50%, 10px); }
   }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
     section { padding: 5rem 1.5rem; }
-    .hero { padding: 7rem 1.5rem 4rem; }
-    .hero-content { grid-template-columns: 1fr; gap: 3rem; }
-    .ring-visual { width: 240px; height: 240px; }
+    .hero-stage { padding: 7rem 1.5rem 4rem; }
+    /* スマホでは中央ロゴ（不透明）を隠し、環・花びら・輝きを背景に文字を前面へ */
+    .hero-logo { display: none; }
+    .converge { --cv-r: 33vmin; }
+    .converge-ring circle { stroke: var(--sakura-mid); }
+    .converge-core { background: radial-gradient(circle, rgba(224,140,150,0.28) 0%, rgba(224,140,150,0.08) 42%, rgba(224,140,150,0) 70%); }
+    .hero-text { max-width: 100%; }
     .pain-grid { grid-template-columns: 1fr; }
     .strengths-grid { grid-template-columns: 1fr; }
     .acc-header { padding: 1.2rem 1.2rem; gap: 0.9rem; }
@@ -1320,10 +1346,7 @@
     .reveal-item > * { opacity: 1 !important; transform: none !important; }
     #sakura-layer { display: none; }
     .scroll-progress { display: none; }
-    /* Hero演出：動きを抑える設定では、環が組み上がった最終形を静的に表示 */
-    .cv-petal { opacity: 0.95 !important; transform: rotate(var(--angle)) translateY(calc(-1 * var(--cv-r, 122px))) scale(1) !important; }
-    .converge-core { opacity: 1 !important; transform: scale(1) !important; }
-    .converge-ring circle { stroke-dashoffset: 0 !important; }
+    /* Hero演出：動きを抑える設定では、環が組み上がった最終形を静的表示（既定状態のまま） */
   }
 </style>
 </head>
@@ -1392,112 +1415,45 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg" aria-hidden="true">
-    <svg class="ring-svg" viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg">
-      <g class="ring-anim-1">
-        <circle cx="450" cy="450" r="420" fill="none" stroke="#c0606a" stroke-width="0.8" stroke-dasharray="6 18"/>
-      </g>
-      <g class="ring-anim-2">
-        <circle cx="450" cy="450" r="340" fill="none" stroke="#c0606a" stroke-width="0.8" stroke-dasharray="4 24"/>
-      </g>
-      <g class="ring-anim-3">
-        <circle cx="450" cy="450" r="260" fill="none" stroke="#c0606a" stroke-width="0.8" stroke-dasharray="8 12"/>
-      </g>
-      <circle cx="450" cy="450" r="180" fill="none" stroke="#c0606a" stroke-width="0.8"/>
-      <circle cx="450" cy="450" r="100" fill="none" stroke="#c0606a" stroke-width="0.8" stroke-dasharray="3 10"/>
-    </svg>
-    <!-- 背景に漂う八重桜シルエット -->
-    <svg style="position:absolute;top:8%;left:5%;opacity:0.07;width:120px;" viewBox="0 0 80 80">
-      <g transform="translate(40,40)">
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(0)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(72)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(144)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(216)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(288)"/>
-        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(36)"/>
-        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(108)"/>
-        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(180)"/>
-        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(252)"/>
-        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(324)"/>
-        <circle cx="0" cy="0" r="6" fill="#c0606a"/>
-      </g>
-    </svg>
-    <svg style="position:absolute;bottom:15%;right:8%;opacity:0.06;width:180px;" viewBox="0 0 80 80">
-      <g transform="translate(40,40)">
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(0)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(72)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(144)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(216)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(288)"/>
-        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(36)"/>
-        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(108)"/>
-        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(180)"/>
-        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(252)"/>
-        <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#7a3a4a" transform="rotate(324)"/>
-        <circle cx="0" cy="0" r="6" fill="#c0606a"/>
-      </g>
-    </svg>
-    <svg style="position:absolute;top:55%;left:2%;opacity:0.05;width:80px;" viewBox="0 0 80 80">
-      <g transform="translate(40,40)">
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(20)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(92)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(164)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(236)"/>
-        <ellipse cx="0" cy="-18" rx="8" ry="13" fill="#c0606a" transform="rotate(308)"/>
-        <circle cx="0" cy="0" r="5" fill="#7a3a4a"/>
-      </g>
-    </svg>
-  </div>
-
-  <div class="hero-content">
-    <div class="hero-text">
-      <p class="hero-en fade-up">Yaenowa Co., Ltd.</p>
-      <h1 class="hero-title fade-up">人と人の縁が<br>重なり合い、<br><span class="kanji-accent">新たな価値</span>を。</h1>
-      <p class="hero-subtitle fade-up">
-        ご縁と共創を軸に、<br>
-        ITの力でビジネスの未来をともに描く。
-      </p>
-      <a href="#works" class="hero-cta fade-up">
-        対応領域を見る
-        <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 7H11M8 4L11 7L8 10" stroke="currentColor" stroke-width="1.2"/>
-        </svg>
-      </a>
+  <div class="hero-stage">
+    <!-- 全画面ビジュアル：縁（花びら）が集い環を成す -->
+    <div class="hero-scene" aria-hidden="true">
+      <span class="converge converge-core"></span>
+      <svg class="converge converge-ring" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="34" pathLength="1"/>
+      </svg>
+      <span class="converge cv-petal" style="--angle:0deg;--sx:-30vw;--sy:-42vh;--sr:-30deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" style="--angle:45deg;--sx:40vw;--sy:-40vh;--sr:40deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" style="--angle:90deg;--sx:48vw;--sy:-6vh;--sr:26deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" style="--angle:135deg;--sx:42vw;--sy:40vh;--sr:-34deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" style="--angle:180deg;--sx:6vw;--sy:46vh;--sr:30deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" style="--angle:225deg;--sx:-42vw;--sy:42vh;--sr:-26deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" style="--angle:270deg;--sx:-48vw;--sy:8vh;--sr:34deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" style="--angle:315deg;--sx:-38vw;--sy:-40vh;--sr:-40deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <img class="hero-logo" src="LOGO.png" alt="八重ノ環ロゴ">
     </div>
 
-    <div class="hero-visual" style="position:relative;display:flex;justify-content:center;align-items:center;">
-      <!-- 回転する環だけ残す -->
-      <svg style="position:absolute;width:340px;height:340px;" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <g style="transform-origin: 170px 170px; animation: rotateRing 30s linear infinite;">
-          <circle cx="170" cy="170" r="155" fill="none" stroke="#e8a0a8" stroke-width="0.6" stroke-dasharray="5 15"/>
-          <g transform="translate(170,15)"><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-4" rx="2" ry="3" fill="#e8a0a8" transform="rotate(288)"/><circle cx="0" cy="0" r="1.5" fill="#f5d8dc"/></g>
-          <g transform="translate(310,230)"><ellipse cx="0" cy="-3" rx="1.5" ry="2.5" fill="#dda0a8" transform="rotate(0)"/><ellipse cx="0" cy="-3" rx="1.5" ry="2.5" fill="#dda0a8" transform="rotate(72)"/><ellipse cx="0" cy="-3" rx="1.5" ry="2.5" fill="#dda0a8" transform="rotate(144)"/><ellipse cx="0" cy="-3" rx="1.5" ry="2.5" fill="#dda0a8" transform="rotate(216)"/><ellipse cx="0" cy="-3" rx="1.5" ry="2.5" fill="#dda0a8" transform="rotate(288)"/><circle cx="0" cy="0" r="1.2" fill="#f5d8dc"/></g>
-          <g transform="translate(60,290)"><ellipse cx="0" cy="-3.5" rx="2" ry="2.8" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-3.5" rx="2" ry="2.8" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-3.5" rx="2" ry="2.8" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-3.5" rx="2" ry="2.8" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-3.5" rx="2" ry="2.8" fill="#e8a0a8" transform="rotate(288)"/><circle cx="0" cy="0" r="1.3" fill="#f5d8dc"/></g>
-        </g>
-        <g style="transform-origin: 170px 170px; animation: rotateRingRev 20s linear infinite;">
-          <circle cx="170" cy="170" r="115" fill="none" stroke="#c0606a" stroke-width="0.7" stroke-dasharray="3 20"/>
-          <g transform="translate(170,55)"><ellipse cx="0" cy="-3" rx="1.8" ry="2.8" fill="#c0606a" transform="rotate(0)"/><ellipse cx="0" cy="-3" rx="1.8" ry="2.8" fill="#c0606a" transform="rotate(72)"/><ellipse cx="0" cy="-3" rx="1.8" ry="2.8" fill="#c0606a" transform="rotate(144)"/><ellipse cx="0" cy="-3" rx="1.8" ry="2.8" fill="#c0606a" transform="rotate(216)"/><ellipse cx="0" cy="-3" rx="1.8" ry="2.8" fill="#c0606a" transform="rotate(288)"/><circle cx="0" cy="0" r="1.2" fill="#f5d8dc"/></g>
-          <g transform="translate(275,245)"><ellipse cx="0" cy="-2.5" rx="1.5" ry="2.2" fill="#b05868" transform="rotate(0)"/><ellipse cx="0" cy="-2.5" rx="1.5" ry="2.2" fill="#b05868" transform="rotate(72)"/><ellipse cx="0" cy="-2.5" rx="1.5" ry="2.2" fill="#b05868" transform="rotate(144)"/><ellipse cx="0" cy="-2.5" rx="1.5" ry="2.2" fill="#b05868" transform="rotate(216)"/><ellipse cx="0" cy="-2.5" rx="1.5" ry="2.2" fill="#b05868" transform="rotate(288)"/><circle cx="0" cy="0" r="1" fill="#f5d8dc"/></g>
-        </g>
-        <g style="transform-origin: 170px 170px; animation: rotateRing 45s linear infinite;">
-          <circle cx="170" cy="170" r="75" fill="none" stroke="#e8a0a8" stroke-width="0.8"/>
-        </g>
-      </svg>
-      <!-- 縁が集い環を成す演出（スクロール連動・装飾） -->
-      <span class="converge converge-core" aria-hidden="true"></span>
-      <svg class="converge converge-ring" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="170" cy="170" r="118" pathLength="1"/>
-      </svg>
-      <span class="converge cv-petal" aria-hidden="true" style="--angle:0deg;--sx:-192px;--sy:-72px;--sr:-30deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
-      <span class="converge cv-petal" aria-hidden="true" style="--angle:45deg;--sx:152px;--sy:-162px;--sr:40deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
-      <span class="converge cv-petal" aria-hidden="true" style="--angle:90deg;--sx:212px;--sy:38px;--sr:26deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
-      <span class="converge cv-petal" aria-hidden="true" style="--angle:135deg;--sx:170px;--sy:182px;--sr:-34deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
-      <span class="converge cv-petal" aria-hidden="true" style="--angle:180deg;--sx:28px;--sy:222px;--sr:30deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
-      <span class="converge cv-petal" aria-hidden="true" style="--angle:225deg;--sx:-162px;--sy:172px;--sr:-26deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
-      <span class="converge cv-petal" aria-hidden="true" style="--angle:270deg;--sx:-222px;--sy:18px;--sr:34deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
-      <span class="converge cv-petal" aria-hidden="true" style="--angle:315deg;--sx:-142px;--sy:-172px;--sr:-40deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
-      <!-- 中心にロゴ画像 -->
-      <img src="LOGO.png" alt="八重ノ環ロゴ" style="position:relative;z-index:2;width:160px;height:auto;">
+    <!-- テキスト（左寄せ・前面） -->
+    <div class="hero-content">
+      <div class="hero-text">
+        <p class="hero-en fade-up">Yaenowa Co., Ltd.</p>
+        <h1 class="hero-title fade-up">人と人の縁が<br>重なり合い、<br><span class="kanji-accent">新たな価値</span>を。</h1>
+        <p class="hero-subtitle fade-up">
+          ご縁と共創を軸に、<br>
+          ITの力でビジネスの未来をともに描く。
+        </p>
+        <a href="#works" class="hero-cta fade-up">
+          対応領域を見る
+          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 7H11M8 4L11 7L8 10" stroke="currentColor" stroke-width="1.2"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint" aria-hidden="true">
+      Scroll
+      <span></span>
     </div>
   </div>
 </section>
@@ -2009,28 +1965,27 @@ function copyMail() {
   const finePointer = window.matchMedia('(pointer: fine)').matches;
   if (reduce || !finePointer) return;
 
-  const hero = document.querySelector('.hero');
-  const visual = document.querySelector('.hero-visual');
-  const bg = document.querySelector('.hero-bg');
-  if (hero && visual) {
+  const stage = document.querySelector('.hero-stage');
+  const scene = document.querySelector('.hero-scene');
+  if (stage && scene) {
     let tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
     const apply = function(){
       cx += (tx - cx) * 0.09;
       cy += (ty - cy) * 0.09;
-      visual.style.transform = 'translate(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px)';
-      if (bg) bg.style.transform = 'translate(' + (cx * -0.45).toFixed(2) + 'px,' + (cy * -0.45).toFixed(2) + 'px)';
+      scene.style.transform = 'translate(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px)';
       if (Math.abs(tx - cx) > 0.15 || Math.abs(ty - cy) > 0.15) {
         raf = requestAnimationFrame(apply);
       } else { raf = null; }
     };
     const kick = function(){ if (!raf) raf = requestAnimationFrame(apply); };
-    hero.addEventListener('pointermove', function(e){
-      const r = hero.getBoundingClientRect();
-      tx = ((e.clientX - r.left) / r.width - 0.5) * 30;
-      ty = ((e.clientY - r.top) / r.height - 0.5) * 30;
+    // ピン留めされた舞台（≒ビューポート）基準でカーソル位置を取る
+    stage.addEventListener('pointermove', function(e){
+      const r = stage.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 18;
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 18;
       kick();
     });
-    hero.addEventListener('pointerleave', function(){ tx = 0; ty = 0; kick(); });
+    stage.addEventListener('pointerleave', function(){ tx = 0; ty = 0; kick(); });
   }
 
   // ── CTAボタンのマグネティック効果 ──
