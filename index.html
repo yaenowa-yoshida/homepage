@@ -1169,6 +1169,92 @@
     }
   }
 
+  /* ── HERO：縁が集い環を成す演出（スクロール連動） ── */
+  /* 花びら（＝人）／中心の輝き／描かれる環。共通の中心はロゴ中央 */
+  .converge {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    pointer-events: none;
+  }
+
+  /* 集まって環になる花びら */
+  .cv-petal {
+    width: 22px;
+    height: 22px;
+    margin: -11px 0 0 -11px;
+    opacity: 0;
+    /* 初期＝四方に散らばった状態 */
+    transform: translate(var(--sx), var(--sy)) rotate(var(--sr)) scale(0.45);
+    z-index: 1;
+  }
+  .cv-petal svg { width: 100%; height: 100%; display: block; }
+
+  /* 中心のやわらかな輝き（価値が生まれる） */
+  .converge-core {
+    width: 220px;
+    height: 220px;
+    margin: -110px 0 0 -110px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,140,150,0.45) 0%, rgba(224,140,150,0.12) 42%, rgba(224,140,150,0) 70%);
+    opacity: 0;
+    transform: scale(0.35);
+    z-index: 0;
+  }
+
+  /* 描かれていく環の線 */
+  .converge-ring {
+    width: 340px;
+    height: 340px;
+    margin: -170px 0 0 -170px;
+    z-index: 1;
+  }
+  .converge-ring circle {
+    fill: none;
+    stroke: var(--sakura-deep);
+    stroke-width: 1;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transform: rotate(-90deg);
+    transform-origin: 170px 170px;
+  }
+
+  @keyframes petalConverge {
+    from { opacity: 0; transform: translate(var(--sx), var(--sy)) rotate(var(--sr)) scale(0.45); }
+    45%  { opacity: 0.95; }
+    to   { opacity: 0.95; transform: rotate(var(--angle)) translateY(calc(-1 * var(--cv-r))) scale(1); }
+  }
+  @keyframes coreGlow {
+    from { opacity: 0; transform: scale(0.35); }
+    to   { opacity: 1; transform: scale(1.05); }
+  }
+  @keyframes ringDraw {
+    from { stroke-dashoffset: 1; }
+    to   { stroke-dashoffset: 0; }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .cv-petal {
+        --cv-r: 122px;
+        animation: petalConverge linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 46vh;
+        will-change: opacity, transform;
+      }
+      .converge-core {
+        animation: coreGlow linear both;
+        animation-timeline: scroll(root);
+        animation-range: 20vh 54vh;
+      }
+      .converge-ring circle {
+        animation: ringDraw linear both;
+        animation-timeline: scroll(root);
+        animation-range: 4vh 44vh;
+      }
+    }
+  }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
@@ -1234,6 +1320,10 @@
     .reveal-item > * { opacity: 1 !important; transform: none !important; }
     #sakura-layer { display: none; }
     .scroll-progress { display: none; }
+    /* Hero演出：動きを抑える設定では、環が組み上がった最終形を静的に表示 */
+    .cv-petal { opacity: 0.95 !important; transform: rotate(var(--angle)) translateY(calc(-1 * var(--cv-r, 122px))) scale(1) !important; }
+    .converge-core { opacity: 1 !important; transform: scale(1) !important; }
+    .converge-ring circle { stroke-dashoffset: 0 !important; }
   }
 </style>
 </head>
@@ -1393,6 +1483,19 @@
           <circle cx="170" cy="170" r="75" fill="none" stroke="#e8a0a8" stroke-width="0.8"/>
         </g>
       </svg>
+      <!-- 縁が集い環を成す演出（スクロール連動・装飾） -->
+      <span class="converge converge-core" aria-hidden="true"></span>
+      <svg class="converge converge-ring" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="170" cy="170" r="118" pathLength="1"/>
+      </svg>
+      <span class="converge cv-petal" aria-hidden="true" style="--angle:0deg;--sx:-192px;--sy:-72px;--sr:-30deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" aria-hidden="true" style="--angle:45deg;--sx:152px;--sy:-162px;--sr:40deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" aria-hidden="true" style="--angle:90deg;--sx:212px;--sy:38px;--sr:26deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" aria-hidden="true" style="--angle:135deg;--sx:170px;--sy:182px;--sr:-34deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" aria-hidden="true" style="--angle:180deg;--sx:28px;--sy:222px;--sr:30deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" aria-hidden="true" style="--angle:225deg;--sx:-162px;--sy:172px;--sr:-26deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#e8a0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" aria-hidden="true" style="--angle:270deg;--sx:-222px;--sy:18px;--sr:34deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#c0606a" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
+      <span class="converge cv-petal" aria-hidden="true" style="--angle:315deg;--sx:-142px;--sy:-172px;--sr:-40deg;"><svg viewBox="0 0 22 22"><g transform="translate(11,11)"><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(0)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.4" ry="4" fill="#dda0a8" transform="rotate(288)"/><circle r="1.5" fill="#fdf0f2"/></g></svg></span>
       <!-- 中心にロゴ画像 -->
       <img src="LOGO.png" alt="八重ノ環ロゴ" style="position:relative;z-index:2;width:160px;height:auto;">
     </div>
