@@ -8,7 +8,10 @@
 
 ## 構成
 
-- `index.html` … サイト本体（HTML + インラインCSS/JS、外部フレームワーク不使用）
+- `index.html` … サイト本体（HTML + ページ固有のインラインCSS/JS、外部フレームワーク不使用）
+- `theme.css` / `theme.js` … 全ページ共通の基盤（カラーパレット・ダークモード・リセット・
+  テーマ切替）。**色やテーマ挙動の変更はここだけを編集**し、各ページには書かない。
+  theme.js は描画前に実行する必要があるため `<head>` で同期読み込み（defer/async 禁止）。
 - `llms.txt` … AIO用の会社サマリ（内容変更時は index.html と同期）
 - `robots.txt` / `sitemap.xml` … SEO。URLを増やしたら sitemap を更新
 - `CNAME` … `yaenowa.co.jp`（apex）

@@ -1,0 +1,119 @@
+/* ============================================================
+   theme.css — 全ページ共通の基盤スタイル
+   （カラーパレット・ダークモード・リセット・共通UI部品）
+   各ページの <style> より前に読み込むこと。
+   色を変更する場合は本ファイルのみを編集すればよい。
+   ============================================================ */
+
+/* ── カラーパレット（ライト基準） ── */
+:root {
+  --ink: #1a1a18;
+  --ink-mid: #3d3d38;
+  --ink-light: #6b6b64;
+  --paper: #fdf8f6;
+  --paper-mid: #f5ede8;
+  --paper-dark: #ddc8be;
+  --accent: #7a3a4a;
+  --accent-gold: #b06070;
+  --accent-pale: #f0d8d8;
+  --sakura-deep: #c0606a;
+  --sakura-mid: #e8a0a8;
+  --sakura-light: #f5d8dc;
+  --sakura-pale: #fdf0f2;
+  --ring: rgba(122,58,74,0.12);
+  --nav-bg: rgba(247,244,238,0.92);
+  --nav-menu-bg: rgba(247,244,238,0.98);
+  --surface-inverse: #1a1a18;
+  --inverse-ink: #fdf8f6;
+  --spot: rgba(192,96,106,0.10);
+}
+
+/* ── ライト/ダーク両対応（light-dark() 対応ブラウザのみ。非対応はライト表示のまま） ── */
+@supports (color: light-dark(#000, #fff)) {
+  :root {
+    color-scheme: light dark;
+    --ink: light-dark(#1a1a18, #ede6e4);
+    --ink-mid: light-dark(#3d3d38, #c9bfc0);
+    --ink-light: light-dark(#6b6b64, #968b8e);
+    --paper: light-dark(#fdf8f6, #161316);
+    --paper-mid: light-dark(#f5ede8, #1e181d);
+    --paper-dark: light-dark(#ddc8be, #3a3037);
+    --accent: light-dark(#7a3a4a, #d98a9b);
+    --accent-gold: light-dark(#b06070, #d4919e);
+    --accent-pale: light-dark(#f0d8d8, #3b2a31);
+    --sakura-deep: light-dark(#c0606a, #e79aa4);
+    --sakura-mid: light-dark(#e8a0a8, #a56671);
+    --sakura-light: light-dark(#f5d8dc, #4a333c);
+    --sakura-pale: light-dark(#fdf0f2, #251d23);
+    --ring: light-dark(rgba(122,58,74,0.12), rgba(217,138,155,0.16));
+    --nav-bg: light-dark(rgba(247,244,238,0.92), rgba(22,19,22,0.88));
+    --nav-menu-bg: light-dark(rgba(247,244,238,0.98), rgba(22,19,22,0.98));
+    --surface-inverse: light-dark(#1a1a18, #100e11);
+    --inverse-ink: light-dark(#fdf8f6, #ede6e4);
+    --spot: light-dark(rgba(192,96,106,0.10), rgba(231,154,164,0.12));
+  }
+  [data-theme="light"] { color-scheme: light; }
+  [data-theme="dark"]  { color-scheme: dark; }
+}
+
+/* ── ダーク時はロゴ（白地の画像）を角丸チップとして見せる ── */
+[data-theme="dark"] .nav-logo img {
+  border-radius: 8px;
+}
+[data-theme="dark"] .hero-logo {
+  border-radius: 18px;
+  box-shadow: 0 0 40px rgba(231,154,164,0.35), 0 0 90px rgba(231,154,164,0.18);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .nav-logo img {
+    border-radius: 8px;
+  }
+  :root:not([data-theme="light"]) .hero-logo {
+    border-radius: 18px;
+    box-shadow: 0 0 40px rgba(231,154,164,0.35), 0 0 90px rgba(231,154,164,0.18);
+  }
+}
+
+/* ── ページ間遷移をクロスフェード（View Transitions API・対応ブラウザのみ） ── */
+@view-transition { navigation: auto; }
+
+/* ── リセット・共通装飾 ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 3px;
+}
+
+/* ── ナビロゴ画像（全ページ共通サイズ） ── */
+.nav-logo img { height: 36px; width: auto; }
+
+/* ── 本文中のテキストリンク ── */
+.text-link {
+  color: var(--accent-gold);
+  text-decoration: underline;
+}
+
+/* ── テーマ切替ボタン（theme.js が #theme-toggle を配線する） ── */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 0.5px solid var(--paper-dark);
+  background: none;
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: color 0.3s, border-color 0.3s, transform 0.2s;
+}
+.theme-toggle:hover { color: var(--accent); border-color: var(--accent-gold); transform: rotate(15deg); }
+.theme-toggle .icon-sun { display: none; }
+[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
