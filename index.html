@@ -155,6 +155,16 @@
         "Shopify",
         "ECサイト構築"
       ],
+      "hasCredential": {
+        "@type": "EducationalOccupationalCredential",
+        "name": "生成AIパスポート",
+        "credentialCategory": "certification",
+        "recognizedBy": {
+          "@type": "Organization",
+          "name": "一般社団法人生成AI活用普及協会",
+          "url": "https://guga.or.jp/"
+        }
+      },
       "memberOf": {
         "@type": "Organization",
         "name": "CraftStage",
@@ -777,6 +787,34 @@
     background: var(--accent-pale);
     color: var(--accent);
     padding: 0.25rem 0.7rem;
+  }
+
+  .profile-cert {
+    margin-top: 1.5rem;
+    padding-top: 1.2rem;
+    border-top: 0.5px solid var(--paper-dark);
+  }
+
+  .profile-cert-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    color: var(--ink-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .profile-cert-name {
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  .profile-cert-issuer {
+    display: block;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-light);
+    margin-top: 0.2rem;
   }
 
   .profile-detail {}
@@ -1844,6 +1882,10 @@
             <span class="profile-tag">生成AI</span>
             <span class="profile-tag">Web制作</span>
             <span class="profile-tag">Shopify</span>
+          </div>
+          <div class="profile-cert">
+            <p class="profile-cert-label">保有資格</p>
+            <p class="profile-cert-name">生成AIパスポート<span class="profile-cert-issuer">一般社団法人生成AI活用普及協会（GUGA）</span></p>
           </div>
         </div>
       </div>
