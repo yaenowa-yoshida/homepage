@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* テーマ初期化（描画前に実行してちらつきを防ぐ） */
+(function(){
+  try {
+    var saved = localStorage.getItem('theme');
+    var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  } catch(e) {}
+})();
+</script>
 <title>プライバシーポリシー | 株式会社ヤエノワ</title>
 <meta name="description" content="株式会社ヤエノワのプライバシーポリシー（個人情報保護方針）です。個人情報の取得・利用目的・第三者提供・安全管理措置等について定めています。">
 <link rel="canonical" href="https://yaenowa.co.jp/privacy">
@@ -10,7 +20,8 @@
 
 <link rel="icon" href="LOGO.png" type="image/png">
 <link rel="apple-touch-icon" href="LOGO.png">
-<meta name="theme-color" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="プライバシーポリシー | 株式会社ヤエノワ">
@@ -25,6 +36,7 @@
 <meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -37,10 +49,56 @@
     --paper-dark: #ddc8be;
     --accent: #7a3a4a;
     --accent-gold: #b06070;
+    --nav-bg: rgba(247,244,238,0.92);
+    --surface-inverse: #1a1a18;
+    --inverse-ink: #fdf8f6;
   }
+
+  /* ライト/ダーク両対応（light-dark() 対応ブラウザのみ。非対応はライト表示のまま） */
+  @supports (color: light-dark(#000, #fff)) {
+    :root {
+      color-scheme: light dark;
+      --ink: light-dark(#1a1a18, #ede6e4);
+      --ink-mid: light-dark(#3d3d38, #c9bfc0);
+      --ink-light: light-dark(#6b6b64, #968b8e);
+      --paper: light-dark(#fdf8f6, #161316);
+      --paper-mid: light-dark(#f5ede8, #1e181d);
+      --paper-dark: light-dark(#ddc8be, #3a3037);
+      --accent: light-dark(#7a3a4a, #d98a9b);
+      --accent-gold: light-dark(#b06070, #d4919e);
+      --nav-bg: light-dark(rgba(247,244,238,0.92), rgba(22,19,22,0.88));
+      --surface-inverse: light-dark(#1a1a18, #100e11);
+      --inverse-ink: light-dark(#fdf8f6, #ede6e4);
+    }
+    [data-theme="light"] { color-scheme: light; }
+    [data-theme="dark"]  { color-scheme: dark; }
+  }
+
+  /* ダーク時はロゴ（白地の画像）を角丸チップとして見せる */
+  [data-theme="dark"] .nav-logo img {
+    border-radius: 8px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .nav-logo img {
+      border-radius: 8px;
+    }
+  }
+
+  /* ページ間遷移をクロスフェード（View Transitions API・対応ブラウザのみ） */
+  @view-transition { navigation: auto; }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 3px;
+  }
 
   body {
     background: var(--paper);
@@ -60,10 +118,32 @@
     justify-content: space-between;
     align-items: center;
     padding: 1.2rem 4rem;
-    background: rgba(247,244,238,0.92);
+    background: var(--nav-bg);
     backdrop-filter: blur(8px);
     border-bottom: 0.5px solid var(--paper-dark);
   }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 0.5px solid var(--paper-dark);
+    background: none;
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: color 0.3s, border-color 0.3s, transform 0.2s;
+  }
+  .theme-toggle:hover { color: var(--accent); border-color: var(--accent-gold); transform: rotate(15deg); }
+  .theme-toggle .icon-sun { display: none; }
+  [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+  [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
   .nav-logo {
     display: flex;
     align-items: center;
@@ -105,6 +185,7 @@
     letter-spacing: 0.06em;
     color: var(--ink);
     margin-bottom: 1.2rem;
+    text-wrap: balance;
   }
 
   .divider {
@@ -175,7 +256,7 @@
 
   /* ── FOOTER ── */
   footer {
-    background: var(--ink);
+    background: var(--surface-inverse);
     color: rgba(247,244,238,0.5);
     padding: 3rem 4rem;
     display: flex;
@@ -188,7 +269,7 @@
     font-family: 'Zen Old Mincho', serif;
     font-size: 1.1rem;
     letter-spacing: 0.2em;
-    color: var(--paper);
+    color: var(--inverse-ink);
   }
   .footer-link {
     font-size: 0.72rem;
@@ -197,7 +278,7 @@
     text-decoration: none;
     transition: color 0.3s;
   }
-  .footer-link:hover { color: var(--paper); }
+  .footer-link:hover { color: var(--inverse-ink); }
   .footer-copy {
     font-size: 0.72rem;
     letter-spacing: 0.1em;
@@ -217,7 +298,18 @@
     <img src="LOGO.png" alt="ヤエノワロゴ" style="height:36px;width:auto;">
     ヤエノワ
   </a>
-  <a href="/" class="nav-home">← ホームへ戻る</a>
+  <div class="nav-right">
+    <a href="/" class="nav-home">← ホームへ戻る</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
 </nav>
 
 <!-- CONTENT -->
@@ -313,6 +405,28 @@
   <a href="/" class="footer-link">ホームへ戻る</a>
   <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
 </footer>
+
+<!-- テーマ切替 -->
+<script>
+(function(){
+  const root = document.documentElement;
+  const themeBtn = document.getElementById('theme-toggle');
+  if (!themeBtn) return;
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+    themeBtn.setAttribute('aria-label', theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え');
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
+      m.setAttribute('content', theme === 'dark' ? '#161316' : '#7a3a4a');
+    });
+  }
+  applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+  themeBtn.addEventListener('click', function(){
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('theme', next); } catch(e) {}
+  });
+})();
+</script>
 
 </body>
 </html>

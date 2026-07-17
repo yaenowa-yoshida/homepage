@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>document.documentElement.className += ' js';</script>
+<script>
+/* テーマ初期化（描画前に実行してちらつきを防ぐ） */
+(function(){
+  try {
+    var saved = localStorage.getItem('theme');
+    var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  } catch(e) {}
+})();
+</script>
 <title>株式会社ヤエノワ | システム要件定義・設計の専門家</title>
 <meta name="description" content="株式会社ヤエノワは、金融系ITシステムで培った専門知識をもとに、システム要件定義・設計を専門とする会社です。ご縁と共創を軸に、ITの力でビジネスの未来をともに描きます。">
 <meta name="keywords" content="システム要件定義,システム設計,ITコンサルティング,EC連携,OMS,基幹システム,ヤエノワ,株式会社ヤエノワ">
@@ -14,7 +24,8 @@
 <!-- ファビコン / ブラウザ表示 -->
 <link rel="icon" href="LOGO.png" type="image/png">
 <link rel="apple-touch-icon" href="LOGO.png">
-<meta name="theme-color" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
 
 <!-- OGP（SNSシェア用） -->
 <meta property="og:type" content="website">
@@ -194,6 +205,7 @@
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -212,11 +224,79 @@
     --sakura-light: #f5d8dc;
     --sakura-pale: #fdf0f2;
     --ring: rgba(122,58,74,0.12);
+    --nav-bg: rgba(247,244,238,0.92);
+    --nav-menu-bg: rgba(247,244,238,0.98);
+    --surface-inverse: #1a1a18;
+    --inverse-ink: #fdf8f6;
+    --spot: rgba(192,96,106,0.10);
   }
+
+  /* ライト/ダーク両対応（light-dark() 対応ブラウザのみ。非対応はライト表示のまま） */
+  @supports (color: light-dark(#000, #fff)) {
+    :root {
+      color-scheme: light dark;
+      --ink: light-dark(#1a1a18, #ede6e4);
+      --ink-mid: light-dark(#3d3d38, #c9bfc0);
+      --ink-light: light-dark(#6b6b64, #968b8e);
+      --paper: light-dark(#fdf8f6, #161316);
+      --paper-mid: light-dark(#f5ede8, #1e181d);
+      --paper-dark: light-dark(#ddc8be, #3a3037);
+      --accent: light-dark(#7a3a4a, #d98a9b);
+      --accent-gold: light-dark(#b06070, #d4919e);
+      --accent-pale: light-dark(#f0d8d8, #3b2a31);
+      --sakura-deep: light-dark(#c0606a, #e79aa4);
+      --sakura-mid: light-dark(#e8a0a8, #a56671);
+      --sakura-light: light-dark(#f5d8dc, #4a333c);
+      --sakura-pale: light-dark(#fdf0f2, #251d23);
+      --ring: light-dark(rgba(122,58,74,0.12), rgba(217,138,155,0.16));
+      --nav-bg: light-dark(rgba(247,244,238,0.92), rgba(22,19,22,0.88));
+      --nav-menu-bg: light-dark(rgba(247,244,238,0.98), rgba(22,19,22,0.98));
+      --surface-inverse: light-dark(#1a1a18, #100e11);
+      --inverse-ink: light-dark(#fdf8f6, #ede6e4);
+      --spot: light-dark(rgba(192,96,106,0.10), rgba(231,154,164,0.12));
+    }
+    [data-theme="light"] { color-scheme: light; }
+    [data-theme="dark"]  { color-scheme: dark; }
+  }
+
+  /* ダーク時はロゴ（白地の画像）を角丸チップとして見せる */
+  [data-theme="dark"] .nav-logo img {
+    border-radius: 8px;
+  }
+  [data-theme="dark"] .hero-logo {
+    border-radius: 18px;
+    box-shadow: 0 0 40px rgba(231,154,164,0.35), 0 0 90px rgba(231,154,164,0.18);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .nav-logo img {
+      border-radius: 8px;
+    }
+    :root:not([data-theme="light"]) .hero-logo {
+      border-radius: 18px;
+      box-shadow: 0 0 40px rgba(231,154,164,0.35), 0 0 90px rgba(231,154,164,0.18);
+    }
+  }
+
+  /* ページ間遷移をクロスフェード（View Transitions API・対応ブラウザのみ） */
+  @view-transition { navigation: auto; }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    scrollbar-color: color-mix(in srgb, var(--accent-gold) 55%, transparent) transparent;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 3px;
+  }
 
   body {
     background: var(--paper);
@@ -225,7 +305,27 @@
     font-weight: 300;
     line-height: 1.8;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
   }
+  body.menu-open { overflow: hidden; }
+
+  p { text-wrap: pretty; }
+
+  /* スキップリンク（キーボード操作時のみ出現） */
+  .skip-link {
+    position: fixed;
+    top: -100%;
+    left: 1rem;
+    z-index: 300;
+    background: var(--accent);
+    color: var(--paper);
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: top 0.3s ease;
+  }
+  .skip-link:focus-visible { top: 1rem; }
 
   /* ── NAV ── */
   nav {
@@ -233,12 +333,18 @@
     top: 0; left: 0; right: 0;
     z-index: 100;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 2.5rem;
     padding: 1.2rem 4rem;
-    background: rgba(247,244,238,0.92);
+    background: var(--nav-bg);
     backdrop-filter: blur(8px);
     border-bottom: 0.5px solid var(--paper-dark);
+    transition: padding 0.35s ease, box-shadow 0.35s ease;
+  }
+  nav.nav-scrolled {
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+    box-shadow: 0 10px 30px var(--ring);
   }
 
   .nav-logo {
@@ -247,6 +353,7 @@
     letter-spacing: 0.2em;
     color: var(--ink);
     text-decoration: none;
+    margin-right: auto;
   }
   .nav-logo span { color: var(--accent-gold); }
 
@@ -256,13 +363,56 @@
     list-style: none;
   }
   .nav-links a {
+    position: relative;
     font-size: 0.78rem;
     letter-spacing: 0.15em;
     color: var(--ink-mid);
     text-decoration: none;
     transition: color 0.3s;
   }
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    bottom: -6px;
+    height: 1px;
+    background: var(--accent-gold);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.3s ease;
+  }
   .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after,
+  .nav-links a.active::after { transform: scaleX(1); }
+  .nav-links a.active { color: var(--accent); }
+
+  .nav-ctrl {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  /* テーマ切替ボタン */
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 0.5px solid var(--paper-dark);
+    background: none;
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: color 0.3s, border-color 0.3s, transform 0.2s;
+  }
+  .theme-toggle:hover { color: var(--accent); border-color: var(--accent-gold); transform: rotate(15deg); }
+  .theme-toggle .icon-sun { display: none; }
+  [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+  [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+  /* モバイルメニュー背後のスクリム */
+  .nav-scrim { display: none; }
 
   /* ハンバーガーボタン（モバイル用・デフォルト非表示） */
   .nav-toggle {
@@ -372,10 +522,28 @@
     letter-spacing: 0.05em;
     color: var(--ink);
     margin-bottom: 1.2rem;
+    text-wrap: balance;
   }
 
   .hero-title .kanji-accent {
     color: var(--accent-gold);
+  }
+
+  /* ヒーロー見出し：1行ずつ立ち上がるラインリビール */
+  .ht-line {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.1em;
+    margin-block: -0.1em;
+  }
+  .ht-inner {
+    display: inline-block;
+    transform: translateY(115%);
+    animation: lineRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: calc(0.15s + var(--d, 0) * 0.14s);
+  }
+  @keyframes lineRise {
+    to { transform: translateY(0); }
   }
 
   .hero-subtitle {
@@ -428,6 +596,8 @@
     color: var(--ink);
     margin-bottom: 3rem;
     line-height: 1.4;
+    text-wrap: balance;
+    word-break: auto-phrase;
   }
 
   .divider {
@@ -765,8 +935,8 @@
 
   /* ── VISION ── */
   .vision {
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--surface-inverse);
+    color: var(--inverse-ink);
     position: relative;
     overflow: hidden;
   }
@@ -779,7 +949,7 @@
   }
 
   .vision .section-label { color: var(--accent-gold); }
-  .vision .section-title { color: var(--paper); }
+  .vision .section-title { color: var(--inverse-ink); }
   .vision .divider { background: var(--accent-gold); }
 
   .vision-content {
@@ -793,7 +963,7 @@
     font-size: clamp(1.4rem, 2.5vw, 2rem);
     line-height: 2.0;
     letter-spacing: 0.1em;
-    color: var(--paper);
+    color: var(--inverse-ink);
     margin-bottom: 2.5rem;
   }
 
@@ -850,7 +1020,7 @@
 
   /* ── FOOTER ── */
   footer {
-    background: var(--ink);
+    background: var(--surface-inverse);
     color: rgba(247,244,238,0.5);
     padding: 3rem 4rem;
     display: flex;
@@ -864,7 +1034,7 @@
     font-family: 'Zen Old Mincho', serif;
     font-size: 1.1rem;
     letter-spacing: 0.2em;
-    color: var(--paper);
+    color: var(--inverse-ink);
   }
 
   .footer-copy {
@@ -879,7 +1049,7 @@
     text-decoration: none;
     transition: color 0.3s;
   }
-  .footer-link:hover { color: var(--paper); }
+  .footer-link:hover { color: var(--inverse-ink); }
 
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
@@ -932,6 +1102,78 @@
     transform-origin: center;
     animation: rotateRing 25s linear infinite;
   }
+
+  /* カーソル追従スポットライト（カードの質感を高めるマイクロインタラクション） */
+  .spot { position: relative; }
+  .spot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(200px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .spot:hover::after { opacity: 1; }
+
+  /* 進捗リング付き「トップへ戻る」ボタン */
+  .to-top {
+    position: fixed;
+    right: 1.6rem;
+    bottom: 1.6rem;
+    z-index: 90;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 20px var(--ring);
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .to-top .to-top-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .to-top .tt-track,
+  .to-top .tt-bar {
+    fill: none;
+    stroke-width: 1.5;
+    cx: 24px; cy: 24px; r: 21px;
+  }
+  .to-top .tt-track { stroke: var(--paper-dark); }
+  .to-top .tt-bar {
+    stroke: var(--accent-gold);
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: var(--p, 1);
+    transform: rotate(-90deg);
+    transform-origin: center;
+  }
+  .to-top .to-top-arrow { width: 14px; height: 14px; }
+
+  /* 区切り線をスクロール到達時に描画 */
+  .js .reveal .divider {
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+  }
+  .js .reveal.is-visible .divider { transform: scaleX(1); }
 
   /* スクロール表示演出（JS有効時のみ隠す＝JS無効でも表示される） */
   .js .reveal {
@@ -1318,6 +1560,26 @@
     }
     nav.nav-open .nav-links { transform: translateX(0); }
     .nav-links a { font-size: 0.95rem; }
+    .nav-links { z-index: 108; }
+
+    /* メニュー展開時に背景を暗くするスクリム */
+    .nav-scrim {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 105;
+      background: rgba(15,10,14,0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    nav.nav-open .nav-scrim {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .to-top { right: 1.1rem; bottom: 1.1rem; width: 44px; height: 44px; }
+    .to-top .tt-track, .to-top .tt-bar { cx: 22px; cy: 22px; r: 19px; }
   }
 
   /* スマホ幅：社名由来の「八＋重＋環」を縦並びに整える */
@@ -1344,13 +1606,18 @@
     .reveal { opacity: 1 !important; transform: none !important; }
     .reveal-item { animation: none !important; }
     .reveal-item > * { opacity: 1 !important; transform: none !important; }
+    .reveal .divider { transform: none !important; }
+    .ht-inner { transform: none !important; animation: none !important; }
     #sakura-layer { display: none; }
     .scroll-progress { display: none; }
+    .spot::after { display: none; }
     /* Hero演出：動きを抑える設定では、環が組み上がった最終形を静的表示（既定状態のまま） */
   }
 </style>
 </head>
 <body>
+
+<a class="skip-link" href="#main">本文へスキップ</a>
 
 <!-- スクロール進捗バー（スクロール連動） -->
 <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
@@ -1399,9 +1666,6 @@
     <img src="LOGO.png" alt="ヤエノワロゴ" style="height:36px;width:auto;">
     ヤエノワ
   </a>
-  <button class="nav-toggle" id="nav-toggle" aria-label="メニューを開く" aria-controls="nav-links" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
   <ul class="nav-links" id="nav-links">
     <li><a href="#about">会社について</a></li>
     <li><a href="#profile">代表紹介</a></li>
@@ -1411,7 +1675,24 @@
     <li><a href="#vision">ビジョン</a></li>
     <li><a href="#contact">お問い合わせ</a></li>
   </ul>
+  <div class="nav-ctrl">
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="nav-toggle" id="nav-toggle" aria-label="メニューを開く" aria-controls="nav-links" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-scrim" id="nav-scrim" aria-hidden="true"></div>
 </nav>
+
+<main id="main">
 
 <!-- HERO -->
 <section class="hero">
@@ -1437,7 +1718,11 @@
     <div class="hero-content">
       <div class="hero-text">
         <p class="hero-en fade-up">Yaenowa Co., Ltd.</p>
-        <h1 class="hero-title fade-up">人と人の縁が<br>重なり合い、<br><span class="kanji-accent">新たな価値</span>を。</h1>
+        <h1 class="hero-title">
+          <span class="ht-line"><span class="ht-inner" style="--d:0">人と人の縁が</span></span>
+          <span class="ht-line"><span class="ht-inner" style="--d:1">重なり合い、</span></span>
+          <span class="ht-line"><span class="ht-inner" style="--d:2"><span class="kanji-accent">新たな価値</span>を。</span></span>
+        </h1>
         <p class="hero-subtitle fade-up">
           ご縁と共創を軸に、<br>
           ITの力でビジネスの未来をともに描く。
@@ -1593,7 +1878,7 @@
 
     <div class="strengths-grid">
      <div class="reveal-item">
-      <div class="strength-item">
+      <div class="strength-item spot">
         <div class="strength-head">
           <span class="strength-icon" aria-hidden="true">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1608,7 +1893,7 @@
       </div>
      </div>
      <div class="reveal-item">
-      <div class="strength-item">
+      <div class="strength-item spot">
         <div class="strength-head">
           <span class="strength-icon" aria-hidden="true">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1624,7 +1909,7 @@
       </div>
      </div>
      <div class="reveal-item">
-      <div class="strength-item">
+      <div class="strength-item spot">
         <div class="strength-head">
           <span class="strength-icon" aria-hidden="true">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1650,7 +1935,8 @@
     <div class="divider"></div>
 
     <div class="pain-grid">
-      <div class="pain-item">
+     <div class="reveal-item">
+      <div class="pain-item spot">
         <div class="pain-icon" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="14" cy="14" r="13" stroke="#e8a0a8" stroke-width="0.8"/>
@@ -1660,7 +1946,9 @@
         <p class="pain-text">システム化したいが、<br><strong>何から始めればいいかわからない</strong></p>
         <p class="pain-resolve">目的の整理から要件定義・設計までを一緒に進めます。「何を作るか」が曖昧な段階から伴走します。</p>
       </div>
-      <div class="pain-item">
+     </div>
+     <div class="reveal-item">
+      <div class="pain-item spot">
         <div class="pain-icon" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="14" cy="14" r="13" stroke="#e8a0a8" stroke-width="0.8"/>
@@ -1670,7 +1958,9 @@
         <p class="pain-text">ベンダーの言っていることが<br><strong>理解できず判断に迷う</strong></p>
         <p class="pain-resolve">発注者側の立場で技術的な内容を翻訳・整理し、意思決定を支援します。</p>
       </div>
-      <div class="pain-item">
+     </div>
+     <div class="reveal-item">
+      <div class="pain-item spot">
         <div class="pain-icon" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="14" cy="14" r="13" stroke="#e8a0a8" stroke-width="0.8"/>
@@ -1680,6 +1970,7 @@
         <p class="pain-text">要件定義・設計を<br><strong>任せられる人材がいない</strong></p>
         <p class="pain-resolve">金融系IT・大規模基幹系の上流工程で実績を持つ専門家が代行・伴走します。</p>
       </div>
+     </div>
     </div>
 
     <div class="pain-answer">
@@ -1884,6 +2175,19 @@
   </div>
 </section>
 
+</main>
+
+<!-- 進捗リング付き「トップへ戻る」 -->
+<button class="to-top" id="to-top" aria-label="ページの先頭へ戻る">
+  <svg class="to-top-ring" viewBox="0 0 48 48" aria-hidden="true">
+    <circle class="tt-track" pathLength="1"/>
+    <circle class="tt-bar" pathLength="1"/>
+  </svg>
+  <svg class="to-top-arrow" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M7 11.5V2.5M3 6.5L7 2.5L11 6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
 <script>
 function copyMail() {
   navigator.clipboard.writeText('yoshida+contact@yaenowa.co.jp').then(function() {
@@ -1902,13 +2206,16 @@ function copyMail() {
   const nav = document.querySelector('nav');
   const toggle = document.getElementById('nav-toggle');
   const links = document.getElementById('nav-links');
+  const scrim = document.getElementById('nav-scrim');
   function closeMenu(){
     nav.classList.remove('nav-open');
+    document.body.classList.remove('menu-open');
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'メニューを開く');
   }
   toggle.addEventListener('click', function(){
     const open = nav.classList.toggle('nav-open');
+    document.body.classList.toggle('menu-open', open);
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
   });
@@ -1916,6 +2223,8 @@ function copyMail() {
   links.querySelectorAll('a').forEach(function(a){
     a.addEventListener('click', closeMenu);
   });
+  // スクリムをタップしたら閉じる
+  if (scrim) scrim.addEventListener('click', closeMenu);
   // Escキーで閉じる
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape') closeMenu();
@@ -1936,6 +2245,88 @@ function copyMail() {
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
   targets.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+<!-- テーマ切替・スクロールスパイ・トップへ戻る・スポットライト -->
+<script>
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const root = document.documentElement;
+
+  // ── テーマ切替（ライト/ダーク） ──
+  const themeBtn = document.getElementById('theme-toggle');
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+    if (themeBtn) themeBtn.setAttribute('aria-label', theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え');
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
+      m.setAttribute('content', theme === 'dark' ? '#161316' : '#7a3a4a');
+    });
+  }
+  if (themeBtn) {
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function(){
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      try { localStorage.setItem('theme', next); } catch(e) {}
+    });
+  }
+
+  // ── ナビ：スクロールで収縮＋現在地ハイライト（スクロールスパイ） ──
+  const nav = document.querySelector('nav');
+  const navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
+  const sections = navLinks
+    .map(function(a){ return document.querySelector(a.getAttribute('href')); })
+    .filter(Boolean);
+
+  if ('IntersectionObserver' in window && sections.length) {
+    const spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(function(a){
+          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ spy.observe(s); });
+  }
+
+  // ── トップへ戻る（進捗リング付き）＋ナビ収縮 ──
+  const toTop = document.getElementById('to-top');
+  let ticking = false;
+  function onScroll(){
+    const h = document.documentElement;
+    const y = h.scrollTop;
+    if (nav) nav.classList.toggle('nav-scrolled', y > 24);
+    if (toTop) {
+      toTop.classList.toggle('visible', y > window.innerHeight * 0.6);
+      const max = h.scrollHeight - h.clientHeight;
+      const p = max > 0 ? y / max : 0;
+      toTop.style.setProperty('--p', (1 - p).toFixed(4));
+    }
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+  }, { passive: true });
+  onScroll();
+
+  if (toTop) {
+    toTop.addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  }
+
+  // ── カーソル追従スポットライト（細かいポインタ操作がある環境のみ） ──
+  if (window.matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll('.spot').forEach(function(el){
+      el.addEventListener('pointermove', function(e){
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+  }
 })();
 </script>
 
