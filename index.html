@@ -3,17 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>document.documentElement.className += ' js';</script>
-<script>
-/* テーマ初期化（描画前に実行してちらつきを防ぐ） */
-(function(){
-  try {
-    var saved = localStorage.getItem('theme');
-    var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-  } catch(e) {}
-})();
-</script>
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="theme.js"></script>
 <title>株式会社ヤエノワ | システム要件定義・設計の専門家</title>
 <meta name="description" content="株式会社ヤエノワは、金融系ITシステムで培った専門知識をもとに、システム要件定義・設計を専門とする会社です。ご縁と共創を軸に、ITの力でビジネスの未来をともに描きます。">
 <meta name="keywords" content="システム要件定義,システム設計,ITコンサルティング,EC連携,OMS,基幹システム,ヤエノワ,株式会社ヤエノワ">
@@ -219,94 +210,32 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="theme.css">
+
 <style>
-  :root {
-    --ink: #1a1a18;
-    --ink-mid: #3d3d38;
-    --ink-light: #6b6b64;
-    --paper: #fdf8f6;
-    --paper-mid: #f5ede8;
-    --paper-dark: #ddc8be;
-    --accent: #7a3a4a;
-    --accent-gold: #b06070;
-    --accent-pale: #f0d8d8;
-    --sakura-deep: #c0606a;
-    --sakura-mid: #e8a0a8;
-    --sakura-light: #f5d8dc;
-    --sakura-pale: #fdf0f2;
-    --ring: rgba(122,58,74,0.12);
-    --nav-bg: rgba(247,244,238,0.92);
-    --nav-menu-bg: rgba(247,244,238,0.98);
-    --surface-inverse: #1a1a18;
-    --inverse-ink: #fdf8f6;
-    --spot: rgba(192,96,106,0.10);
-  }
+  /* ============================================================
+     本ページ固有スタイル 目次
+     （色・ダークモード・リセット等の共通分は theme.css 側）
+       BASE ………………… html / body / スキップリンク
+       NAV ………………… 固定ナビ・ハンバーガー・モバイルメニュー
+       HERO ……………… ピン留め全画面・縁が集い環を成す演出
+       SECTION COMMON … セクション見出し・レイアウト共通
+       ABOUT ……………… 社名由来・会社概要（company-*）
+       PROFILE …………… 代表紹介
+       WORKS ……………… 対応領域アコーディオン
+       VISION / CONTACT / FOOTER
+       ANIMATIONS ……… reveal 演出・キーフレーム
+       PAIN POINTS / STRENGTHS（選ばれる理由）
+       SAKURA PETALS … 花びら演出
+       SCROLL-DRIVEN UX / RESPONSIVE
+     ============================================================ */
 
-  /* ライト/ダーク両対応（light-dark() 対応ブラウザのみ。非対応はライト表示のまま） */
-  @supports (color: light-dark(#000, #fff)) {
-    :root {
-      color-scheme: light dark;
-      --ink: light-dark(#1a1a18, #ede6e4);
-      --ink-mid: light-dark(#3d3d38, #c9bfc0);
-      --ink-light: light-dark(#6b6b64, #968b8e);
-      --paper: light-dark(#fdf8f6, #161316);
-      --paper-mid: light-dark(#f5ede8, #1e181d);
-      --paper-dark: light-dark(#ddc8be, #3a3037);
-      --accent: light-dark(#7a3a4a, #d98a9b);
-      --accent-gold: light-dark(#b06070, #d4919e);
-      --accent-pale: light-dark(#f0d8d8, #3b2a31);
-      --sakura-deep: light-dark(#c0606a, #e79aa4);
-      --sakura-mid: light-dark(#e8a0a8, #a56671);
-      --sakura-light: light-dark(#f5d8dc, #4a333c);
-      --sakura-pale: light-dark(#fdf0f2, #251d23);
-      --ring: light-dark(rgba(122,58,74,0.12), rgba(217,138,155,0.16));
-      --nav-bg: light-dark(rgba(247,244,238,0.92), rgba(22,19,22,0.88));
-      --nav-menu-bg: light-dark(rgba(247,244,238,0.98), rgba(22,19,22,0.98));
-      --surface-inverse: light-dark(#1a1a18, #100e11);
-      --inverse-ink: light-dark(#fdf8f6, #ede6e4);
-      --spot: light-dark(rgba(192,96,106,0.10), rgba(231,154,164,0.12));
-    }
-    [data-theme="light"] { color-scheme: light; }
-    [data-theme="dark"]  { color-scheme: dark; }
-  }
-
-  /* ダーク時はロゴ（白地の画像）を角丸チップとして見せる */
-  [data-theme="dark"] .nav-logo img {
-    border-radius: 8px;
-  }
-  [data-theme="dark"] .hero-logo {
-    border-radius: 18px;
-    box-shadow: 0 0 40px rgba(231,154,164,0.35), 0 0 90px rgba(231,154,164,0.18);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .nav-logo img {
-      border-radius: 8px;
-    }
-    :root:not([data-theme="light"]) .hero-logo {
-      border-radius: 18px;
-      box-shadow: 0 0 40px rgba(231,154,164,0.35), 0 0 90px rgba(231,154,164,0.18);
-    }
-  }
-
-  /* ページ間遷移をクロスフェード（View Transitions API・対応ブラウザのみ） */
-  @view-transition { navigation: auto; }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
+  /* ── BASE ── */
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     scrollbar-color: color-mix(in srgb, var(--accent-gold) 55%, transparent) transparent;
-  }
-
-  ::selection {
-    background: var(--accent);
-    color: var(--paper);
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--accent-gold);
-    outline-offset: 3px;
   }
 
   body {
@@ -359,6 +288,9 @@
   }
 
   .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-family: 'Zen Old Mincho', serif;
     font-size: 1.15rem;
     letter-spacing: 0.2em;
@@ -403,24 +335,7 @@
     gap: 0.8rem;
   }
 
-  /* テーマ切替ボタン */
-  .theme-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: 0.5px solid var(--paper-dark);
-    background: none;
-    color: var(--ink-mid);
-    cursor: pointer;
-    transition: color 0.3s, border-color 0.3s, transform 0.2s;
-  }
-  .theme-toggle:hover { color: var(--accent); border-color: var(--accent-gold); transform: rotate(15deg); }
-  .theme-toggle .icon-sun { display: none; }
-  [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
-  [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+  /* テーマ切替ボタンのスタイルは theme.css 側 */
 
   /* モバイルメニュー背後のスクリム */
   .nav-scrim { display: none; }
@@ -715,6 +630,37 @@
     color: var(--ink-mid);
     letter-spacing: 0.06em;
   }
+
+  /* 会社概要カード */
+  .company-card {
+    background: var(--paper);
+    border: 0.5px solid var(--paper-dark);
+    padding: 2rem 2.5rem;
+  }
+  .company-card-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+  }
+  .company-table {
+    width: 100%;
+    font-size: 0.85rem;
+    border-collapse: collapse;
+  }
+  .company-table tr { border-bottom: 0.5px solid var(--paper-dark); }
+  .company-table tr:last-child { border-bottom: none; }
+  .company-table td {
+    padding: 0.7rem 0;
+    color: var(--ink);
+  }
+  .company-table td:first-child {
+    width: 35%;
+    color: var(--ink-light);
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+  }
+  .company-table .serif { font-family: 'Shippori Mincho', serif; }
 
   /* ── PROFILE ── */
   .profile {}
@@ -1062,6 +1008,26 @@
     transition: background 0.3s, transform 0.2s;
   }
   .contact-btn:hover { background: var(--ink); transform: translateY(-2px); }
+
+  /* メーラー不調時の補助文言とコピーボタン */
+  .contact-note {
+    margin-top: 1.2rem;
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    font-family: 'Shippori Mincho', serif;
+    letter-spacing: 0.08em;
+  }
+  .copy-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--accent-gold);
+    font-size: 0.78rem;
+    font-family: 'Shippori Mincho', serif;
+    letter-spacing: 0.08em;
+    text-decoration: underline;
+    padding: 0;
+  }
 
   /* ── FOOTER ── */
   footer {
@@ -1670,6 +1636,7 @@
 <!-- 散る花びらレイヤー -->
 <div class="sakura-layer" id="sakura-layer" aria-hidden="true"></div>
 
+<!-- 花びら生成（ランダムなサイズ・位置・速度でSVG花びらを流す） -->
 <script>
 (function(){
   const layer = document.getElementById('sakura-layer');
@@ -1707,8 +1674,8 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo" style="display:flex;align-items:center;gap:0.5rem;">
-    <img src="LOGO.png" alt="ヤエノワロゴ" style="height:36px;width:auto;">
+  <a href="#" class="nav-logo">
+    <img src="LOGO.png" alt="ヤエノワロゴ">
     ヤエノワ
   </a>
   <ul class="nav-links" id="nav-links">
@@ -1834,28 +1801,28 @@
           </p>
         </div>
 
-        <div style="background: var(--paper); border: 0.5px solid var(--paper-dark); padding: 2rem 2.5rem;">
-          <p style="font-size: 0.7rem; letter-spacing: 0.3em; color: var(--accent-gold); margin-bottom: 1rem;">Company Info</p>
-          <table style="width: 100%; font-size: 0.85rem; border-collapse: collapse;">
-            <tr style="border-bottom: 0.5px solid var(--paper-dark);">
-              <td style="padding: 0.7rem 0; color: var(--ink-light); width: 35%; font-size: 0.78rem; letter-spacing: 0.05em;">会社名</td>
-              <td style="padding: 0.7rem 0; color: var(--ink); font-family: 'Shippori Mincho', serif;">株式会社ヤエノワ</td>
-            </tr>
-            <tr style="border-bottom: 0.5px solid var(--paper-dark);">
-              <td style="padding: 0.7rem 0; color: var(--ink-light); font-size: 0.78rem; letter-spacing: 0.05em;">代表取締役</td>
-              <td style="padding: 0.7rem 0; color: var(--ink); font-family: 'Shippori Mincho', serif;">吉田 勝大</td>
-            </tr>
-            <tr style="border-bottom: 0.5px solid var(--paper-dark);">
-              <td style="padding: 0.7rem 0; color: var(--ink-light); font-size: 0.78rem; letter-spacing: 0.05em;">設立</td>
-              <td style="padding: 0.7rem 0; color: var(--ink);">2025年4月3日</td>
-            </tr>
-            <tr style="border-bottom: 0.5px solid var(--paper-dark);">
-              <td style="padding: 0.7rem 0; color: var(--ink-light); font-size: 0.78rem; letter-spacing: 0.05em;">所在地</td>
-              <td style="padding: 0.7rem 0; color: var(--ink);">〒153-0064<br>東京都目黒区下目黒1丁目1番14号<br>コノトラビル7F</td>
+        <div class="company-card">
+          <p class="company-card-label">Company Info</p>
+          <table class="company-table">
+            <tr>
+              <td>会社名</td>
+              <td class="serif">株式会社ヤエノワ</td>
             </tr>
             <tr>
-              <td style="padding: 0.7rem 0; color: var(--ink-light); font-size: 0.78rem; letter-spacing: 0.05em;">事業内容</td>
-              <td style="padding: 0.7rem 0; color: var(--ink);">システム要件定義・設計<br>ITコンサルティング</td>
+              <td>代表取締役</td>
+              <td class="serif">吉田 勝大</td>
+            </tr>
+            <tr>
+              <td>設立</td>
+              <td>2025年4月3日</td>
+            </tr>
+            <tr>
+              <td>所在地</td>
+              <td>〒153-0064<br>東京都目黒区下目黒1丁目1番14号<br>コノトラビル7F</td>
+            </tr>
+            <tr>
+              <td>事業内容</td>
+              <td>システム要件定義・設計<br>ITコンサルティング</td>
             </tr>
           </table>
         </div>
@@ -1911,7 +1878,7 @@
           上流工程の専門家でありながら、実際に手を動かして形にするところまで一貫して対応できるのも強みです。個人事業主として数多くのShopifyストア構築やコーポレートサイト制作を手がけており、構想を整理する力と、それを実装に落とす力の両方を備えています。
         </p>
         <p class="profile-body">
-          近年は生成AIを要件定義・設計やプロジェクト推進の実務に積極的に取り入れ、活用知見を継続的にアップデートしています。技術コミュニティ <a href="https://craftstage.connpass.com/" target="_blank" rel="noopener" style="color:var(--accent-gold);text-decoration:underline;">CraftStage</a> では共同主催・登壇者として、AI・開発に関するLT（ライトニングトーク）で発信を続けています。
+          近年は生成AIを要件定義・設計やプロジェクト推進の実務に積極的に取り入れ、活用知見を継続的にアップデートしています。技術コミュニティ <a href="https://craftstage.connpass.com/" target="_blank" rel="noopener" class="text-link">CraftStage</a> では共同主催・登壇者として、AI・開発に関するLT（ライトニングトーク）で発信を続けています。
         </p>
       </div>
     </div>
@@ -2217,9 +2184,9 @@
         <path d="M3 7H11M8 4L11 7L8 10" stroke="currentColor" stroke-width="1.2"/>
       </svg>
     </a>
-    <p style="margin-top:1.2rem; font-size:0.78rem; color:var(--ink-light); font-family:'Shippori Mincho',serif; letter-spacing:0.08em;">
+    <p class="contact-note">
       メーラーが開かない場合は
-      <button onclick="copyMail()" id="copy-btn" style="background:none;border:none;cursor:pointer;color:var(--accent-gold);font-size:0.78rem;font-family:'Shippori Mincho',serif;letter-spacing:0.08em;text-decoration:underline;padding:0;">アドレスをコピー</button>
+      <button onclick="copyMail()" id="copy-btn" class="copy-btn">アドレスをコピー</button>
     </p>
   </div>
 </section>
@@ -2297,29 +2264,10 @@ function copyMail() {
 })();
 </script>
 
-<!-- テーマ切替・スクロールスパイ・トップへ戻る・スポットライト -->
+<!-- スクロールスパイ・トップへ戻る・スポットライト（テーマ切替は theme.js 側） -->
 <script>
 (function(){
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const root = document.documentElement;
-
-  // ── テーマ切替（ライト/ダーク） ──
-  const themeBtn = document.getElementById('theme-toggle');
-  function applyTheme(theme){
-    root.setAttribute('data-theme', theme);
-    if (themeBtn) themeBtn.setAttribute('aria-label', theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え');
-    document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
-      m.setAttribute('content', theme === 'dark' ? '#161316' : '#7a3a4a');
-    });
-  }
-  if (themeBtn) {
-    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
-    themeBtn.addEventListener('click', function(){
-      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      try { localStorage.setItem('theme', next); } catch(e) {}
-    });
-  }
 
   // ── ナビ：スクロールで収縮＋現在地ハイライト（スクロールスパイ） ──
   const nav = document.querySelector('nav');
