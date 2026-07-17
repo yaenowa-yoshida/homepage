@@ -87,3 +87,6 @@
 
 - 作業ブランチで開発 → コミット → push。`main` へは PR 作成後にマージ。
 - コンテンツ変更時は実機（ブラウザ）で表示確認し、JSON-LD の構文を検証する。
+- コンテンツ変更後は必ずサブエージェントでレビューする（`.claude/agents/`）:
+  - `content-legal-review` … 必須ルール（契約・法務）への違反チェック
+  - `site-consistency-check` … JSON-LD 構文・4箇所同期・URL 正規化・sitemap・noopener の検証
