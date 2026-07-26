@@ -75,7 +75,10 @@
   `twitter:image` が参照。キャッチコピーやデザインを変えたら本画像も再生成して差し替える。
   （注: JSON-LD の `logo` は実ロゴ `LOGO.png` のままにする。OGPバナーとは別物）
 - `outlook/index.html` … 「今後の展望」ページ（公開URLは `/outlook/`。ディレクトリ index 方式。
-  個別テーマページを `/outlook/○○` として同階層にぶら下げる）。検討中のテーマ
+  個別テーマページを `/outlook/○○` として同階層にぶら下げる）。
+  **outlook 配下は全ページ noindex 運用**（`<meta name="robots" content="noindex, follow">`、
+  sitemap にも載せない。検討中コンテンツを検索結果に出さないため。配下に新ページを
+  追加するときも同様にする）。検討中のテーマ
   （GX・ITコンサルの方向性・新規事業構想など）を日付つきで時系列に追記していくジャーナル形式。
   運用ルール:
   - 新しいエントリは `.entries` の**一番上**に `<article class="entry">` で追加（新しい順）。
