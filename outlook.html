@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="theme.js"></script>
+<title>今後の展望 | 株式会社ヤエノワ</title>
+<meta name="description" content="株式会社ヤエノワが、いま考えていることを日付とともに記録するページです。GX（グリーントランスフォーメーション）やITコンサルティングの方向性、新規事業の構想など、検討中のテーマを時系列で公開しています。">
+<link rel="canonical" href="https://yaenowa.co.jp/outlook">
+<meta name="robots" content="index, follow">
+
+<link rel="icon" href="LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="今後の展望 | 株式会社ヤエノワ">
+<meta property="og:description" content="いま考えていることを日付とともに記録するページ。検討中のテーマを時系列で公開しています。">
+<meta property="og:url" content="https://yaenowa.co.jp/outlook">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+
+<!-- 構造化データ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://yaenowa.co.jp/outlook",
+  "url": "https://yaenowa.co.jp/outlook",
+  "name": "今後の展望 | 株式会社ヤエノワ",
+  "description": "株式会社ヤエノワが、いま考えていることを日付とともに記録するページ。検討中のテーマを時系列で公開しています。",
+  "inLanguage": "ja",
+  "datePublished": "2026-07-26",
+  "dateModified": "2026-07-26",
+  "publisher": {
+    "@type": "Organization",
+    "name": "株式会社ヤエノワ",
+    "url": "https://yaenowa.co.jp/"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="theme.css">
+
+<style>
+  /* 本ページ固有スタイルのみ。色・ダークモード・リセット等の共通分は theme.css 側 */
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--paper-dark);
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-home {
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-home:hover { color: var(--accent); }
+
+  /* ── CONTENT ── */
+  .journal {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 9rem 1.5rem 5rem;
+  }
+
+  .journal-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .journal-title {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+    text-wrap: balance;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent-gold);
+    margin: 1.2rem 0 2.5rem;
+  }
+
+  .journal-intro {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.95rem;
+    line-height: 2.1;
+    color: var(--ink-mid);
+    letter-spacing: 0.04em;
+    margin-bottom: 1.5rem;
+  }
+
+  .journal-note {
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+    margin-bottom: 4rem;
+  }
+
+  /* ── ENTRIES（時系列。新しいものを上に追加する） ── */
+  .entries {
+    border-left: 1px solid var(--paper-dark);
+    padding-left: 2rem;
+    margin-left: 0.4rem;
+  }
+
+  .entry {
+    position: relative;
+    margin-bottom: 4rem;
+  }
+  .entry:last-child { margin-bottom: 0; }
+
+  .entry::before {
+    content: "";
+    position: absolute;
+    left: calc(-2rem - 4.5px);
+    top: 0.5em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-gold);
+  }
+
+  .entry time {
+    display: block;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    color: var(--accent-gold);
+    margin-bottom: 0.6rem;
+  }
+
+  .entry h2 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    text-wrap: balance;
+  }
+
+  .entry p {
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 2.0;
+    letter-spacing: 0.03em;
+    margin-bottom: 1rem;
+  }
+  .entry p:last-child { margin-bottom: 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface-inverse);
+    color: rgba(247,244,238,0.5);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--inverse-ink);
+  }
+  .footer-link {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: rgba(247,244,238,0.7);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-link:hover { color: var(--inverse-ink); }
+  .footer-copy {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <div class="nav-right">
+    <a href="/" class="nav-home">← ホームへ戻る</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<main class="journal">
+  <p class="journal-label">Outlook</p>
+  <h1 class="journal-title">今後の展望</h1>
+  <div class="divider"></div>
+
+  <p class="journal-intro">
+    このページは、当社がいま考えていることを、結論が出る前の段階から日付とともに記していく場所です。GX（グリーントランスフォーメーション）への関心、ITコンサルティングの方向性、新規事業の構想──テーマを問わず、同じページに時系列で追記していきます。数字や成果が出たテーマは、あらためて独立したページに切り出す予定です。
+  </p>
+  <p class="journal-note">
+    ※ ここに記す内容は検討中の構想やアイデアであり、現在提供中のサービスを示すものではありません。考えが変わったときは、変わったことも含めて記録します。
+  </p>
+
+  <!-- 新しいエントリはこの直下に追加する（新しい順） -->
+  <div class="entries">
+
+    <article class="entry">
+      <time datetime="2026-07-26">2026年7月26日</time>
+      <h2>「TOKYO GX ACTION MUSEUM」を見て、GXと自社の接点を考え始めた</h2>
+      <p>
+        東京ビッグサイトで開催された体験型GXイベント「<a href="https://tokyo-gx-action.jp/" target="_blank" rel="noopener" class="text-link">TOKYO GX ACTION MUSEUM</a>」に足を運んだ。脱炭素やエネルギーをテーマにした展示や体験が並び、GXが特別な誰かの話ではなく、生活や事業の身近なところまで来ていることを肌で感じた。
+      </p>
+      <p>
+        会場を歩きながら考えていたのは、一人法人である自社に何ができるか、ということ。GXの実務には、排出量の算定や可視化のように「データを集め、整理し、仕組みにする」仕事が多くあるように見える。これは、当社が専門としてきた要件定義・設計と同じ構造の課題ではないか──というのが、いまの仮説。
+      </p>
+      <p>
+        まずは自社自身を題材に、事業活動に伴う排出量の算定を小さく試すところから始めてみるつもりだ。結果や学びが出たら、このページに追記していく。ITコンサルティングとしてGX領域とどう接続できるかは、まだ結論がない。結論が出るまでの考えの過程ごと、ここに残していく。
+      </p>
+    </article>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/" class="footer-link">ホームへ戻る</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+</body>
+</html>
