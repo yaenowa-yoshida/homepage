@@ -74,6 +74,15 @@
 - `og-image.png` … SNSシェア用の専用OGP画像（1200×630）。index/privacy の `og:image`・
   `twitter:image` が参照。キャッチコピーやデザインを変えたら本画像も再生成して差し替える。
   （注: JSON-LD の `logo` は実ロゴ `LOGO.png` のままにする。OGPバナーとは別物）
+- `outlook.html` … 「今後の展望」ページ（公開URLは拡張子なしの `/outlook`）。検討中のテーマ
+  （GX・ITコンサルの方向性・新規事業構想など）を日付つきで時系列に追記していくジャーナル形式。
+  運用ルール:
+  - 新しいエントリは `.entries` の**一番上**に `<article class="entry">` で追加（新しい順）
+  - 語り口は「検討中・考えている」を保ち、提供中のサービスと誤認される断定表現を避ける
+    （ページ冒頭に「検討中であり提供中のサービスではない」旨の注記あり。景表法配慮）
+  - 数字や成果が出たテーマは独立ページに切り出す（切り出したら sitemap・ナビを更新）
+  - 追記時は JSON-LD の `dateModified` と sitemap.xml の lastmod を更新し、
+    検討テーマが変わったら llms.txt の「今後の展望」セクションも同期する
 - `privacy.html` … プライバシーポリシー（個人情報保護方針）。フッターからリンク。
   公開URLは拡張子なしの `/privacy`（GitHub Pages は `privacy.html` を `/privacy` で配信する）。
   リンク・canonical・og:url・sitemap は `/privacy` で統一すること。
