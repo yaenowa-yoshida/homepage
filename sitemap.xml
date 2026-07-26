@@ -13,6 +13,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://yaenowa.co.jp/gx</loc>
+    <lastmod>2026-07-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://yaenowa.co.jp/privacy</loc>
     <lastmod>2026-06-30</lastmod>
     <changefreq>yearly</changefreq>
