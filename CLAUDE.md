@@ -113,6 +113,9 @@
 - コンテンツ変更後は必ずサブエージェントでレビューする（`.claude/agents/`）:
   - `content-legal-review` … 必須ルール（契約・法務）への違反チェック
   - `site-consistency-check` … JSON-LD 構文・4箇所同期・URL 正規化・sitemap・noopener の検証
+- 事業・サービス・新規テーマの検討には `solution-ideation`（課題→ソリューション発想の壁打ち）を
+  使える。レビュー担当ではないため通過必須ではないが、発想した案を公開文言にする場合は
+  content-legal-review を必ず通す。
 
 ## 自律改善ループ（週次）
 
