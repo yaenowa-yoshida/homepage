@@ -123,6 +123,7 @@
   .dropzone input { display: none; }
 
   .demo-row { text-align: center; margin-bottom: 1.5rem; }
+  .demo-note { font-size: 0.72rem; color: var(--ink-light); margin-top: 0.5rem; }
 
   .supported {
     background: var(--paper-mid);
@@ -325,16 +326,18 @@
   <span class="app-status">プロトタイプ（実験公開）</span>
   <p class="app-note">
     会計ソフトから書き出した仕訳CSVを読み込むと、勘定科目ごとの金額に<strong>サンプルの排出原単位</strong>を掛けて、Scope1・2・3の排出量をざっくり概算します。<br>
-    <strong>読み込んだデータは、お使いのブラウザの中でのみ処理されます。サーバーには一切送信されません。</strong>ページを閉じればデータは残りません。
+    <strong>読み込んだデータは、お使いのブラウザの中でのみ処理されます。サーバーには一切送信されません。</strong>ページを閉じればデータは残りません。<br>
+    本ツールは<a href="/outlook/gx" class="text-link">検討中のGX構想</a>の実験として公開しているプロトタイプであり、正式なサービスとして提供しているものではありません。
   </p>
 
   <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="仕訳CSVファイルを選択">
     <p>仕訳CSVをここにドロップ、またはクリックして選択</p>
-    <p class="sub">UTF-8 / Shift_JIS 対応。勘定科目と金額の列があれば形式は問いません（列は手動でも選べます）</p>
+    <p class="sub">UTF-8 / Shift_JIS 対応。勘定科目と金額の列があれば読み込める想定です（列は手動でも選べます）</p>
     <input type="file" id="fileInput" accept=".csv,text/csv">
   </div>
   <div class="demo-row">
     <button class="btn-secondary" id="demoBtn" type="button">サンプルデータで試す</button>
+    <p class="demo-note">（サンプルは架空の仕訳データです。実在の取引・当社の会計データではありません）</p>
   </div>
 
   <div class="supported">
@@ -342,7 +345,7 @@
     <ul>
       <li><strong>freee会計</strong> ── 仕訳帳（仕訳データ）のエクスポートCSV</li>
       <li><strong>マネーフォワード クラウド会計</strong> ── 仕訳帳のエクスポートCSV</li>
-      <li><strong>弥生会計</strong> ── 仕訳日記帳の書き出しCSV（Shift_JIS のまま読み込めます）</li>
+      <li><strong>弥生会計</strong> ── 仕訳日記帳の書き出しCSV（Shift_JIS のまま読み込める想定）</li>
       <li>その他 ── 「勘定科目（または借方勘定科目）」と「金額（または借方金額）」の列を持つCSV全般</li>
     </ul>
     <p class="supported-note">
