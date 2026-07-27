@@ -102,6 +102,12 @@
   本ページの位置づけ（注記・タイトルの「検討中」表記・index の提供サービスとの関係）を
   見直すこと。内容更新時は JSON-LD の `dateModified`・sitemap の lastmod・llms.txt の
   GX 記述を同期する。
+- `outlook/gx-demo.html` … 排出量ざっくり概算プロトタイプ（公開URLは `/outlook/gx-demo`、noindex）。
+  仕訳CSVをブラウザ内でのみ処理して概算するツール（サーバー送信なし・外部ライブラリなし・
+  静的HTML1枚）。**原単位はダミーのサンプル値**（環境省DB実数値の同梱はライセンス未確認のため
+  不可）。免責文と「プロトタイプ・参考値」表記を必ず維持する。無料公開のみ（**課金を始める場合は
+  特商法表記ページの新設と privacy.html 改定が必須**）。第三者サービス名（freee等）への言及は
+  商標・非提携の注記とセットで維持する。
 - `outlook/local.html` / `outlook/academics.html` / `outlook/sports.html` … 地域×IT・母校/学び・
   スポーツ×IT の構想ページ（公開URLは `/outlook/local` 等）。gx.html と同じ運用
   （構想段階・検討中の語り口、noindex、sitemap 非掲載、更新時は JSON-LD の dateModified と
