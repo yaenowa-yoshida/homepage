@@ -94,6 +94,10 @@
   - 数字や成果が出たテーマは独立ページに切り出す（切り出したら sitemap・ナビを更新）
   - 追記時は JSON-LD の `dateModified` と sitemap.xml の lastmod を更新し、
     検討テーマが変わったら llms.txt の「今後の展望」セクションも同期する
+  - **outlook 内の構造化**: index は `CollectionPage` ＋ `hasPart`（配下ページ一覧）、
+    配下ページは `isPartOf` ＋ `BreadcrumbList` の JSON-LD と、見えるパンくず
+    （`.crumbs`）・「← 今後の展望へ」ナビで統一。index の「テーマ別の構想ページ」
+    一覧ブロック（`.topics`）と JSON-LD の hasPart は、**配下ページを増やしたら両方更新**する
 - `outlook/gx.html` … GX構想の企画案ページ（公開URLは拡張子なしの `/outlook/gx`）。
   ルート直下の `gx.html` は旧URL `/gx` からの meta refresh リダイレクトスタブ（noindex）なので
   編集・削除しないこと。outlook から切り出した

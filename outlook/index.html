@@ -31,7 +31,7 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebPage",
+  "@type": "CollectionPage",
   "@id": "https://yaenowa.co.jp/outlook/",
   "url": "https://yaenowa.co.jp/outlook/",
   "name": "今後の展望 | 株式会社ヤエノワ",
@@ -39,11 +39,28 @@
   "inLanguage": "ja",
   "datePublished": "2026-07-26",
   "dateModified": "2026-07-27",
+  "hasPart": [
+    { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx", "name": "GX構想（検討中）" },
+    { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx-demo", "name": "排出量ざっくり概算（プロトタイプ）" },
+    { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/local", "name": "地域構想（検討中）" },
+    { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/academics", "name": "母校・学びの構想（検討中）" },
+    { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/sports", "name": "スポーツ構想（検討中）" }
+  ],
   "publisher": {
     "@type": "Organization",
     "name": "株式会社ヤエノワ",
     "url": "https://yaenowa.co.jp/"
   }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+    { "@type": "ListItem", "position": 2, "name": "今後の展望", "item": "https://yaenowa.co.jp/outlook/" }
+  ]
 }
 </script>
 
@@ -151,7 +168,35 @@
     color: var(--ink-light);
     line-height: 1.9;
     letter-spacing: 0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── テーマ別の構想ページ一覧 ── */
+  .topics {
+    background: var(--paper-mid);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
     margin-bottom: 4rem;
+  }
+  .topics-title {
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+  }
+  .topics ul { list-style: none; margin: 0; padding: 0; }
+  .topics li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 2.0;
+  }
+  .topics li::before {
+    content: "・";
+    position: absolute;
+    left: 0;
+    color: var(--accent-gold);
   }
 
   /* ── ENTRIES（時系列。新しいものを上に追加する） ── */
@@ -307,8 +352,18 @@
     このページは、当社がいま考えていることを、結論が出る前の段階から日付とともに記していく場所です。ITコンサルティングの方向性、新しい領域への関心、新規事業の構想──テーマを問わず、同じページに時系列で追記していきます。数字や成果が出たテーマは、あらためて独立したページに切り出す予定です。
   </p>
   <p class="journal-note">
-    ※ ここに記す内容は検討中の構想やアイデアであり、現在提供中のサービスを示すものではありません。考えが変わったときは、変わったことも含めて記録します。テーマごとの構想は個別ページにまとめています（<a href="/outlook/gx" class="text-link">GX</a>・<a href="/outlook/local" class="text-link">地域</a>・<a href="/outlook/academics" class="text-link">母校と学び</a>・<a href="/outlook/sports" class="text-link">スポーツ</a>）。
+    ※ ここに記す内容は検討中の構想やアイデアであり、現在提供中のサービスを示すものではありません。考えが変わったときは、変わったことも含めて記録します。
   </p>
+
+  <nav class="topics" aria-label="テーマ別の構想ページ">
+    <p class="topics-title">テーマ別の構想ページ</p>
+    <ul>
+      <li><a href="/outlook/gx" class="text-link">GX構想</a> ── 排出量算定の「前工程」を、上流工程の仕事に（<a href="/outlook/gx-demo" class="text-link">概算プロトタイプ</a>を実験公開中）</li>
+      <li><a href="/outlook/local" class="text-link">地域</a> ── 縁のある土地と、ITの仕事をつなぐ</li>
+      <li><a href="/outlook/academics" class="text-link">母校と学び</a> ── 学びの場に、実務の知を返す（学びの記録あり）</li>
+      <li><a href="/outlook/sports" class="text-link">スポーツ</a> ── スポーツの現場に、設計の力を</li>
+    </ul>
+  </nav>
 
   <!-- 新しいエントリはこの直下に追加する（新しい順） -->
   <div class="entries">

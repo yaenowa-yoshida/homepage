@@ -27,6 +27,43 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
 
+<!-- 構造化データ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://yaenowa.co.jp/outlook/gx-demo",
+  "url": "https://yaenowa.co.jp/outlook/gx-demo",
+  "name": "排出量ざっくり概算（プロトタイプ） | 株式会社ヤエノワ",
+  "description": "仕訳CSVをブラウザ内でのみ処理して排出量をざっくり概算するプロトタイプ。データはサーバーに送信されない。原単位はサンプル値であり、結果は参考値。",
+  "inLanguage": "ja",
+  "datePublished": "2026-07-27",
+  "dateModified": "2026-07-27",
+  "isPartOf": {
+    "@type": "WebPage",
+    "@id": "https://yaenowa.co.jp/outlook/gx",
+    "name": "GX構想（検討中）"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "株式会社ヤエノワ",
+    "url": "https://yaenowa.co.jp/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+    { "@type": "ListItem", "position": 2, "name": "今後の展望", "item": "https://yaenowa.co.jp/outlook/" },
+    { "@type": "ListItem", "position": 3, "name": "GX構想", "item": "https://yaenowa.co.jp/outlook/gx" },
+    { "@type": "ListItem", "position": 4, "name": "排出量ざっくり概算", "item": "https://yaenowa.co.jp/outlook/gx-demo" }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
@@ -76,6 +113,16 @@
     margin: 0 auto;
     padding: 9rem 1.5rem 5rem;
   }
+
+  .crumbs {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-light);
+    margin-bottom: 1.2rem;
+  }
+  .crumbs a { color: var(--ink-light); text-decoration: none; }
+  .crumbs a:hover { color: var(--accent); }
+
   .app-label {
     font-size: 0.7rem; letter-spacing: 0.4em;
     color: var(--accent-gold); text-transform: uppercase;
@@ -319,6 +366,7 @@
 </nav>
 
 <main class="app">
+  <p class="crumbs"><a href="/outlook/">今後の展望</a> › <a href="/outlook/gx">GX構想</a> › 排出量ざっくり概算</p>
   <p class="app-label">GX Demo</p>
   <h1 class="app-title">排出量ざっくり概算</h1>
   <div class="divider"></div>
