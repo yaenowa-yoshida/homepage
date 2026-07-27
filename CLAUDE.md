@@ -102,6 +102,10 @@
   本ページの位置づけ（注記・タイトルの「検討中」表記・index の提供サービスとの関係）を
   見直すこと。内容更新時は JSON-LD の `dateModified`・sitemap の lastmod・llms.txt の
   GX 記述を同期する。
+- `outlook/local.html` / `outlook/academics.html` / `outlook/sports.html` … 地域×IT・母校/学び・
+  スポーツ×IT の構想ページ（公開URLは `/outlook/local` 等）。gx.html と同じ運用
+  （構想段階・検討中の語り口、noindex、sitemap 非掲載、更新時は JSON-LD の dateModified と
+  llms.txt を同期）。academics は「大学との公式な連携ではない」旨の注記を維持すること。
 - `privacy.html` … プライバシーポリシー（個人情報保護方針）。フッターからリンク。
   公開URLは拡張子なしの `/privacy`（GitHub Pages は `privacy.html` を `/privacy` で配信する）。
   リンク・canonical・og:url・sitemap は `/privacy` で統一すること。

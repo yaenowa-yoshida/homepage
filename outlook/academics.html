@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<title>母校・学びの構想（検討中） | 株式会社ヤエノワ</title>
+<meta name="description" content="株式会社ヤエノワが検討中の、学びの場との接点づくりの構想。代表の母校である大阪工業大学 情報科学部をはじめ、実務で培った要件定義・設計や生成AI活用の知見を学びの場に返せないか——検討の現在地をまとめたページです。">
+<link rel="canonical" href="https://yaenowa.co.jp/outlook/academics">
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="母校・学びの構想（検討中） | 株式会社ヤエノワ">
+<meta property="og:description" content="学びの場に、実務の知を返せないか。検討中の構想をまとめたページです。">
+<meta property="og:url" content="https://yaenowa.co.jp/outlook/academics">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+
+<!-- 構造化データ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://yaenowa.co.jp/outlook/academics",
+  "url": "https://yaenowa.co.jp/outlook/academics",
+  "name": "母校・学びの構想（検討中） | 株式会社ヤエノワ",
+  "description": "株式会社ヤエノワが検討中の、学びの場との接点づくりの構想。代表の母校である大阪工業大学 情報科学部をはじめ、実務で培った要件定義・設計や生成AI活用の知見を学びの場に返せないか——検討の現在地をまとめたページです。",
+  "inLanguage": "ja",
+  "datePublished": "2026-07-26",
+  "dateModified": "2026-07-26",
+  "publisher": {
+    "@type": "Organization",
+    "name": "株式会社ヤエノワ",
+    "url": "https://yaenowa.co.jp/"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+
+<style>
+  /* 本ページ固有スタイルのみ。色・ダークモード・リセット等の共通分は theme.css 側 */
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--paper-dark);
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-home {
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-home:hover { color: var(--accent); }
+
+  /* ── CONTENT ── */
+  .concept {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 9rem 1.5rem 5rem;
+  }
+
+  .concept-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .concept-title {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+    text-wrap: balance;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent-gold);
+    margin: 1.2rem 0 2.5rem;
+  }
+
+  .concept-status {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--accent-gold);
+    border: 1px solid var(--accent-gold);
+    border-radius: 999px;
+    padding: 0.15rem 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .concept-note {
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+    margin-bottom: 3rem;
+  }
+
+  .concept-section { margin-bottom: 3rem; }
+
+  .concept-section h2 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+    padding-left: 0.8rem;
+    border-left: 2px solid var(--accent-gold);
+    margin-bottom: 1rem;
+  }
+
+  .concept-section p {
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 2.0;
+    letter-spacing: 0.03em;
+    margin-bottom: 1rem;
+  }
+  .concept-section p:last-child { margin-bottom: 0; }
+
+  .concept-section ul {
+    list-style: none;
+    margin: 0.6rem 0 0;
+    padding: 0;
+  }
+  .concept-section li {
+    position: relative;
+    padding-left: 1.2rem;
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 2.0;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.6rem;
+  }
+  .concept-section li::before {
+    content: "・";
+    position: absolute;
+    left: 0;
+    color: var(--accent-gold);
+  }
+
+  .concept-meta {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 0.5px solid var(--paper-dark);
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    line-height: 2.0;
+  }
+  .concept-meta a { color: var(--accent-gold); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface-inverse);
+    color: rgba(247,244,238,0.5);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--inverse-ink);
+  }
+  .footer-link {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: rgba(247,244,238,0.7);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-link:hover { color: var(--inverse-ink); }
+  .footer-copy {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <div class="nav-right">
+    <a href="/" class="nav-home">← ホームへ戻る</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<main class="concept">
+  <p class="concept-label">Academics Concept</p>
+  <h1 class="concept-title">学びの場に、<br>実務の知を返す。</h1>
+  <div class="divider"></div>
+
+  <span class="concept-status">構想段階の企画案</span>
+  <p class="concept-note">
+    ※ 本ページは検討中の企画案をまとめたものであり、現在提供中のサービスを紹介するものではありません。内容は代表個人の構想であり、大学・学部との公式な連携や合意に基づくものではありません。検討の経緯は<a href="/outlook/" class="text-link">今後の展望</a>に日付つきで記録しています。
+  </p>
+
+  <div class="concept-section">
+    <h2>この軸について</h2>
+    <p>
+      代表の母校は、大阪工業大学 情報科学部です。情報の世界に入る入口をくれた場所であり、キャンパスのあった大阪・枚方は学生時代を過ごした土地でもあります。実務の世界で要件定義・設計を重ね、生成AIの活用や技術コミュニティの運営に携わるなかで、この経験を学びの場に返せないか、と考えるようになりました。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>考えていること（すべて検討中）</h2>
+    <ul>
+      <li>実務家としての経験──上流工程の仕事、生成AIの実務活用──を学生に伝える機会づくり</li>
+      <li>技術コミュニティの共同主催で得た「場づくり」の経験を、学びの場に接続すること</li>
+      <li>体制が整った先には、学生との共同の取り組みも──これはまだ遠い構想です</li>
+    </ul>
+  </div>
+
+  <div class="concept-section">
+    <h2>現在地</h2>
+    <p>
+      本ページの内容は代表個人の構想であり、大学・学部との公式な連携や合意に基づくものではありません。まずは一人の卒業生としてできる接点づくりから考えています。経緯は<a href="/outlook/" class="text-link">今後の展望</a>に記録していきます。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>共創のご縁を探しています</h2>
+    <p>
+      教育と実務の接点づくりに関心のある方がいらっしゃいましたら、<a href="/#contact" class="text-link">お問い合わせ</a>からご連絡ください。
+    </p>
+  </div>
+
+  <p class="concept-meta">
+    公開日：2026年7月26日（内容は検討の進展にあわせて更新します）
+  </p>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/outlook/" class="footer-link">今後の展望</a>
+  <a href="/" class="footer-link">ホームへ戻る</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+</body>
+</html>
