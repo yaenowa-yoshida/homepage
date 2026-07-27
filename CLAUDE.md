@@ -96,7 +96,8 @@
     検討テーマが変わったら llms.txt の「今後の展望」セクションも同期する
   - **outlook 内の構造化**: index は `CollectionPage` ＋ `hasPart`（配下ページ一覧）、
     配下ページは `isPartOf` ＋ `BreadcrumbList` の JSON-LD と、見えるパンくず
-    （`.crumbs`）・「← 今後の展望へ」ナビで統一。index の「テーマ別の構想ページ」
+    （`.crumbs`）・「← 今後の展望へ」ナビで統一（例外: gx-demo は gx の子ページ扱いで、
+    ナビは「← GX構想へ戻る」・isPartOf は gx を指す）。index の「テーマ別の構想ページ」
     一覧ブロック（`.topics`）と JSON-LD の hasPart は、**配下ページを増やしたら両方更新**する
 - `outlook/gx.html` … GX構想の企画案ページ（公開URLは拡張子なしの `/outlook/gx`）。
   ルート直下の `gx.html` は旧URL `/gx` からの meta refresh リダイレクトスタブ（noindex）なので
