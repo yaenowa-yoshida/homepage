@@ -112,6 +112,8 @@
   スポーツ×IT の構想ページ（公開URLは `/outlook/local` 等）。gx.html と同じ運用
   （構想段階・検討中の語り口、noindex、sitemap 非掲載、更新時は JSON-LD の dateModified と
   llms.txt を同期）。academics は「大学との公式な連携ではない」旨の注記を維持すること。
+  academics には「学びの記録」セクションがあり、新しい領域について学んだことを
+  日付つき・新しい順で追記していく（GX等。事実ベース・ヘッジ表現を維持）。
 - `privacy.html` … プライバシーポリシー（個人情報保護方針）。フッターからリンク。
   公開URLは拡張子なしの `/privacy`（GitHub Pages は `privacy.html` を `/privacy` で配信する）。
   リンク・canonical・og:url・sitemap は `/privacy` で統一すること。
