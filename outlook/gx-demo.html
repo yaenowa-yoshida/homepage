@@ -122,7 +122,31 @@
   .dropzone .sub { font-size: 0.78rem; color: var(--ink-light); }
   .dropzone input { display: none; }
 
-  .demo-row { text-align: center; margin-bottom: 2.5rem; }
+  .demo-row { text-align: center; margin-bottom: 1.5rem; }
+
+  .supported {
+    background: var(--paper-mid);
+    border-radius: 12px;
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 2.5rem;
+  }
+  .supported-title {
+    font-size: 0.78rem; letter-spacing: 0.15em;
+    color: var(--accent-gold); margin-bottom: 0.4rem;
+  }
+  .supported ul { list-style: none; margin: 0; padding: 0; }
+  .supported li {
+    position: relative; padding-left: 1.1rem;
+    font-size: 0.82rem; color: var(--ink-mid); line-height: 1.9;
+  }
+  .supported li::before {
+    content: "・"; position: absolute; left: 0; color: var(--accent-gold);
+  }
+  .supported li strong { font-weight: 500; }
+  .supported-note {
+    font-size: 0.72rem; color: var(--ink-light);
+    line-height: 1.8; margin-top: 0.6rem;
+  }
   .btn-secondary {
     display: inline-block;
     font-size: 0.82rem; letter-spacing: 0.08em;
@@ -306,11 +330,24 @@
 
   <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="仕訳CSVファイルを選択">
     <p>仕訳CSVをここにドロップ、またはクリックして選択</p>
-    <p class="sub">UTF-8 / Shift_JIS 対応。「日付・勘定科目・金額」の列があれば形式は問いません</p>
+    <p class="sub">UTF-8 / Shift_JIS 対応。勘定科目と金額の列があれば形式は問いません（列は手動でも選べます）</p>
     <input type="file" id="fileInput" accept=".csv,text/csv">
   </div>
   <div class="demo-row">
     <button class="btn-secondary" id="demoBtn" type="button">サンプルデータで試す</button>
+  </div>
+
+  <div class="supported">
+    <p class="supported-title">対応を想定しているCSV</p>
+    <ul>
+      <li><strong>freee会計</strong> ── 仕訳帳（仕訳データ）のエクスポートCSV</li>
+      <li><strong>マネーフォワード クラウド会計</strong> ── 仕訳帳のエクスポートCSV</li>
+      <li><strong>弥生会計</strong> ── 仕訳日記帳の書き出しCSV（Shift_JIS のまま読み込めます）</li>
+      <li>その他 ── 「勘定科目（または借方勘定科目）」と「金額（または借方金額）」の列を持つCSV全般</li>
+    </ul>
+    <p class="supported-note">
+      経費が借方に計上された仕訳帳形式を前提としています。各形式での動作確認は順次進めており、読み込めない形式がありましたらお知らせいただけると助かります。記載の製品・サービス名は各社の商標または登録商標です。当社と各社の間に提携関係はありません。
+    </p>
   </div>
 
   <div class="mapping-panel" id="mappingPanel">
@@ -449,11 +486,15 @@
     reader.readAsArrayBuffer(file);
   }
 
-  /* ── 列の自動推定と選択UI ── */
+  /* ── 列の自動推定と選択UI ──
+     キーワードの優先順に探し、貸方側の列は候補から除外する
+     （freee・マネーフォワード・弥生会計の仕訳帳は借方/貸方が対になるため、
+      経費が計上される借方側を採用する） */
   function guessCol(keywords) {
-    for (var i = 0; i < state.headers.length; i++) {
-      var h = String(state.headers[i]);
-      for (var k = 0; k < keywords.length; k++) {
+    for (var k = 0; k < keywords.length; k++) {
+      for (var i = 0; i < state.headers.length; i++) {
+        var h = String(state.headers[i]);
+        if (h.indexOf('貸方') !== -1) { continue; }
         if (h.indexOf(keywords[k]) !== -1) { return i; }
       }
     }
@@ -469,7 +510,7 @@
       var o2 = o1.cloneNode(true);
       accSel.appendChild(o1); amtSel.appendChild(o2);
     });
-    var accGuess = guessCol(['勘定科目', '科目']);
+    var accGuess = guessCol(['借方勘定科目', '勘定科目', '科目']);
     var amtGuess = guessCol(['借方金額', '税込金額', '金額']);
     accSel.value = accGuess >= 0 ? accGuess : 0;
     amtSel.value = amtGuess >= 0 ? amtGuess : Math.min(1, state.headers.length - 1);
