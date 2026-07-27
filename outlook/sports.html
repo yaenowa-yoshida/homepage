@@ -38,12 +38,28 @@
   "description": "株式会社ヤエノワが検討中の、スポーツの現場とITをつなぐ構想。代表が親しんできた野球をはじめ、チーム運営や記録などスポーツの現場に残る手作業を、設計の力で軽くできないか——検討の現在地をまとめたページです。",
   "inLanguage": "ja",
   "datePublished": "2026-07-26",
-  "dateModified": "2026-07-26",
+  "dateModified": "2026-07-27",
+  "isPartOf": {
+    "@type": "CollectionPage",
+    "@id": "https://yaenowa.co.jp/outlook/",
+    "name": "今後の展望"
+  },
   "publisher": {
     "@type": "Organization",
     "name": "株式会社ヤエノワ",
     "url": "https://yaenowa.co.jp/"
   }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+    { "@type": "ListItem", "position": 2, "name": "今後の展望", "item": "https://yaenowa.co.jp/outlook/" },
+    { "@type": "ListItem", "position": 3, "name": "スポーツ構想", "item": "https://yaenowa.co.jp/outlook/sports" }
+  ]
 }
 </script>
 
@@ -114,6 +130,16 @@
     margin: 0 auto;
     padding: 9rem 1.5rem 5rem;
   }
+
+
+  .crumbs {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-light);
+    margin-bottom: 1.2rem;
+  }
+  .crumbs a { color: var(--ink-light); text-decoration: none; }
+  .crumbs a:hover { color: var(--accent); }
 
   .concept-label {
     font-size: 0.7rem;
@@ -257,7 +283,7 @@
     ヤエノワ
   </a>
   <div class="nav-right">
-    <a href="/" class="nav-home">← ホームへ戻る</a>
+    <a href="/outlook/" class="nav-home">← 今後の展望へ</a>
     <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
       <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
@@ -272,6 +298,7 @@
 
 <!-- CONTENT -->
 <main class="concept">
+  <p class="crumbs"><a href="/outlook/">今後の展望</a> › スポーツ構想</p>
   <p class="concept-label">Sports Concept</p>
   <h1 class="concept-title">スポーツの現場に、<br>設計の力を。</h1>
   <div class="divider"></div>
@@ -312,7 +339,7 @@
   </div>
 
   <p class="concept-meta">
-    公開日：2026年7月26日（内容は検討の進展にあわせて更新します）
+    公開日：2026年7月26日 ／ 最終更新：2026年7月27日（内容は検討の進展にあわせて更新します）
   </p>
 </main>
 
