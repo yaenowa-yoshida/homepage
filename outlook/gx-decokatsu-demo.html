@@ -254,6 +254,7 @@
     letter-spacing: 0.03em;
     margin-bottom: 0.5rem;
   }
+  .matched-action:empty { display: none; }
 
   .verdict {
     display: none;
@@ -386,7 +387,7 @@
 
   <span class="app-status">プロトタイプ（実験公開）</span>
   <p class="app-note">
-    始めた行動と「以前はどうしていたか」から、その行動が排出削減の方向かどうかの<strong>目安</strong>を返します。エコっぽく見える行動でも、何かの「置き換え」でなければ排出は減っていない──<a href="/outlook/gx-decokatsu" class="text-link">デコ活の実践</a>で得たその気づきを、そのまま小さなツールにした実験です。<br>
+    始めた行動を自分の言葉で書くか一覧から選び、「以前はどうしていたか」と合わせると、その行動が排出削減の方向かどうかの<strong>目安</strong>を返します。エコっぽく見える行動でも、何かの「置き換え」でなければ排出は減っていない──<a href="/outlook/gx-decokatsu" class="text-link">デコ活の実践</a>で得たその気づきを、そのまま小さなツールにした実験です。<br>
     判定は定性的な目安であり、数値の算定は行いません。<strong>入力・選択した内容はブラウザの中でのみ処理され、サーバーには一切送信されません。</strong>
   </p>
 
@@ -470,7 +471,7 @@
       { label: 'その移動自体が新しく増えた', v: 'up', note: '何かの置き換えでなければ、移動の分の排出は純増です。' }
     ]},
     { label: '【移動】徒歩・ランニングで移動した',
-      kw: ['歩', 'あるく', '徒歩', 'ウォーキング', 'ランニング', 'ジョギング', '走', 'マラソン'],
+      kw: ['歩いて', '歩く', 'あるく', '徒歩', 'ウォーキング', 'ランニング', 'ジョギング', '走って', '走る', 'マラソン'],
       baselines: [
       { label: '車・タクシーで移動していた', v: 'down', note: '排出の大きい移動から、いちばん小さい移動への置き換えです。' },
       { label: '電車・バスで移動していた', v: 'small', note: '公共交通はもともと排出が小さいため削減幅は小さめですが、方向は削減です。' },
@@ -515,7 +516,7 @@
       { label: 'もともと詰め替え派', v: 'already', note: '排出の小さい選択を続けている状態です。' }
     ]},
     { label: '【家】ごみをルールどおり分別した',
-      kw: ['分別', 'ごみ', 'ゴミ', 'リサイクル', '資源', '古紙', '段ボール', 'ダンボール', 'ペットボトル回収', '缶', 'びん', 'ビン'],
+      kw: ['分別', 'ごみ', 'ゴミ', 'リサイクル', '資源ごみ', '資源ゴミ', '古紙', '段ボール', 'ダンボール', 'ペットボトル回収', '空き缶', 'あき缶', '空きびん', '空きビン'],
       baselines: [
       { label: '分別が粗いことがあった', v: 'small', note: '分別はリサイクルの前提です。資源の再利用につながり、削減の方向に働きます。' },
       { label: 'もともと分別している', v: 'already', note: '自治体のルールに沿った分別を続けている状態です。' }
@@ -587,6 +588,23 @@
     });
   }
 
+  /* 行動と置き換え元がそろっていれば判定を、行動だけなら次の案内を出す */
+  function render(matchedNote) {
+    if (actionSel.value === '') { clearVerdict(); return; }
+    var action = ACTIONS[Number(actionSel.value)];
+    if (baseSel.value !== '') {
+      var b = action.baselines[Number(baseSel.value)];
+      matchedAction.textContent = matchedNote || action.label;
+      verdictLabel.textContent = VERDICT_LABELS[b.v];
+      verdictNote.textContent = b.note;
+    } else {
+      matchedAction.textContent = matchedNote || action.label;
+      verdictLabel.textContent = '以前はどうしていましたか？';
+      verdictNote.textContent = '下の「以前はどうしていましたか？」を選ぶと判定が出ます。';
+    }
+    verdictBox.className = 'verdict show';
+  }
+
   /* 入力のたびに探し直す。見つからないときは、そのことを正直に伝える */
   function handleInput() {
     var text = actionInput.value.trim();
@@ -606,19 +624,23 @@
       verdictBox.className = 'verdict show';
       return;
     }
+    /* マッチ先が変わったときだけ選択肢を作り直す（選択済みの置き換え元を保つ） */
     if (actionSel.value !== String(i)) {
       actionSel.value = String(i);
       fillBaselines(i);
     }
-    matchedAction.textContent = '判定表の「' + ACTIONS[i].label + '」として扱います（違っていれば下の一覧から選び直してください）';
-    verdictLabel.textContent = '以前はどうしていましたか？';
-    verdictNote.textContent = '下の「以前はどうしていましたか？」を選ぶと判定が出ます。';
-    verdictBox.className = 'verdict show';
+    render('判定表の「' + ACTIONS[i].label + '」として扱います（違っていれば下の一覧から選び直してください）');
   }
 
-  actionInput.addEventListener('input', handleInput);
+  /* 打鍵ごとの再描画を抑える（読み上げの連発と処理の無駄を防ぐ） */
+  var inputTimer = null;
+  actionInput.addEventListener('input', function () {
+    if (inputTimer) { clearTimeout(inputTimer); }
+    inputTimer = setTimeout(handleInput, 250);
+  });
 
   actionSel.addEventListener('change', function () {
+    actionInput.value = '';
     clearVerdict();
     if (actionSel.value === '') {
       fillBaselines(-1);
@@ -628,16 +650,7 @@
   });
 
   baseSel.addEventListener('change', function () {
-    if (actionSel.value === '' || baseSel.value === '') {
-      clearVerdict();
-      return;
-    }
-    var action = ACTIONS[Number(actionSel.value)];
-    var b = action.baselines[Number(baseSel.value)];
-    matchedAction.textContent = action.label;
-    verdictLabel.textContent = VERDICT_LABELS[b.v];
-    verdictNote.textContent = b.note;
-    verdictBox.className = 'verdict show';
+    render(null);
   });
 })();
 </script>
