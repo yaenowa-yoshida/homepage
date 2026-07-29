@@ -46,3 +46,6 @@ User-agent: CCBot
 Allow: /
 
 Sitemap: https://yaenowa.co.jp/sitemap.xml
+
+# AI向け会社サマリ（llms.txt）
+# https://yaenowa.co.jp/llms.txt
