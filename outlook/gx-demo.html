@@ -38,11 +38,11 @@
   "description": "仕訳CSVをブラウザ内でのみ処理して排出量をざっくり概算するプロトタイプ。データはサーバーに送信されない。原単位はサンプル値であり、結果は参考値。",
   "inLanguage": "ja",
   "datePublished": "2026-07-27",
-  "dateModified": "2026-07-27",
+  "dateModified": "2026-07-29",
   "isPartOf": {
     "@type": "WebPage",
-    "@id": "https://yaenowa.co.jp/outlook/gx",
-    "name": "GX構想（検討中）"
+    "@id": "https://yaenowa.co.jp/outlook/gx-pipeline",
+    "name": "排出量算定の前工程構想（検討中）"
   },
   "publisher": {
     "@type": "Organization",
@@ -59,7 +59,8 @@
     { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
     { "@type": "ListItem", "position": 2, "name": "今後の展望", "item": "https://yaenowa.co.jp/outlook/" },
     { "@type": "ListItem", "position": 3, "name": "GX構想", "item": "https://yaenowa.co.jp/outlook/gx" },
-    { "@type": "ListItem", "position": 4, "name": "排出量ざっくり概算", "item": "https://yaenowa.co.jp/outlook/gx-demo" }
+    { "@type": "ListItem", "position": 4, "name": "排出量算定の前工程構想", "item": "https://yaenowa.co.jp/outlook/gx-pipeline" },
+    { "@type": "ListItem", "position": 5, "name": "排出量ざっくり概算", "item": "https://yaenowa.co.jp/outlook/gx-demo" }
   ]
 }
 </script>
@@ -352,7 +353,7 @@
     ヤエノワ
   </a>
   <div class="nav-right">
-    <a href="/outlook/gx" class="nav-home">← GX構想へ戻る</a>
+    <a href="/outlook/gx-pipeline" class="nav-home">← 前工程構想へ戻る</a>
     <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
       <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
@@ -366,7 +367,7 @@
 </nav>
 
 <main class="app">
-  <p class="crumbs"><a href="/outlook/">今後の展望</a> › <a href="/outlook/gx">GX構想</a> › 排出量ざっくり概算</p>
+  <p class="crumbs"><a href="/outlook/">今後の展望</a> › <a href="/outlook/gx">GX構想</a> › <a href="/outlook/gx-pipeline">排出量算定の前工程構想</a> › 排出量ざっくり概算</p>
   <p class="app-label">GX Demo</p>
   <h1 class="app-title">排出量ざっくり概算</h1>
   <div class="divider"></div>
@@ -375,7 +376,7 @@
   <p class="app-note">
     会計ソフトから書き出した仕訳CSVを読み込むと、勘定科目ごとの金額に<strong>サンプルの排出原単位</strong>を掛けて、Scope1・2・3の排出量をざっくり概算します。<br>
     <strong>読み込んだデータは、お使いのブラウザの中でのみ処理されます。サーバーには一切送信されません。</strong>ページを閉じればデータは残りません。<br>
-    本ツールは<a href="/outlook/gx" class="text-link">検討中のGX構想</a>の実験として公開しているプロトタイプであり、正式なサービスとして提供しているものではありません。
+    本ツールは検討中の<a href="/outlook/gx-pipeline" class="text-link">排出量算定の前工程構想</a>の実験として公開しているプロトタイプであり、正式なサービスとして提供しているものではありません。
   </p>
 
   <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="仕訳CSVファイルを選択">
@@ -447,13 +448,14 @@
   </div>
 
   <p class="app-meta">
-    このプロトタイプは<a href="/outlook/gx">GX構想</a>の実験として公開しているものです。検討の経緯は<a href="/outlook/">今後の展望</a>に記録しています。ご意見・ご関心のある方は<a href="/#contact">お問い合わせ</a>からご連絡ください。
+    このプロトタイプは<a href="/outlook/gx-pipeline">排出量算定の前工程構想</a>（<a href="/outlook/gx">GX構想</a>の一テーマ）の実験として公開しているものです。検討の経緯は<a href="/outlook/">今後の展望</a>に記録しています。ご意見・ご関心のある方は<a href="/#contact">お問い合わせ</a>からご連絡ください。
   </p>
 </main>
 
 <!-- FOOTER -->
 <footer>
   <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/outlook/gx-pipeline" class="footer-link">前工程構想</a>
   <a href="/outlook/gx" class="footer-link">GX構想</a>
   <a href="/" class="footer-link">ホームへ戻る</a>
   <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>

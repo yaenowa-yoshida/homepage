@@ -96,25 +96,38 @@
     検討テーマが変わったら llms.txt の「今後の展望」セクションも同期する
   - **outlook 内の構造化**: index は `CollectionPage` ＋ `hasPart`（配下ページ一覧）、
     配下ページは `isPartOf` ＋ `BreadcrumbList` の JSON-LD と、見えるパンくず
-    （`.crumbs`）・「← 今後の展望へ」ナビで統一（例外: gx-demo は gx の子ページ扱いで、
-    ナビは「← GX構想へ戻る」・isPartOf は gx を指す）。index の「テーマ別の構想ページ」
-    一覧ブロック（`.topics`）と JSON-LD の hasPart は、**配下ページを増やしたら両方更新**する
-- `outlook/gx.html` … GX構想の企画案ページ（公開URLは拡張子なしの `/outlook/gx`）。
+    （`.crumbs`）・「← 今後の展望へ」ナビで統一（例外: GX系はハブ `gx` の下に階層化しており、
+    gx-pipeline / gx-decokatsu のナビは「← GX構想へ戻る」・isPartOf は gx を、
+    gx-demo のナビは「← 前工程構想へ戻る」・isPartOf は gx-pipeline を指す）。
+    index の「テーマ別の構想ページ」一覧ブロック（`.topics`）と JSON-LD の hasPart は、
+    **配下ページを増やしたら両方更新**する
+- `outlook/gx.html` … GX構想の**ハブページ**（公開URLは拡張子なしの `/outlook/gx`。
+  2026-07-29 にテーマ別ページへ再編）。GX領域の検討テーマをとりまとめ、`hasPart` と
+  テーマカード（`.theme-card`）で配下ページ（gx-pipeline / gx-decokatsu / gx-demo）に
+  リンクする。**GXの新テーマ・プロトタイプは `/outlook/gx-○○` として増やし、本ハブの
+  テーマカードと hasPart・index の topics/hasPart・llms.txt を更新**する。
   ルート直下の `gx.html` は旧URL `/gx` からの meta refresh リダイレクトスタブ（noindex）なので
-  編集・削除しないこと。outlook から切り出した
-  最初の個別テーマページ。**全編「構想段階・検討中」の語り口を厳守**し、ページ冒頭に
-  「提供中のサービスではない」旨の注記を置いている。サービスとして正式提供を始める際は、
-  本ページの位置づけ（注記・タイトルの「検討中」表記・index の提供サービスとの関係）を
-  見直すこと。内容更新時は JSON-LD の `dateModified` と llms.txt の GX 記述を同期する
-  （sitemap 非掲載のため lastmod 同期は不要）。
-- `outlook/gx-demo.html` … 排出量ざっくり概算プロトタイプ（公開URLは `/outlook/gx-demo`、noindex）。
+  編集・削除しないこと。
+- `outlook/gx-pipeline.html` … 排出量算定の前工程構想の企画案ページ（公開URLは
+  `/outlook/gx-pipeline`。旧 gx ページの本編を移設）。**全編「構想段階・検討中」の語り口を
+  厳守**し、ページ冒頭に「提供中のサービスではない」旨の注記を置いている。サービスとして
+  正式提供を始める際は、本ページの位置づけ（注記・タイトルの「検討中」表記・index の
+  提供サービスとの関係）を見直すこと。内容更新時は JSON-LD の `dateModified` と llms.txt の
+  GX 記述を同期する（sitemap 非掲載のため lastmod 同期は不要）。
+- `outlook/gx-decokatsu.html` … 個人の側のGX（環境省「デコ活」）の実践記録ページ（公開URLは
+  `/outlook/gx-decokatsu`）。代表個人の実践であり**サービスではない旨の注記を維持**。
+  実践の具体的な移動区間・駅名・路線名・利用サービスのブランド名は書かない（プライバシー
+  および商標配慮）。実践が進んだら本ページと outlook ジャーナルの両方に追記し、
+  dateModified・llms.txt を同期する。
+- `outlook/gx-demo.html` … 排出量ざっくり概算プロトタイプ（公開URLは `/outlook/gx-demo`、
+  noindex、gx-pipeline の子ページ）。
   仕訳CSVをブラウザ内でのみ処理して概算するツール（サーバー送信なし・外部ライブラリなし・
   静的HTML1枚）。**原単位はダミーのサンプル値**（環境省DB実数値の同梱はライセンス未確認のため
   不可）。免責文と「プロトタイプ・参考値」表記を必ず維持する。無料公開のみ（**課金を始める場合は
   特商法表記ページの新設と privacy.html 改定が必須**）。第三者サービス名（freee等）への言及は
   商標・非提携の注記とセットで維持する。
 - `outlook/local.html` / `outlook/academics.html` / `outlook/sports.html` … 地域×IT・母校/学び・
-  スポーツ×IT の構想ページ（公開URLは `/outlook/local` 等）。gx.html と同じ運用
+  スポーツ×IT の構想ページ（公開URLは `/outlook/local` 等）。gx-pipeline.html と同じ運用
   （構想段階・検討中の語り口、noindex、sitemap 非掲載、更新時は JSON-LD の dateModified と
   llms.txt を同期）。academics は「大学との公式な連携ではない」旨の注記を維持すること。
   academics には「学びの記録」セクションがあり、新しい領域について学んだことを
