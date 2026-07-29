@@ -119,8 +119,17 @@
     （`.crumbs`）・「← 今後の展望へ」ナビで統一（例外: GX系はハブ `gx` の下に階層化しており、
     gx-pipeline / gx-decokatsu のナビは「← GX構想へ戻る」・isPartOf は gx を、
     gx-pipeline-demo のナビは「← 前工程構想へ戻る」・isPartOf は gx-pipeline を指す）
+  - **outlook 内の共通スタイル**: `outlook/outlook.css`（theme.css の後に読み込む）。
+    サブナビの見た目と、本セクション限定のモダンCSS拡張を集約する:
+    `::details-content` ＋ `interpolate-size` によるアコーディオンの高さアニメーション、
+    `:has()` による開いているエントリの強調、`animation-timeline: view()` の
+    スクロール駆動アニメーション（エントリの立ち上がり・ジャーナル縦線の伸長）、
+    `@property` による下線アニメーション、`view-transition-name` でのページ間の連続性、
+    `text-wrap: pretty`。**すべて `@supports` と `prefers-reduced-motion` でガード**し、
+    非対応環境では従来表示にフォールバックさせること（内容が見えなくなる実装は禁止）。
+    色は theme.css のカスタムプロパティのみ参照する
   - **outlook 内の回遊**: 配下全ページのテーマ間ナビは `outlook/nav.js` が `.crumbs` 直後に
-    注入する（JS無効時はパンくず＋ハブ経由が残る）。**テーマページを増やしたら
+    注入する（JS無効時はパンくず＋ハブ経由が残る）。見た目は outlook.css 側が持つ。**テーマページを増やしたら
     3点セットで更新**する: ① `outlook/nav.js` の THEMES、② index の `.topics` 一覧、
     ③ index の JSON-LD hasPart（テーマの子はさらにハブのカードと hasPart も）
 - `outlook/gx.html` … GX構想の**ハブページ**（公開URLは拡張子なしの `/outlook/gx`。

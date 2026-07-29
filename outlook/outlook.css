@@ -1,0 +1,146 @@
+/* ============================================================
+   outlook.css — 「今後の展望」セクション共通の拡張スタイル
+   theme.css（全ページ共通基盤）の後に読み込むこと。
+
+   方針: モダンCSSはすべて @supports / prefers-reduced-motion で
+   ガードし、非対応ブラウザや motion を減らす設定では従来表示に
+   フォールバックする（内容が見えなくなることはない）。
+   色は theme.css のカスタムプロパティのみを参照する。
+   ============================================================ */
+
+/* ── サブナビ（outlook/nav.js が .crumbs 直後に注入する） ── */
+.outlook-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  margin: 0 0 1.6rem;
+}
+.outlook-subnav a {
+  color: var(--ink-light);
+  text-decoration: none;
+  padding-bottom: 3px;
+  transition: color 0.3s;
+}
+.outlook-subnav a:hover { color: var(--accent); }
+.outlook-subnav a.current { color: var(--accent-gold); }
+
+/* @property: カスタムプロパティに型を与え、下線の伸長をアニメーション可能にする
+   （@property なしでは背景サイズの補間が効かないため、非対応環境では
+   下線が即時表示されるだけのフォールバックになる） */
+@property --subnav-underline {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+@supports (background-size: 0%) {
+  .outlook-subnav a {
+    background-image: linear-gradient(var(--accent-gold), var(--accent-gold));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    /* フォールバック値は必須。@property 非対応ブラウザでは --subnav-underline が
+       未登録のため var() が無効となり、指定がないと background-size が auto に落ちて
+       リンク全体が塗りつぶされてしまう */
+    background-size: var(--subnav-underline, 0%) 1px;
+    transition: --subnav-underline 0.35s ease, color 0.3s;
+  }
+  .outlook-subnav a:hover,
+  .outlook-subnav a.current { --subnav-underline: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .outlook-subnav a { transition: none; }
+}
+
+/* ── ページ間のクロスフェード時に、パンくずとサブナビを固定要素として引き継ぐ
+   （theme.css の @view-transition による遷移で、共通UIだけが動かずに残る） ── */
+@supports (view-transition-name: none) {
+  .crumbs { view-transition-name: outlook-crumbs; }
+  .outlook-subnav { view-transition-name: outlook-subnav; }
+}
+
+/* ── 本文の折り返しを最適化（末尾の泣き別れを防ぐ） ── */
+@supports (text-wrap: pretty) {
+  .entry-body p,
+  .concept-section p,
+  .journal-intro { text-wrap: pretty; }
+}
+
+/* ── ジャーナルのアコーディオンを高さアニメーションで開閉する
+   ::details-content と interpolate-size により、height:auto への
+   トランジションが可能になる（非対応環境では従来どおり瞬時に開閉） ── */
+@supports (interpolate-size: allow-keywords) {
+  :root { interpolate-size: allow-keywords; }
+}
+@supports selector(::details-content) {
+  @media (prefers-reduced-motion: no-preference) {
+    .entry-details::details-content {
+      block-size: 0;
+      overflow: clip;
+      opacity: 0;
+      transition:
+        block-size 0.45s cubic-bezier(0.2, 0.7, 0.3, 1),
+        opacity 0.35s ease,
+        content-visibility 0.45s allow-discrete;
+    }
+    .entry-details[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+}
+
+/* ── :has() で「開いているエントリ」の目印を強調する ── */
+@supports selector(:has(*)) {
+  .entry:has(.entry-details[open])::before {
+    background: var(--accent);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent-gold) 20%, transparent);
+  }
+  .entry::before { transition: background 0.3s, box-shadow 0.3s; }
+  @media (prefers-reduced-motion: reduce) {
+    .entry::before { transition: none; }
+  }
+}
+
+/* ── スクロール駆動アニメーション（JS不要）
+   ①エントリ／セクションがビューに入るときに立ち上がる
+   ②ジャーナルの縦線がスクロールに合わせて伸びる ── */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .entry,
+    .concept-section {
+      animation: outlook-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 65%;
+    }
+
+    .entries { position: relative; }
+    .entries::after {
+      content: "";
+      position: absolute;
+      inset-block: 0;
+      left: -1px;
+      width: 1px;
+      background: var(--accent-gold);
+      transform: scaleY(0);
+      transform-origin: top;
+      animation: outlook-line linear both;
+      animation-timeline: view();
+      animation-range: entry 85% exit 15%;
+    }
+  }
+}
+
+@keyframes outlook-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes outlook-line {
+  to { transform: scaleY(1); }
+}
+
+/* ── 概算プロトタイプ: 結果バーの伸長を滑らかにする ── */
+@media (prefers-reduced-motion: no-preference) {
+  .bar-fill { transition: width 0.6s cubic-bezier(0.2, 0.7, 0.3, 1); }
+}

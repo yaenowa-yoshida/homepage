@@ -76,6 +76,10 @@
 
 /* ── ページ間遷移をクロスフェード（View Transitions API・対応ブラウザのみ） ── */
 @view-transition { navigation: auto; }
+/* モーション低減設定では遷移アニメーションを行わない */
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
 
 /* ── リセット・共通装飾 ── */
 * { margin: 0; padding: 0; box-sizing: border-box; }
