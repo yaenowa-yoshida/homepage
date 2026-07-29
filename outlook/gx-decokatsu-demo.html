@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<!-- outlook共通の回遊ナビ（パンくず直後にテーマ一覧を注入） -->
+<script src="/outlook/nav.js" defer></script>
+<title>これってデコ活？判定（プロトタイプ） | 株式会社ヤエノワ</title>
+<meta name="description" content="行動と「以前はどうしていたか」を選ぶと、その行動が排出削減の方向かどうかの目安を返す判定チェッカー。デコ活実践で得た「置き換えかどうかの線引き」の気づきをツールにした実験プロトタイプです。">
+<link rel="canonical" href="https://yaenowa.co.jp/outlook/gx-decokatsu-demo">
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="これってデコ活？判定（プロトタイプ） | 株式会社ヤエノワ">
+<meta property="og:description" content="行動と「以前はどうしていたか」から、排出削減の方向かどうかの目安を返す判定チェッカー。実験プロトタイプ。">
+<meta property="og:url" content="https://yaenowa.co.jp/outlook/gx-decokatsu-demo">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+
+<!-- 構造化データ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://yaenowa.co.jp/outlook/gx-decokatsu-demo",
+  "url": "https://yaenowa.co.jp/outlook/gx-decokatsu-demo",
+  "name": "これってデコ活？判定（プロトタイプ） | 株式会社ヤエノワ",
+  "description": "行動と「以前はどうしていたか」から、排出削減の方向かどうかの目安を返す判定チェッカーの実験プロトタイプ。",
+  "inLanguage": "ja",
+  "datePublished": "2026-07-29",
+  "dateModified": "2026-07-29",
+  "isPartOf": {
+    "@type": "WebPage",
+    "@id": "https://yaenowa.co.jp/outlook/gx-decokatsu",
+    "name": "個人の側のGX ── デコ活の実践"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "株式会社ヤエノワ",
+    "url": "https://yaenowa.co.jp/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+    { "@type": "ListItem", "position": 2, "name": "今後の展望", "item": "https://yaenowa.co.jp/outlook/" },
+    { "@type": "ListItem", "position": 3, "name": "GX構想", "item": "https://yaenowa.co.jp/outlook/gx" },
+    { "@type": "ListItem", "position": 4, "name": "個人の側のGX ── デコ活の実践", "item": "https://yaenowa.co.jp/outlook/gx-decokatsu" },
+    { "@type": "ListItem", "position": 5, "name": "これってデコ活？判定", "item": "https://yaenowa.co.jp/outlook/gx-decokatsu-demo" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+
+<style>
+  /* 本ページ固有スタイルのみ。色・ダークモード・リセット等の共通分は theme.css 側 */
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--paper-dark);
+  }
+  .nav-right { display: flex; align-items: center; gap: 1.2rem; }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-home {
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-home:hover { color: var(--accent); }
+
+  /* ── CONTENT ── */
+  .app {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 9rem 1.5rem 5rem;
+  }
+
+  .crumbs {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-light);
+    margin-bottom: 1.2rem;
+  }
+  .crumbs a { color: var(--ink-light); text-decoration: none; }
+  .crumbs a:hover { color: var(--accent); }
+
+  .app-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .app-title {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+    text-wrap: balance;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent-gold);
+    margin: 1.2rem 0 2.5rem;
+  }
+
+  .app-status {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--accent-gold);
+    border: 1px solid var(--accent-gold);
+    border-radius: 999px;
+    padding: 0.15rem 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .app-note {
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── チェッカー ── */
+  .checker {
+    background: var(--paper-mid);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .checker label {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-mid);
+    margin-bottom: 0.4rem;
+  }
+  .checker select {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--paper-dark);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+  .checker select:focus { outline: 2px solid var(--accent-gold); }
+
+  .verdict {
+    display: none;
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    background: var(--paper);
+    border-left: 3px solid var(--accent-gold);
+  }
+  .verdict.show { display: block; }
+  .verdict-label {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.0rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+  .verdict-note {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+  }
+
+  .app-section { margin-bottom: 2.5rem; }
+  .app-section h2 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+    padding-left: 0.8rem;
+    border-left: 2px solid var(--accent-gold);
+    margin-bottom: 0.8rem;
+  }
+  .app-section p, .app-section li {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+  }
+  .app-section p { margin-bottom: 0.8rem; }
+  .app-section p:last-child { margin-bottom: 0; }
+  .app-section ul { list-style: none; margin: 0; padding: 0; }
+  .app-section li { position: relative; padding-left: 1.1rem; margin-bottom: 0.4rem; }
+  .app-section li::before { content: "・"; position: absolute; left: 0; color: var(--accent-gold); }
+
+  .disclaimer {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+    background: var(--paper-mid);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .app-meta {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 0.5px solid var(--paper-dark);
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    line-height: 2.0;
+  }
+  .app-meta a { color: var(--accent-gold); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface-inverse);
+    color: rgba(247,244,238,0.5);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--inverse-ink);
+  }
+  .footer-link {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: rgba(247,244,238,0.7);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-link:hover { color: var(--inverse-ink); }
+  .footer-copy { font-size: 0.72rem; letter-spacing: 0.1em; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <div class="nav-right">
+    <a href="/outlook/gx-decokatsu" class="nav-home">← デコ活の実践へ戻る</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<main class="app">
+  <p class="crumbs"><a href="/outlook/">今後の展望</a> › <a href="/outlook/gx">GX構想</a> › <a href="/outlook/gx-decokatsu">デコ活の実践</a> › これってデコ活？判定</p>
+  <p class="app-label">GX Demo</p>
+  <h1 class="app-title">これってデコ活？判定</h1>
+  <div class="divider"></div>
+
+  <span class="app-status">プロトタイプ（実験公開）</span>
+  <p class="app-note">
+    始めた行動と「以前はどうしていたか」を選ぶと、その行動が排出削減の方向かどうかの<strong>目安</strong>を返します。エコっぽく見える行動でも、何かの「置き換え」でなければ排出は減っていない──<a href="/outlook/gx-decokatsu" class="text-link">デコ活の実践</a>で得たその気づきを、そのまま小さなツールにした実験です。<br>
+    判定は定性的な目安であり、数値の算定は行いません。<strong>選択内容はブラウザの中でのみ処理され、サーバーには一切送信されません。</strong>
+  </p>
+
+  <div class="checker">
+    <label for="action-select">始めた（している）行動</label>
+    <select id="action-select">
+      <option value="">選んでください</option>
+    </select>
+
+    <label for="baseline-select">以前はどうしていましたか？</label>
+    <select id="baseline-select" disabled>
+      <option value="">先に行動を選んでください</option>
+    </select>
+
+    <div class="verdict" id="verdict" role="status">
+      <p class="verdict-label" id="verdict-label"></p>
+      <p class="verdict-note" id="verdict-note"></p>
+    </div>
+  </div>
+
+  <div class="app-section">
+    <h2>判定の考え方</h2>
+    <ul>
+      <li><strong>削減の方向</strong> ── 以前の行動より排出の小さい選択に「置き換え」ができている</li>
+      <li><strong>削減の方向（幅は小さめ）</strong> ── 置き換えにはなっているが、元の行動の排出がもともと小さい</li>
+      <li><strong>条件しだい</strong> ── 使い方や内容によって、削減にも中立にもなり得る</li>
+      <li><strong>増える方向</strong> ── 置き換えではなく「追加」なので、良い変化でも排出の観点では増える</li>
+      <li><strong>すでにデコ活</strong> ── 元から排出の小さい選択をしている。続けることがいちばんの貢献</li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    【ご利用にあたって】本ツールは「置き換えかどうか」という判定の考え方を体験いただくためのプロトタイプです。判定は一般的なライフサイクルの考え方に基づく定性的な目安であり、実際の排出は製品・地域・使い方などの条件で変わります。数値の算定・保証は行いません。環境省の「<a href="https://ondankataisaku.env.go.jp/decokatsu/action/" target="_blank" rel="noopener" class="text-link">デコ活アクション一覧</a>」「<a href="https://ondankataisaku.env.go.jp/decokatsu/smartmove/about_smartmove/" target="_blank" rel="noopener" class="text-link">スマートムーブ</a>」もあわせてご覧ください（本ツールは環境省の公式ツールではありません）。
+  </div>
+
+  <p class="app-meta">
+    このプロトタイプは<a href="/outlook/gx-decokatsu">デコ活の実践</a>（<a href="/outlook/gx">GX構想</a>の一テーマ）から生まれた実験です。ご意見・ご関心のある方は<a href="/#contact">お問い合わせ</a>からご連絡ください。<br>
+    公開日：2026年7月29日 ／ 最終更新：2026年7月29日
+  </p>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/outlook/gx-decokatsu" class="footer-link">デコ活の実践</a>
+  <a href="/outlook/gx" class="footer-link">GX構想</a>
+  <a href="/" class="footer-link">ホームへ戻る</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* 行動×置き換え元の対応表（定性的な目安。根拠の考え方はページ本文・免責を参照）
+     判定区分: down=削減の方向 / small=削減の方向（幅は小さめ） /
+               up=増える方向 / already=すでにデコ活 / depends=条件しだい */
+  var VERDICT_LABELS = {
+    down:    '削減の方向です',
+    small:   '削減の方向です（幅は小さめ）',
+    up:      '排出はむしろ増える方向です',
+    already: 'すでにデコ活です',
+    depends: '条件しだいです'
+  };
+
+  var ACTIONS = [
+    { label: '【移動】シェアサイクル・自転車で移動した', baselines: [
+      { label: '車・タクシーで移動していた', v: 'down', note: '自動車の1人あたり排出は大きく、自転車への置き換えは削減が見込めます。' },
+      { label: '電車・バスで移動していた', v: 'small', note: '公共交通はもともと1人あたりの排出が小さい乗り物です。削減はゼロではありませんが幅は小さめで、電動モデルでは充電や車両の製造・再配置の分もあります。' },
+      { label: '歩いていた', v: 'depends', note: '徒歩はもともと排出がほぼゼロの移動です。非電動の自転車ならほぼ中立、電動モデルでは電力や車両の分だけ増える方向になります。' },
+      { label: 'その移動自体が新しく増えた', v: 'up', note: '何かの置き換えでなければ、移動の分の排出は純増です。' }
+    ]},
+    { label: '【移動】徒歩・ランニングで移動した', baselines: [
+      { label: '車・タクシーで移動していた', v: 'down', note: '排出の大きい移動から、いちばん小さい移動への置き換えです。' },
+      { label: '電車・バスで移動していた', v: 'small', note: '公共交通はもともと排出が小さいため削減幅は小さめですが、方向は削減です。' },
+      { label: 'シェアサイクル・自転車で移動していた', v: 'small', note: '自転車も排出は小さい移動ですが、自分の足はさらに小さくなります。' },
+      { label: 'もともと歩いていた', v: 'already', note: '元からいちばん排出の小さい移動です。続けることがいちばんの貢献です。' }
+    ]},
+    { label: '【食】植物性ミルク（豆乳・オーツミルク等）を選んだ', baselines: [
+      { label: '牛乳を飲んでいた', v: 'down', note: '植物性ミルクは生産に伴う温室効果ガスが牛乳より小さいとされています。' },
+      { label: '飲む習慣がなかった（新しく飲み始めた）', v: 'up', note: '置き換えではなく追加なので、排出の観点では増える方向です（暮らしとしては良い変化かもしれません）。' },
+      { label: 'もともと植物性ミルクだった', v: 'already', note: '排出の小さい選択を続けている状態です。' }
+    ]},
+    { label: '【食】食べ残しを出さず食べきった', baselines: [
+      { label: '残してしまうことがあった', v: 'down', note: '食品ロスは生産・輸送・廃棄の排出が無駄になる分です。減らすことは削減の方向に働きます。' },
+      { label: 'もともと残さない', v: 'already', note: 'デコ活アクションの「食べ残しゼロ」を元から実践している状態です。' }
+    ]},
+    { label: '【食】朝食・間食を新しく食べ始めた', baselines: [
+      { label: '何も食べていなかった', v: 'up', note: '健康には良い変化かもしれませんが、何かをエコに置き換えたわけではないので、排出の観点では増える方向です。' },
+      { label: '外食・コンビニで済ませていたのを家に切り替えた', v: 'depends', note: '内容によります。移動や包装が減る分は削減方向に働きますが、一概には言えません。' }
+    ]},
+    { label: '【買い物】マイバッグ・マイボトルを使った', baselines: [
+      { label: 'レジ袋・ペットボトルを使っていた', v: 'small', note: '1回あたりの削減は小さいものの、繰り返し使うほど効いてきます。バッグやボトル自体の製造分があるため、長く使うことが前提です。' },
+      { label: '買っただけであまり使っていない', v: 'up', note: '繰り返し使って初めて削減になります。まず日常で使うところからです。' }
+    ]},
+    { label: '【買い物】服・道具を修理して長く使った', baselines: [
+      { label: '買い替えるつもりだった', v: 'down', note: '新品の製造に伴う排出を避けられる、わかりやすい置き換えです。' },
+      { label: 'もともと長く使う派', v: 'already', note: 'サステナブルな消費を元から実践している状態です。' }
+    ]},
+    { label: '【買い物】簡素な包装・詰め替え品を選んだ', baselines: [
+      { label: '通常の包装の商品を選んでいた', v: 'small', note: '包装の資材と製造の分が減ります。1点あたりは小さくても、日々の選択として積み上がります。' },
+      { label: 'もともと詰め替え派', v: 'already', note: '排出の小さい選択を続けている状態です。' }
+    ]},
+    { label: '【家】ごみをルールどおり分別した', baselines: [
+      { label: '分別が粗いことがあった', v: 'small', note: '分別はリサイクルの前提です。資源の再利用につながり、削減の方向に働きます。' },
+      { label: 'もともと分別している', v: 'already', note: '自治体のルールに沿った分別を続けている状態です。' }
+    ]},
+    { label: '【家】冷暖房の設定温度を見直した・こまめに消した', baselines: [
+      { label: '以前より控えめにした', v: 'down', note: '電力の使用量が直接減るため、削減につながります（体調を崩さない範囲で）。' },
+      { label: 'もともと意識している', v: 'already', note: '「電気も省エネ」を元から実践している状態です。' }
+    ]}
+  ];
+
+  var actionSel = document.getElementById('action-select');
+  var baseSel = document.getElementById('baseline-select');
+  var verdictBox = document.getElementById('verdict');
+  var verdictLabel = document.getElementById('verdict-label');
+  var verdictNote = document.getElementById('verdict-note');
+
+  ACTIONS.forEach(function (a, i) {
+    var opt = document.createElement('option');
+    opt.value = String(i);
+    opt.textContent = a.label;
+    actionSel.appendChild(opt);
+  });
+
+  actionSel.addEventListener('change', function () {
+    baseSel.innerHTML = '';
+    verdictBox.className = 'verdict';
+    if (actionSel.value === '') {
+      baseSel.disabled = true;
+      baseSel.appendChild(new Option('先に行動を選んでください', ''));
+      return;
+    }
+    baseSel.disabled = false;
+    baseSel.appendChild(new Option('選んでください', ''));
+    ACTIONS[Number(actionSel.value)].baselines.forEach(function (b, j) {
+      baseSel.appendChild(new Option(b.label, String(j)));
+    });
+  });
+
+  baseSel.addEventListener('change', function () {
+    if (actionSel.value === '' || baseSel.value === '') {
+      verdictBox.className = 'verdict';
+      return;
+    }
+    var b = ACTIONS[Number(actionSel.value)].baselines[Number(baseSel.value)];
+    verdictLabel.textContent = VERDICT_LABELS[b.v];
+    verdictNote.textContent = b.note;
+    verdictBox.className = 'verdict show';
+  });
+})();
+</script>
+
+</body>
+</html>
