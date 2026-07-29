@@ -60,7 +60,8 @@
 ## SEO / AIO 運用メモ
 
 - 正規URLは **apex ドメイン**（`https://yaenowa.co.jp/`、www無し）。canonical・OGP・sitemap・構造化データを統一すること。
-- コンテンツを変更したら **`llms.txt` と JSON-LD 構造化データを同期**する。
+- コンテンツを変更したら **`llms.txt` と JSON-LD 構造化データを同期**する
+  （llms.txt 冒頭の「最終更新」日付も更新）。
 - セクション/ページを増やしたら `sitemap.xml` と必要に応じてナビ・FAQ構造化データを更新。
 - 構造化データの可視性: FAQ等は**表示されている内容と構造化データを一致**させる（Googleポリシー）。
 - アクセシビリティ: 装飾要素は `aria-hidden`、`prefers-reduced-motion` を尊重。
@@ -133,6 +134,8 @@
   academics には「学びの記録」セクションがあり、新しい領域について学んだことを
   日付つき・新しい順で追記していく（GX等。事実ベース・ヘッジ表現を維持）。
 - `privacy.html` … プライバシーポリシー（個人情報保護方針）。フッターからリンク。
+  WebPage ＋ BreadcrumbList の JSON-LD あり（本文を改定したら `dateModified` と
+  sitemap の lastmod を更新すること）。
   公開URLは拡張子なしの `/privacy`（GitHub Pages は `privacy.html` を `/privacy` で配信する）。
   リンク・canonical・og:url・sitemap は `/privacy` で統一すること。
   内容を変える際は実態（取得方法・利用目的・クッキー/外部サービスの利用状況）と
