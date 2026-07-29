@@ -65,6 +65,18 @@
 - セクション/ページを増やしたら `sitemap.xml` と必要に応じてナビ・FAQ構造化データを更新。
 - 構造化データの可視性: FAQ等は**表示されている内容と構造化データを一致**させる（Googleポリシー）。
 - アクセシビリティ: 装飾要素は `aria-hidden`、`prefers-reduced-motion` を尊重。
+- **outlook 配下の noindex 段階解除方針**（2026-07 決定。現状は全ページ noindex だが、
+  AI検索には robots.txt / llms.txt で開いている。「実態が先、公開はそれに追いつく」が原則）:
+  - **フェーズ1**: gx-demo の原単位が公的DBの実数値に置き換わったら（概算が参考値から
+    一段上がったら）、**事実・ツール系ページ**（gx-demo、academics の学びの記録、
+    gx-decokatsu）の noindex を解除して sitemap に追加する。解除開始前に
+    Google Search Console を登録し、効果測定できる状態にする
+  - **フェーズ2**: サービス化を決めたテーマは、構想ページ（gx-pipeline 等）を
+    正式ページに昇格させて index する（各ページ運用メモの見直し手順に従う）
+  - **ジャーナル（/outlook/ 本体）と未成熟の構想ページ**（local / sports 等）は
+    当面 noindex 維持。柔らかい思考置き場を検索から守る弁のため
+  - 解除時の作業: `meta robots` 変更 → sitemap 追加（lastmod 同期）→ 検索流入者が
+    文脈なしで読む前提で文言を再点検 → content-legal-review 通過後にマージ
 
 ## 既知の未対応事項（TODO）
 
