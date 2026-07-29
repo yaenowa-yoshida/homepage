@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
 <script src="/theme.js"></script>
+<!-- outlook共通の回遊ナビ（パンくず直後にテーマ一覧を注入） -->
+<script src="/outlook/nav.js" defer></script>
 <title>排出量ざっくり概算（プロトタイプ） | 株式会社ヤエノワ</title>
 <meta name="description" content="仕訳CSVをブラウザに読み込むと、勘定科目ベースでScope1・2・3の排出量をざっくり概算するプロトタイプです。データはブラウザ内でのみ処理され、サーバーには送信されません。検討中のGX構想の実験として公開しています。">
 <link rel="canonical" href="https://yaenowa.co.jp/outlook/gx-demo">

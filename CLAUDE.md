@@ -95,13 +95,20 @@
   - 数字や成果が出たテーマは独立ページに切り出す（切り出したら sitemap・ナビを更新）
   - 追記時は JSON-LD の `dateModified` を更新し（outlook 配下は sitemap 非掲載のため lastmod 同期は不要）、
     検討テーマが変わったら llms.txt の「今後の展望」セクションも同期する
+  - **outlook の階層モデル**: 基本形は `outlook/`（ジャーナル＋テーマ一覧）→ `/outlook/テーマ`
+    （ハブ）→ `/outlook/テーマ-○○`（企画案・記録）→ そのデモ、の**最大4階層**。
+    GX（gx → gx-pipeline → gx-demo）が参照実装。各テーマは**サービスに結びつく出口
+    （プロトタイプ・デモ・商品化の種）を意識して育てる**。単一ページのテーマ
+    （local / academics / sports）も、育ったら同じ型でハブ化して子をぶら下げる
   - **outlook 内の構造化**: index は `CollectionPage` ＋ `hasPart`（配下ページ一覧）、
     配下ページは `isPartOf` ＋ `BreadcrumbList` の JSON-LD と、見えるパンくず
     （`.crumbs`）・「← 今後の展望へ」ナビで統一（例外: GX系はハブ `gx` の下に階層化しており、
     gx-pipeline / gx-decokatsu のナビは「← GX構想へ戻る」・isPartOf は gx を、
-    gx-demo のナビは「← 前工程構想へ戻る」・isPartOf は gx-pipeline を指す）。
-    index の「テーマ別の構想ページ」一覧ブロック（`.topics`）と JSON-LD の hasPart は、
-    **配下ページを増やしたら両方更新**する
+    gx-demo のナビは「← 前工程構想へ戻る」・isPartOf は gx-pipeline を指す）
+  - **outlook 内の回遊**: 配下全ページのテーマ間ナビは `outlook/nav.js` が `.crumbs` 直後に
+    注入する（JS無効時はパンくず＋ハブ経由が残る）。**テーマページを増やしたら
+    3点セットで更新**する: ① `outlook/nav.js` の THEMES、② index の `.topics` 一覧、
+    ③ index の JSON-LD hasPart（テーマの子はさらにハブのカードと hasPart も）
 - `outlook/gx.html` … GX構想の**ハブページ**（公開URLは拡張子なしの `/outlook/gx`。
   2026-07-29 にテーマ別ページへ再編）。GX領域の検討テーマをとりまとめ、`hasPart` と
   テーマカード（`.theme-card`）で配下ページ（gx-pipeline / gx-decokatsu / gx-demo）に
@@ -127,12 +134,16 @@
   不可）。免責文と「プロトタイプ・参考値」表記を必ず維持する。無料公開のみ（**課金を始める場合は
   特商法表記ページの新設と privacy.html 改定が必須**）。第三者サービス名（freee等）への言及は
   商標・非提携の注記とセットで維持する。
-- `outlook/local.html` / `outlook/academics.html` / `outlook/sports.html` … 地域×IT・母校/学び・
-  スポーツ×IT の構想ページ（公開URLは `/outlook/local` 等）。gx-pipeline.html と同じ運用
+- `outlook/local.html` / `outlook/sports.html` … 地域×IT・スポーツ×IT の構想ページ
+  （公開URLは `/outlook/local` 等）。gx-pipeline.html と同じ運用
   （構想段階・検討中の語り口、noindex、sitemap 非掲載、更新時は JSON-LD の dateModified と
-  llms.txt を同期）。academics は「大学との公式な連携ではない」旨の注記を維持すること。
-  academics には「学びの記録」セクションがあり、新しい領域について学んだことを
-  日付つき・新しい順で追記していく（GX等。事実ベース・ヘッジ表現を維持）。
+  llms.txt を同期）。
+- `outlook/academics.html` … **「学びの記録と構想」ページ**（公開URLは `/outlook/academics`）。
+  主役は「学びの記録」（新しい領域について学んだことを日付つき・新しい順で追記。
+  事実ベース・ヘッジ表現を維持）で、母校との接点づくりは「考えていること」（検討中の構想）
+  として従に置く二層構成。記録＝事実、構想＝検討中という区別を注記・バッジで明示しており、
+  **この区別を崩さないこと**。「大学・学部や出身校（高校）との公式な連携ではない」旨の
+  注記を維持すること。更新時は dateModified・llms.txt を同期。
 - `privacy.html` … プライバシーポリシー（個人情報保護方針）。フッターからリンク。
   WebPage ＋ BreadcrumbList の JSON-LD あり（本文を改定したら `dateModified` と
   sitemap の lastmod を更新すること）。

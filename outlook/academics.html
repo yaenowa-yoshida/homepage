@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
 <script src="/theme.js"></script>
-<title>母校・学びの構想（検討中） | 株式会社ヤエノワ</title>
-<meta name="description" content="株式会社ヤエノワが検討中の、学びの場との接点づくりの構想。代表の母校である大阪工業大学 情報科学部をはじめ、実務で培った要件定義・設計や生成AI活用の知見を学びの場に返せないか——検討の現在地をまとめたページです。">
+<!-- outlook共通の回遊ナビ（パンくず直後にテーマ一覧を注入） -->
+<script src="/outlook/nav.js" defer></script>
+<title>学びの記録と構想 | 株式会社ヤエノワ</title>
+<meta name="description" content="株式会社ヤエノワ代表の学びの記録（GX・生成AIなど）と、学びの場に実務の知を返す構想のページ。学んだことを日付つきで記録し、母校（大阪工業大学 情報科学部・和歌山県立海南高校）との接点づくりを検討しています。">
 <link rel="canonical" href="https://yaenowa.co.jp/outlook/academics">
 <meta name="robots" content="noindex, follow">
 
@@ -16,8 +18,8 @@
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="母校・学びの構想（検討中） | 株式会社ヤエノワ">
-<meta property="og:description" content="学びの場に、実務の知を返せないか。検討中の構想をまとめたページです。">
+<meta property="og:title" content="学びの記録と構想 | 株式会社ヤエノワ">
+<meta property="og:description" content="学びの記録（GX・生成AIなど）と、学びの場に実務の知を返す構想。記録は継続更新中、構想は検討段階です。">
 <meta property="og:url" content="https://yaenowa.co.jp/outlook/academics">
 <meta property="og:site_name" content="株式会社ヤエノワ">
 <meta property="og:locale" content="ja_JP">
@@ -34,8 +36,8 @@
   "@type": "WebPage",
   "@id": "https://yaenowa.co.jp/outlook/academics",
   "url": "https://yaenowa.co.jp/outlook/academics",
-  "name": "母校・学びの構想（検討中） | 株式会社ヤエノワ",
-  "description": "株式会社ヤエノワが検討中の、学びの場との接点づくりの構想。代表の母校である大阪工業大学 情報科学部をはじめ、実務で培った要件定義・設計や生成AI活用の知見を学びの場に返せないか——検討の現在地をまとめたページです。",
+  "name": "学びの記録と構想 | 株式会社ヤエノワ",
+  "description": "株式会社ヤエノワ代表の学びの記録（GX・生成AIなど）と、学びの場に実務の知を返す構想のページ。記録は継続更新中、構想は検討段階。",
   "inLanguage": "ja",
   "datePublished": "2026-07-26",
   "dateModified": "2026-07-29",
@@ -58,7 +60,7 @@
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
     { "@type": "ListItem", "position": 2, "name": "今後の展望", "item": "https://yaenowa.co.jp/outlook/" },
-    { "@type": "ListItem", "position": 3, "name": "母校・学びの構想", "item": "https://yaenowa.co.jp/outlook/academics" }
+    { "@type": "ListItem", "position": 3, "name": "学びの記録と構想", "item": "https://yaenowa.co.jp/outlook/academics" }
   ]
 }
 </script>
@@ -298,30 +300,21 @@
 
 <!-- CONTENT -->
 <main class="concept">
-  <p class="crumbs"><a href="/outlook/">今後の展望</a> › 母校・学びの構想</p>
+  <p class="crumbs"><a href="/outlook/">今後の展望</a> › 学びの記録と構想</p>
   <p class="concept-label">Academics Concept</p>
-  <h1 class="concept-title">学びの場に、<br>実務の知を返す。</h1>
+  <h1 class="concept-title">学び続け、いつか<br>学びの場に返す。</h1>
   <div class="divider"></div>
 
-  <span class="concept-status">構想段階の企画案</span>
+  <span class="concept-status">記録は継続更新中 ／ 構想は検討段階</span>
   <p class="concept-note">
-    ※ 本ページは検討中の企画案をまとめたものであり、現在提供中のサービスを紹介するものではありません。内容は代表個人の構想であり、大学・学部や出身校（高校）との公式な連携や合意に基づくものではありません。検討の経緯は<a href="/outlook/" class="text-link">今後の展望</a>に日付つきで記録しています。
+    ※ 「学びの記録」は事実の記録、「考えていること」は検討中の構想であり、現在提供中のサービスを紹介するものではありません。内容は代表個人の記録・構想であり、大学・学部や出身校（高校）との公式な連携や合意に基づくものではありません。検討の経緯は<a href="/outlook/" class="text-link">今後の展望</a>にも日付つきで記録しています。
   </p>
 
   <div class="concept-section">
     <h2>この軸について</h2>
     <p>
-      代表の母校は、大阪工業大学 情報科学部です。情報の世界に入る入口をくれた場所であり、キャンパスのあった大阪・枚方は学生時代を過ごした土地でもあります。さかのぼれば和歌山県立海南高校の出身で、<a href="/outlook/local" class="text-link">地域の構想</a>とこの学びの軸は、根のところでつながっています。実務の世界で要件定義・設計を重ね、生成AIの活用や技術コミュニティの運営に携わるなかで、この経験を学びの場に返せないか、と考えるようになりました。
+      この軸の中心は「学び続けること」です。新しい領域を学んだら、その記録をこのページに日付つきで残していきます。あわせて、その学びをいつか学びの場に返せないか、という構想も育てています。代表の母校は大阪工業大学 情報科学部──情報の世界に入る入口をくれた場所で、キャンパスのあった大阪・枚方は学生時代を過ごした土地です。さかのぼれば和歌山県立海南高校の出身で、<a href="/outlook/local" class="text-link">地域の構想</a>とこの軸は根のところでつながっています。
     </p>
-  </div>
-
-  <div class="concept-section">
-    <h2>考えていること（すべて検討中）</h2>
-    <ul>
-      <li>実務家としての経験──上流工程の仕事、生成AIの実務活用──を学生に伝える機会づくり</li>
-      <li>技術コミュニティの共同主催で得た「場づくり」の経験を、学びの場に接続すること</li>
-      <li>体制が整った先には、学生との共同の取り組みも──これはまだ遠い構想です</li>
-    </ul>
   </div>
 
   <div class="concept-section">
@@ -352,6 +345,18 @@
       <li>合格し、保有資格として<a href="https://wallet.openbadge.net/public/credential/82ff49a7-8a5c-8ac3-8f28-019f6dd068af" target="_blank" rel="noopener" class="text-link">オープンバッジ</a>を公開している（発行日 2026年7月17日）</li>
       <li>「使えること」と「説明できること」は別の力で、試験勉強は後者を鍛える──という実感を得た。学びの場に知見を返すなら、どちらも要る</li>
     </ul>
+  </div>
+
+  <div class="concept-section">
+    <h2>考えていること（すべて検討中）</h2>
+    <ul>
+      <li>実務家としての経験──上流工程の仕事、生成AIの実務活用──を学生に伝える機会づくり</li>
+      <li>技術コミュニティの共同主催で得た「場づくり」の経験を、学びの場に接続すること</li>
+      <li>体制が整った先には、学生との共同の取り組みも──これはまだ遠い構想です</li>
+    </ul>
+    <p style="margin-top:1rem;">
+      学びの記録が蓄積した先で、勉強会や研修のような形に育てられないか──サービスに結びつく出口も、遠い検討課題として意識しています。
+    </p>
   </div>
 
   <div class="concept-section">
