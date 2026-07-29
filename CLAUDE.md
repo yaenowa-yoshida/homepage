@@ -65,6 +65,18 @@
 - セクション/ページを増やしたら `sitemap.xml` と必要に応じてナビ・FAQ構造化データを更新。
 - 構造化データの可視性: FAQ等は**表示されている内容と構造化データを一致**させる（Googleポリシー）。
 - アクセシビリティ: 装飾要素は `aria-hidden`、`prefers-reduced-motion` を尊重。
+- **outlook 配下の noindex 段階解除方針**（2026-07 決定。現状は全ページ noindex だが、
+  AI検索には robots.txt / llms.txt で開いている。「実態が先、公開はそれに追いつく」が原則）:
+  - **フェーズ1**: gx-pipeline-demo の原単位が公的DBの実数値に置き換わったら（概算が参考値から
+    一段上がったら）、**事実・ツール系ページ**（gx-pipeline-demo、academics の学びの記録、
+    gx-decokatsu）の noindex を解除して sitemap に追加する。解除開始前に
+    Google Search Console を登録し、効果測定できる状態にする
+  - **フェーズ2**: サービス化を決めたテーマは、構想ページ（gx-pipeline 等）を
+    正式ページに昇格させて index する（各ページ運用メモの見直し手順に従う）
+  - **ジャーナル（/outlook/ 本体）と未成熟の構想ページ**（local / sports 等）は
+    当面 noindex 維持。柔らかい思考置き場を検索から守る弁のため
+  - 解除時の作業: `meta robots` 変更 → sitemap 追加（lastmod 同期）→ 検索流入者が
+    文脈なしで読む前提で文言を再点検 → content-legal-review 通過後にマージ
 
 ## 既知の未対応事項（TODO）
 
@@ -97,21 +109,23 @@
     検討テーマが変わったら llms.txt の「今後の展望」セクションも同期する
   - **outlook の階層モデル**: 基本形は `outlook/`（ジャーナル＋テーマ一覧）→ `/outlook/テーマ`
     （ハブ）→ `/outlook/テーマ-○○`（企画案・記録）→ そのデモ、の**最大4階層**。
-    GX（gx → gx-pipeline → gx-demo）が参照実装。各テーマは**サービスに結びつく出口
-    （プロトタイプ・デモ・商品化の種）を意識して育てる**。単一ページのテーマ
+    GX（gx → gx-pipeline → gx-pipeline-demo）が参照実装。各テーマは**サービスに結びつく出口
+    （プロトタイプ・デモ・商品化の種）を意識して育てる**。**デモページの命名は「親スラッグ-demo」**
+    （例: gx-pipeline の子デモ → `gx-pipeline-demo`）。旧URL `/outlook/gx-demo` は
+    リダイレクトスタブ（`outlook/gx-demo.html`、noindex）なので編集・削除しないこと。単一ページのテーマ
     （local / academics / sports）も、育ったら同じ型でハブ化して子をぶら下げる
   - **outlook 内の構造化**: index は `CollectionPage` ＋ `hasPart`（配下ページ一覧）、
     配下ページは `isPartOf` ＋ `BreadcrumbList` の JSON-LD と、見えるパンくず
     （`.crumbs`）・「← 今後の展望へ」ナビで統一（例外: GX系はハブ `gx` の下に階層化しており、
     gx-pipeline / gx-decokatsu のナビは「← GX構想へ戻る」・isPartOf は gx を、
-    gx-demo のナビは「← 前工程構想へ戻る」・isPartOf は gx-pipeline を指す）
+    gx-pipeline-demo のナビは「← 前工程構想へ戻る」・isPartOf は gx-pipeline を指す）
   - **outlook 内の回遊**: 配下全ページのテーマ間ナビは `outlook/nav.js` が `.crumbs` 直後に
     注入する（JS無効時はパンくず＋ハブ経由が残る）。**テーマページを増やしたら
     3点セットで更新**する: ① `outlook/nav.js` の THEMES、② index の `.topics` 一覧、
     ③ index の JSON-LD hasPart（テーマの子はさらにハブのカードと hasPart も）
 - `outlook/gx.html` … GX構想の**ハブページ**（公開URLは拡張子なしの `/outlook/gx`。
   2026-07-29 にテーマ別ページへ再編）。GX領域の検討テーマをとりまとめ、`hasPart` と
-  テーマカード（`.theme-card`）で配下ページ（gx-pipeline / gx-decokatsu / gx-demo）に
+  テーマカード（`.theme-card`）で配下ページ（gx-pipeline / gx-decokatsu / gx-pipeline-demo）に
   リンクする。**GXの新テーマ・プロトタイプは `/outlook/gx-○○` として増やし、本ハブの
   テーマカードと hasPart・index の topics/hasPart・llms.txt を更新**する。
   ルート直下の `gx.html` は旧URL `/gx` からの meta refresh リダイレクトスタブ（noindex）なので
@@ -127,7 +141,7 @@
   実践の具体的な移動区間・駅名・路線名・利用サービスのブランド名は書かない（プライバシー
   および商標配慮）。実践が進んだら本ページと outlook ジャーナルの両方に追記し、
   dateModified・llms.txt を同期する。
-- `outlook/gx-demo.html` … 排出量ざっくり概算プロトタイプ（公開URLは `/outlook/gx-demo`、
+- `outlook/gx-pipeline-demo.html` … 排出量ざっくり概算プロトタイプ（公開URLは `/outlook/gx-pipeline-demo`、
   noindex、gx-pipeline の子ページ）。
   仕訳CSVをブラウザ内でのみ処理して概算するツール（サーバー送信なし・外部ライブラリなし・
   静的HTML1枚）。**原単位はダミーのサンプル値**（環境省DB実数値の同梱はライセンス未確認のため

@@ -25,7 +25,7 @@
     if (theme.href === '/outlook/') {
       return path === '/outlook/' || path === '/outlook';
     }
-    // テーマ本体・その配下（gx-pipeline / gx-demo 等のハイフン子ページ）を同一テーマ扱いにする
+    // テーマ本体・その配下（gx-pipeline / gx-pipeline-demo 等のハイフン子ページ）を同一テーマ扱いにする
     return path === theme.href || path.indexOf(theme.href + '-') === 0;
   }
 
