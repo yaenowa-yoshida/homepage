@@ -8,7 +8,7 @@
 <!-- outlook共通の回遊ナビ（パンくず直後にテーマ一覧を注入） -->
 <script src="/outlook/nav.js" defer></script>
 <title>これってデコ活？判定（プロトタイプ） | 株式会社ヤエノワ</title>
-<meta name="description" content="行動と「以前はどうしていたか」を選ぶと、その行動が排出削減の方向かどうかの目安を返す判定チェッカー。デコ活実践で得た「置き換えかどうかの線引き」の気づきをツールにした実験プロトタイプです。">
+<meta name="description" content="始めた行動を書くか一覧から選び、「以前はどうしていたか」と合わせると、その行動が排出削減の方向かどうかの目安を返す判定チェッカー。デコ活実践で得た「置き換えかどうかの線引き」の気づきをツールにした実験プロトタイプです。">
 <link rel="canonical" href="https://yaenowa.co.jp/outlook/gx-decokatsu-demo">
 <meta name="robots" content="noindex, follow">
 
@@ -19,7 +19,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="これってデコ活？判定（プロトタイプ） | 株式会社ヤエノワ">
-<meta property="og:description" content="行動と「以前はどうしていたか」から、排出削減の方向かどうかの目安を返す判定チェッカー。実験プロトタイプ。">
+<meta property="og:description" content="始めた行動（自由入力または一覧から選択）と「以前はどうしていたか」から、排出削減の方向かどうかの目安を返す判定チェッカー。実験プロトタイプ。">
 <meta property="og:url" content="https://yaenowa.co.jp/outlook/gx-decokatsu-demo">
 <meta property="og:site_name" content="株式会社ヤエノワ">
 <meta property="og:locale" content="ja_JP">
@@ -37,7 +37,7 @@
   "@id": "https://yaenowa.co.jp/outlook/gx-decokatsu-demo",
   "url": "https://yaenowa.co.jp/outlook/gx-decokatsu-demo",
   "name": "これってデコ活？判定（プロトタイプ） | 株式会社ヤエノワ",
-  "description": "行動と「以前はどうしていたか」から、排出削減の方向かどうかの目安を返す判定チェッカーの実験プロトタイプ。",
+  "description": "始めた行動（自由入力または一覧から選択）と「以前はどうしていたか」から、排出削減の方向かどうかの目安を返す判定チェッカーの実験プロトタイプ。",
   "inLanguage": "ja",
   "datePublished": "2026-07-29",
   "dateModified": "2026-07-29",
@@ -211,6 +211,51 @@
   }
   .checker select:focus { outline: 2px solid var(--accent-gold); }
 
+  .checker input[type="text"] {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--paper-dark);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 0.6rem;
+  }
+  .checker input[type="text"]:focus { outline: 2px solid var(--accent-gold); }
+
+  .checker-hint {
+    font-size: 0.75rem;
+    color: var(--ink-light);
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+  }
+
+  .checker-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-light);
+    margin: 0 0 1.2rem;
+  }
+  .checker-divider::before,
+  .checker-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--paper-dark);
+  }
+
+  .matched-action {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.5rem;
+  }
+  .matched-action:empty { display: none; }
+
   .verdict {
     display: none;
     border-radius: 8px;
@@ -342,11 +387,17 @@
 
   <span class="app-status">プロトタイプ（実験公開）</span>
   <p class="app-note">
-    始めた行動と「以前はどうしていたか」を選ぶと、その行動が排出削減の方向かどうかの<strong>目安</strong>を返します。エコっぽく見える行動でも、何かの「置き換え」でなければ排出は減っていない──<a href="/outlook/gx-decokatsu" class="text-link">デコ活の実践</a>で得たその気づきを、そのまま小さなツールにした実験です。<br>
-    判定は定性的な目安であり、数値の算定は行いません。<strong>選択内容はブラウザの中でのみ処理され、サーバーには一切送信されません。</strong>
+    始めた行動を自分の言葉で書くか一覧から選び、「以前はどうしていたか」と合わせると、その行動が排出削減の方向かどうかの<strong>目安</strong>を返します。エコっぽく見える行動でも、何かの「置き換え」でなければ排出は減っていない──<a href="/outlook/gx-decokatsu" class="text-link">デコ活の実践</a>で得たその気づきを、そのまま小さなツールにした実験です。<br>
+    判定は定性的な目安であり、数値の算定は行いません。<strong>入力・選択した内容はブラウザの中でのみ処理され、サーバーには一切送信されません。</strong>
   </p>
 
   <div class="checker">
+    <label for="action-input">始めた（している）行動を書いてみてください</label>
+    <input type="text" id="action-input" placeholder="例: 自転車で通勤するようにした" autocomplete="off">
+    <p class="checker-hint">言葉から判定表の行動を探します。見つからないときは、下の一覧から選んでください。</p>
+
+    <p class="checker-divider">または一覧から選ぶ</p>
+
     <label for="action-select">始めた（している）行動</label>
     <select id="action-select">
       <option value="">選んでください</option>
@@ -358,6 +409,7 @@
     </select>
 
     <div class="verdict" id="verdict" role="status">
+      <p class="matched-action" id="matched-action"></p>
       <p class="verdict-label" id="verdict-label"></p>
       <p class="verdict-note" id="verdict-note"></p>
     </div>
@@ -408,57 +460,80 @@
     depends: '条件しだいです'
   };
 
+  /* kw: フリー入力から行動を探すための手がかり語。表記ゆれを拾えるよう複数持たせる */
   var ACTIONS = [
-    { label: '【移動】シェアサイクル・自転車で移動した', baselines: [
+    { label: '【移動】シェアサイクル・自転車で移動した',
+      kw: ['自転車', 'じてんしゃ', 'チャリ', 'ちゃり', 'サイクル', 'シェアサイクル', 'サイクリング', 'バイクシェア', 'キックボード', '電動キックボード'],
+      baselines: [
       { label: '車・タクシーで移動していた', v: 'down', note: '自動車の1人あたり排出は大きく、自転車への置き換えは削減が見込めます。' },
       { label: '電車・バスで移動していた', v: 'small', note: '公共交通はもともと1人あたりの排出が小さい乗り物です。削減はゼロではありませんが幅は小さめで、電動モデルでは充電や車両の製造・再配置の分もあります。' },
       { label: '歩いていた', v: 'depends', note: '徒歩はもともと排出がほぼゼロの移動です。非電動の自転車ならほぼ中立、電動モデルでは電力や車両の分だけ増える方向になります。' },
       { label: 'その移動自体が新しく増えた', v: 'up', note: '何かの置き換えでなければ、移動の分の排出は純増です。' }
     ]},
-    { label: '【移動】徒歩・ランニングで移動した', baselines: [
+    { label: '【移動】徒歩・ランニングで移動した',
+      kw: ['歩いて', '歩く', 'あるく', '徒歩', 'ウォーキング', 'ランニング', 'ジョギング', '走って', '走る', 'マラソン'],
+      baselines: [
       { label: '車・タクシーで移動していた', v: 'down', note: '排出の大きい移動から、いちばん小さい移動への置き換えです。' },
       { label: '電車・バスで移動していた', v: 'small', note: '公共交通はもともと排出が小さいため削減幅は小さめですが、方向は削減です。' },
       { label: 'シェアサイクル・自転車で移動していた', v: 'small', note: '自転車も排出は小さい移動ですが、自分の足はさらに小さくなります。' },
       { label: 'もともと歩いていた', v: 'already', note: '元からいちばん排出の小さい移動です。続けることがいちばんの貢献です。' }
     ]},
-    { label: '【食】植物性ミルク（豆乳・オーツミルク等）を選んだ', baselines: [
+    { label: '【食】植物性ミルク（豆乳・オーツミルク等）を選んだ',
+      kw: ['豆乳', 'とうにゅう', 'オーツ', 'オーツミルク', '植物性', 'ソイ', 'アーモンドミルク', 'ライスミルク', '牛乳をやめ'],
+      baselines: [
       { label: '牛乳を飲んでいた', v: 'down', note: '植物性ミルクは生産に伴う温室効果ガスが牛乳より小さいとされています。' },
       { label: '飲む習慣がなかった（新しく飲み始めた）', v: 'up', note: '置き換えではなく追加なので、排出の観点では増える方向です（暮らしとしては良い変化かもしれません）。' },
       { label: 'もともと植物性ミルクだった', v: 'already', note: '排出の小さい選択を続けている状態です。' }
     ]},
-    { label: '【食】食べ残しを出さず食べきった', baselines: [
+    { label: '【食】食べ残しを出さず食べきった',
+      kw: ['食べ残し', '食べきり', '食べ切', '残さ', 'フードロス', '食品ロス', '食品廃棄', 'てまえどり', '手前どり', '手前取り'],
+      baselines: [
       { label: '残してしまうことがあった', v: 'down', note: '食品ロスは生産・輸送・廃棄の排出が無駄になる分です。減らすことは削減の方向に働きます。' },
       { label: 'もともと残さない', v: 'already', note: 'デコ活アクションの「食べ残しゼロ」を元から実践している状態です。' }
     ]},
-    { label: '【食】朝食・間食を新しく食べ始めた', baselines: [
+    { label: '【食】朝食・間食を新しく食べ始めた',
+      kw: ['朝食', '朝ごはん', '朝ご飯', 'あさごはん', 'グラノーラ', 'シリアル', '間食', 'おやつ', '食べ始め', '自炊'],
+      baselines: [
       { label: '何も食べていなかった', v: 'up', note: '健康には良い変化かもしれませんが、何かをエコに置き換えたわけではないので、排出の観点では増える方向です。' },
       { label: '外食・コンビニで済ませていたのを家に切り替えた', v: 'depends', note: '内容によります。移動や包装が減る分は削減方向に働きますが、一概には言えません。' }
     ]},
-    { label: '【買い物】マイバッグ・マイボトルを使った', baselines: [
+    { label: '【買い物】マイバッグ・マイボトルを使った',
+      kw: ['マイバッグ', 'エコバッグ', 'トートバッグ', 'トート', 'マイボトル', '水筒', 'タンブラー', 'レジ袋', 'マイ箸'],
+      baselines: [
       { label: 'レジ袋・ペットボトルを使っていた', v: 'small', note: '1回あたりの削減は小さいものの、繰り返し使うほど効いてきます。バッグやボトル自体の製造分があるため、長く使うことが前提です。' },
       { label: '買っただけであまり使っていない', v: 'up', note: '繰り返し使って初めて削減になります。まず日常で使うところからです。' }
     ]},
-    { label: '【買い物】服・道具を修理して長く使った', baselines: [
+    { label: '【買い物】服・道具を修理して長く使った',
+      kw: ['修理', 'リペア', '直し', '長く使', '使い続け', '古着', 'リユース', 'お下がり', 'メンテナンス', '買い替えをやめ'],
+      baselines: [
       { label: '買い替えるつもりだった', v: 'down', note: '新品の製造に伴う排出を避けられる、わかりやすい置き換えです。' },
       { label: 'もともと長く使う派', v: 'already', note: 'サステナブルな消費を元から実践している状態です。' }
     ]},
-    { label: '【買い物】簡素な包装・詰め替え品を選んだ', baselines: [
+    { label: '【買い物】簡素な包装・詰め替え品を選んだ',
+      kw: ['詰め替え', 'つめかえ', '詰替', '包装', 'パッケージ', '簡易包装', 'ばら売り', '量り売り', '過剰包装'],
+      baselines: [
       { label: '通常の包装の商品を選んでいた', v: 'small', note: '包装の資材と製造の分が減ります。1点あたりは小さくても、日々の選択として積み上がります。' },
       { label: 'もともと詰め替え派', v: 'already', note: '排出の小さい選択を続けている状態です。' }
     ]},
-    { label: '【家】ごみをルールどおり分別した', baselines: [
+    { label: '【家】ごみをルールどおり分別した',
+      kw: ['分別', 'ごみ', 'ゴミ', 'リサイクル', '資源ごみ', '資源ゴミ', '古紙', '段ボール', 'ダンボール', 'ペットボトル回収', '空き缶', 'あき缶', '空きびん', '空きビン'],
+      baselines: [
       { label: '分別が粗いことがあった', v: 'small', note: '分別はリサイクルの前提です。資源の再利用につながり、削減の方向に働きます。' },
       { label: 'もともと分別している', v: 'already', note: '自治体のルールに沿った分別を続けている状態です。' }
     ]},
-    { label: '【家】冷暖房の設定温度を見直した・こまめに消した', baselines: [
+    { label: '【家】冷暖房の設定温度を見直した・こまめに消した',
+      kw: ['冷房', '暖房', '冷暖房', 'エアコン', '設定温度', '節電', '省エネ', '電気を消', 'こまめに', 'クールビズ', 'ウォームビズ', '照明', 'LED'],
+      baselines: [
       { label: '以前より控えめにした', v: 'down', note: '電力の使用量が直接減るため、削減につながります（体調を崩さない範囲で）。' },
       { label: 'もともと意識している', v: 'already', note: '「電気も省エネ」を元から実践している状態です。' }
     ]}
   ];
 
+  var actionInput = document.getElementById('action-input');
   var actionSel = document.getElementById('action-select');
   var baseSel = document.getElementById('baseline-select');
   var verdictBox = document.getElementById('verdict');
+  var matchedAction = document.getElementById('matched-action');
   var verdictLabel = document.getElementById('verdict-label');
   var verdictNote = document.getElementById('verdict-note');
 
@@ -469,30 +544,113 @@
     actionSel.appendChild(opt);
   });
 
-  actionSel.addEventListener('change', function () {
-    baseSel.innerHTML = '';
+  /* 全角英数字を半角に寄せてから小文字化する（「ＬＥＤ」等の表記ゆれ対策） */
+  function normalize(text) {
+    return text.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (ch) {
+      return String.fromCharCode(ch.charCodeAt(0) - 0xFEE0);
+    }).toLowerCase();
+  }
+
+  /* フリー入力から行動を探す。手がかり語を多く含む行動を優先する */
+  function findAction(text) {
+    var q = normalize(text);
+    if (q.length < 2) { return -1; }
+    var best = -1;
+    var bestScore = 0;
+    ACTIONS.forEach(function (a, i) {
+      var score = 0;
+      (a.kw || []).forEach(function (k) {
+        if (q.indexOf(normalize(k)) !== -1) { score += normalize(k).length; }
+      });
+      if (score > bestScore) { bestScore = score; best = i; }
+    });
+    return best;
+  }
+
+  function clearVerdict() {
     verdictBox.className = 'verdict';
-    if (actionSel.value === '') {
+    matchedAction.textContent = '';
+    verdictLabel.textContent = '';
+    verdictNote.textContent = '';
+  }
+
+  function fillBaselines(index) {
+    baseSel.innerHTML = '';
+    if (index < 0) {
       baseSel.disabled = true;
       baseSel.appendChild(new Option('先に行動を選んでください', ''));
       return;
     }
     baseSel.disabled = false;
     baseSel.appendChild(new Option('選んでください', ''));
-    ACTIONS[Number(actionSel.value)].baselines.forEach(function (b, j) {
+    ACTIONS[index].baselines.forEach(function (b, j) {
       baseSel.appendChild(new Option(b.label, String(j)));
     });
+  }
+
+  /* 行動と置き換え元がそろっていれば判定を、行動だけなら次の案内を出す */
+  function render(matchedNote) {
+    if (actionSel.value === '') { clearVerdict(); return; }
+    var action = ACTIONS[Number(actionSel.value)];
+    if (baseSel.value !== '') {
+      var b = action.baselines[Number(baseSel.value)];
+      matchedAction.textContent = matchedNote || action.label;
+      verdictLabel.textContent = VERDICT_LABELS[b.v];
+      verdictNote.textContent = b.note;
+    } else {
+      matchedAction.textContent = matchedNote || action.label;
+      verdictLabel.textContent = '以前はどうしていましたか？';
+      verdictNote.textContent = '下の「以前はどうしていましたか？」を選ぶと判定が出ます。';
+    }
+    verdictBox.className = 'verdict show';
+  }
+
+  /* 入力のたびに探し直す。見つからないときは、そのことを正直に伝える */
+  function handleInput() {
+    var text = actionInput.value.trim();
+    if (text === '') {
+      actionSel.value = '';
+      fillBaselines(-1);
+      clearVerdict();
+      return;
+    }
+    var i = findAction(text);
+    if (i < 0) {
+      actionSel.value = '';
+      fillBaselines(-1);
+      matchedAction.textContent = '';
+      verdictLabel.textContent = 'この行動は、まだ判定表にありません';
+      verdictNote.textContent = '判定表は暮らしの実践にあわせて少しずつ育てているところです。近い行動が一覧にあれば選んでみてください。なお、どの行動でも考え方は同じで、「以前はどうしていたか」と比べて置き換えになっているかどうかが分かれ目になります。';
+      verdictBox.className = 'verdict show';
+      return;
+    }
+    /* マッチ先が変わったときだけ選択肢を作り直す（選択済みの置き換え元を保つ） */
+    if (actionSel.value !== String(i)) {
+      actionSel.value = String(i);
+      fillBaselines(i);
+    }
+    render('判定表の「' + ACTIONS[i].label + '」として扱います（違っていれば下の一覧から選び直してください）');
+  }
+
+  /* 打鍵ごとの再描画を抑える（読み上げの連発と処理の無駄を防ぐ） */
+  var inputTimer = null;
+  actionInput.addEventListener('input', function () {
+    if (inputTimer) { clearTimeout(inputTimer); }
+    inputTimer = setTimeout(handleInput, 250);
+  });
+
+  actionSel.addEventListener('change', function () {
+    actionInput.value = '';
+    clearVerdict();
+    if (actionSel.value === '') {
+      fillBaselines(-1);
+      return;
+    }
+    fillBaselines(Number(actionSel.value));
   });
 
   baseSel.addEventListener('change', function () {
-    if (actionSel.value === '' || baseSel.value === '') {
-      verdictBox.className = 'verdict';
-      return;
-    }
-    var b = ACTIONS[Number(actionSel.value)].baselines[Number(baseSel.value)];
-    verdictLabel.textContent = VERDICT_LABELS[b.v];
-    verdictNote.textContent = b.note;
-    verdictBox.className = 'verdict show';
+    render(null);
   });
 })();
 </script>
