@@ -19,7 +19,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="これってデコ活？判定（プロトタイプ） | 株式会社ヤエノワ">
-<meta property="og:description" content="行動と「以前はどうしていたか」から、排出削減の方向かどうかの目安を返す判定チェッカー。実験プロトタイプ。">
+<meta property="og:description" content="始めた行動（自由入力または一覧から選択）と「以前はどうしていたか」から、排出削減の方向かどうかの目安を返す判定チェッカー。実験プロトタイプ。">
 <meta property="og:url" content="https://yaenowa.co.jp/outlook/gx-decokatsu-demo">
 <meta property="og:site_name" content="株式会社ヤエノワ">
 <meta property="og:locale" content="ja_JP">
@@ -610,7 +610,7 @@
       actionSel.value = String(i);
       fillBaselines(i);
     }
-    matchedAction.textContent = '判定表の「' + ACTIONS[i].label + '」として扱います';
+    matchedAction.textContent = '判定表の「' + ACTIONS[i].label + '」として扱います（違っていれば下の一覧から選び直してください）';
     verdictLabel.textContent = '以前はどうしていましたか？';
     verdictNote.textContent = '下の「以前はどうしていましたか？」を選ぶと判定が出ます。';
     verdictBox.className = 'verdict show';
