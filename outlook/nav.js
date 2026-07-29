@@ -1,5 +1,6 @@
 /* outlook/nav.js — 今後の展望（/outlook/）配下の共通回遊ナビ
    各ページのパンくず（.crumbs）の直後に、テーマ一覧のミニナビを注入する。
+   見た目は outlook/outlook.css の .outlook-subnav が受け持つ（本ファイルは構造のみ）。
    テーマページを増やしたら THEMES を更新すること（あわせて outlook/index.html の
    .topics 一覧と JSON-LD の hasPart も更新する。CLAUDE.md 参照）。
    JS無効環境ではパンくず＋ハブ経由の回遊がそのまま残る（プログレッシブ・エンハンスメント）。 */
@@ -56,14 +57,6 @@
       box.appendChild(a);
     });
 
-    var style = document.createElement('style');
-    style.textContent =
-      '.outlook-subnav{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.75rem;letter-spacing:.08em;margin:0 0 1.6rem;}' +
-      '.outlook-subnav a{color:var(--ink-light);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px;transition:color .3s;}' +
-      '.outlook-subnav a:hover{color:var(--accent);}' +
-      '.outlook-subnav a.current{color:var(--accent-gold);border-bottom-color:var(--accent-gold);}' +
-      '@media (prefers-reduced-motion: reduce){.outlook-subnav a{transition:none;}}';
-    document.head.appendChild(style);
 
     anchor.insertAdjacentElement(before ? 'beforebegin' : 'afterend', box);
   }
