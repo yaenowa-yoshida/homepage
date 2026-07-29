@@ -30,7 +30,13 @@
   }
 
   function init() {
+    // パンくずのないページ（ジャーナル index）はページラベルを目印にその直前へ挿入する
     var anchor = document.querySelector('.crumbs');
+    var before = false;
+    if (!anchor) {
+      anchor = document.querySelector('.journal-label');
+      before = true;
+    }
     if (!anchor || document.querySelector('.outlook-subnav')) { return; }
 
     var path = currentPath();
@@ -59,7 +65,7 @@
       '@media (prefers-reduced-motion: reduce){.outlook-subnav a{transition:none;}}';
     document.head.appendChild(style);
 
-    anchor.insertAdjacentElement('afterend', box);
+    anchor.insertAdjacentElement(before ? 'beforebegin' : 'afterend', box);
   }
 
   if (document.readyState === 'loading') {
