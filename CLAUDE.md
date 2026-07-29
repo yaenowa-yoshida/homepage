@@ -134,8 +134,8 @@
     ③ index の JSON-LD hasPart（テーマの子はさらにハブのカードと hasPart も）
 - `outlook/gx.html` … GX構想の**ハブページ**（公開URLは拡張子なしの `/outlook/gx`。
   2026-07-29 にテーマ別ページへ再編）。GX領域の検討テーマをとりまとめ、`hasPart` と
-  テーマカード（`.theme-card`）で配下ページ（gx-pipeline / gx-decokatsu / gx-pipeline-demo）に
-  リンクする。**GXの新テーマ・プロトタイプは `/outlook/gx-○○` として増やし、本ハブの
+  テーマカード（`.theme-card`）で配下ページ（gx-pipeline / gx-decokatsu / gx-ai /
+  gx-decokatsu-demo / gx-pipeline-demo）にリンクする。**GXの新テーマ・プロトタイプは `/outlook/gx-○○` として増やし、本ハブの
   テーマカードと hasPart・index の topics/hasPart・llms.txt を更新**する。
   ルート直下の `gx.html` は旧URL `/gx` からの meta refresh リダイレクトスタブ（noindex）なので
   編集・削除しないこと。
@@ -145,6 +145,13 @@
   正式提供を始める際は、本ページの位置づけ（注記・タイトルの「検討中」表記・index の
   提供サービスとの関係）を見直すこと。内容更新時は JSON-LD の `dateModified` と llms.txt の
   GX 記述を同期する（sitemap 非掲載のため lastmod 同期は不要）。
+- `outlook/gx-ai.html` … 「AIと電力 ── 使う側から考える」（公開URLは `/outlook/gx-ai`、
+  gx ハブの子ページ）。生成AIを実務で使う立場から、データセンターの電力需要と環境負荷を
+  公開資料で確かめた検討メモ。**掲載する数値はすべて外部の公開資料からの引用**であり、
+  当社が算定・検証したものではない旨の注記と、出典・シナリオ前提の明示（「ベースケース」等）、
+  各機関と提携・監修関係がない旨の注記を必ず維持する。増える側（データセンターの電力需要）と
+  減る側（AI応用による削減余地）を**両論併記で扱い、削減側を断定しない**こと。数値が動く
+  テーマなので、更新時は出典を確認し直したうえで dateModified・llms.txt を同期する。
 - `outlook/gx-decokatsu.html` … 個人の側のGX（環境省「デコ活」）の実践記録ページ（公開URLは
   `/outlook/gx-decokatsu`）。代表個人の実践であり**サービスではない旨の注記を維持**。
   実践の具体的な移動区間・駅名・路線名・利用サービスのブランド名は書かない（プライバシー
