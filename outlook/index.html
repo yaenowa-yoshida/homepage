@@ -45,6 +45,7 @@
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx", "name": "GX構想（検討中）" },
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx-pipeline", "name": "排出量算定の前工程構想（検討中）" },
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx-decokatsu", "name": "個人の側のGX ── デコ活の実践" },
+    { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx-ai", "name": "AIと電力（検討中）" },
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx-decokatsu-demo", "name": "これってデコ活？判定（プロトタイプ）" },
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx-pipeline-demo", "name": "排出量ざっくり概算（プロトタイプ）" },
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/local", "name": "地域構想（検討中）" },
@@ -375,7 +376,7 @@
   <div class="topics" role="navigation" aria-label="テーマ別の構想ページ">
     <p class="topics-title">テーマ別の構想ページ</p>
     <ul>
-      <li><a href="/outlook/gx" class="text-link">GX構想</a> ── <a href="/outlook/gx-pipeline" class="text-link">排出量算定の前工程</a>と<a href="/outlook/gx-decokatsu" class="text-link">個人のデコ活実践</a>（<a href="/outlook/gx-pipeline-demo" class="text-link">概算</a>・<a href="/outlook/gx-decokatsu-demo" class="text-link">デコ活判定</a>のプロトタイプを実験公開中）</li>
+      <li><a href="/outlook/gx" class="text-link">GX構想</a> ── <a href="/outlook/gx-pipeline" class="text-link">排出量算定の前工程</a>、<a href="/outlook/gx-decokatsu" class="text-link">個人のデコ活実践</a>、<a href="/outlook/gx-ai" class="text-link">AIと電力</a>（<a href="/outlook/gx-pipeline-demo" class="text-link">概算</a>・<a href="/outlook/gx-decokatsu-demo" class="text-link">デコ活判定</a>のプロトタイプを実験公開中）</li>
       <li><a href="/outlook/local" class="text-link">地域</a> ── 縁のある土地と、ITの仕事をつなぐ</li>
       <li><a href="/outlook/academics" class="text-link">学び</a> ── 学びの記録（継続更新中）と、学びの場に実務の知を返す構想</li>
       <li><a href="/outlook/sports" class="text-link">スポーツ</a> ── スポーツの現場に、設計の力を</li>
@@ -422,6 +423,42 @@
           </p>
           <p>
             事業になるかはまだ分からない。ただ、事業者の算定も個人の暮らしも「測る・整理する・続ける」でつながっている。その地図を、今度は自分の暮らしで確かめてみる。
+          </p>
+        </div>
+      </details>
+    </article>
+
+    <article class="entry">
+      <time datetime="2026-07-29">2026年7月29日</time>
+      <details class="entry-details">
+        <summary>
+          <h2>AIの電力の話を、避けずに書いておく</h2>
+          <span class="entry-toggle" aria-hidden="true"></span>
+        </summary>
+        <div class="entry-body">
+          <p>
+            暮らしの棚卸しをしていて、ふと足元に目が向いた。当社の実務でいちばん頼っている道具は生成AIだ。その電力は自分の部屋のコンセントではなく、どこかのデータセンターで使われている。GXを次の軸の候補に掲げておきながら、そこだけ見ないのは筋が通らない。
+          </p>
+          <p>
+            公開情報を確かめた。国際エネルギー機関（IEA）が2025年4月に出した特別報告書『Energy and AI』によると、世界のデータセンターの電力消費は2024年で約415TWh、世界全体の約1.5%。これが2030年には約945TWh、3%弱まで倍増する見通しだという（ベースケース）。年率にすると約15%で、他部門を合計した電力消費の伸びの4倍を超える速さ。牽引しているのはAI向けの高性能サーバーで、こちらは年率約30%と見込まれている。
+          </p>
+          <p>
+            数字を眺めて最初に思ったのは、同じ資料から正反対の語り方が両方切り出せてしまう、ということだった。「倍増する」と書けば脅威の話になり、「2030年でも3%弱」と書けば些細な話になる。どちらも嘘ではない。だとすれば、出典とシナリオの前提を付けずにこの話をしない──それがまず自分に課すべき作法だと思う。
+          </p>
+          <p>
+            日本は事情が少し違うことも分かった。同報告書では、先進国ほど電力需要の伸びに占めるデータセンターの割合が高く、日本については2030年までの需要増の過半を占めると見込まれている。国内では省エネ法のベンチマーク制度でデータセンター業にPUE（施設全体の消費電力をIT機器の消費電力で割った指標）の目標が置かれ、新設施設にはより厳しい基準が段階的に示されている（制度の詳細は改定が続いているので、判断に使うときは一次情報にあたる前提だ）。ここでも「測って、報告して、基準に照らす」から始まっていた。先日の概算実験でたどった順番と同じだ。対象が会社の排出でも施設の電力効率でも、最初に立ちはだかるのは「そのデータはどこにあるのか」になる。
+          </p>
+          <p>
+            減らす側の話もある。同じ報告書は、既存のAI応用が各分野に広く普及した場合、2035年に14億トン規模のCO2削減につながりうると試算している。データセンターの電力由来排出を現在の約1.8億トンから2035年に3億トン規模と見込んでいることと並べれば、削減側の桁のほうが大きい。ただし同じ資料に、その普及を確実にする勢いは現時点では存在しない、とも書かれている。増える分はインフラ投資として着実に積み上がり、減る分は「普及すれば」という仮定の上にある。この非対称性は、都合よく読み飛ばしたくないところだ。
+          </p>
+          <p>
+            ここでも、デコ活の棚卸しで身についた線引きが効いた。エコっぽく見えることと、実際に排出が減ることは別物だという感覚だ。AIを使って何かが速くなったとして、それは移動や手戻りを実際に置き換えたのか、それとも処理の量が増えただけなのか。置き換え元を問わない削減の話は、暮らしでも事業でも成立しない。
+          </p>
+          <p>
+            自社に引き寄せると、宿題がひとつ増えた。AIやクラウドの利用は、当社にとってはScope3──買っているもの由来の排出になる。すると仕訳ベースの概算では──サンプル原単位のプロトタイプでの話だが──「支払額×原単位」という形でしか乗ってこない。実際に使った計算資源とも、その電源構成とも結びつかない。金額が増えれば排出も増えたことになり、効率が改善しても数字は動かない。粗い概算の割り切りとしては妥当でも、AI利用が費用の中で存在感を増していくなら、このままでいいのかは考えておきたい。
+          </p>
+          <p>
+            誤解のないように書いておくと、「使うのをやめる」を答えにするつもりはない。上流工程の検討の速度と質に効いている実感があるからだ。減らす余地があるとすれば、無駄な試行錯誤の回数のほうだろう──もっともこれは仮説で、まだ検証していない。分かったことと分からなかったことを並べて、テーマページ「<a href="/outlook/gx-ai" class="text-link">AIと電力 ── 使う側から考える</a>」に切り出した。都合の悪い側の話ほど、日付をつけて残しておきたい。
           </p>
         </div>
       </details>

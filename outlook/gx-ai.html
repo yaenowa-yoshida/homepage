@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<!-- outlook共通の回遊ナビ（パンくず直後にテーマ一覧を注入） -->
+<script src="/outlook/nav.js" defer></script>
+<title>AIと電力（検討中） | 株式会社ヤエノワ</title>
+<meta name="description" content="株式会社ヤエノワが検討中のテーマ。生成AIを実務で使う立場から、データセンターの電力需要と環境負荷をどう考えるか——公開情報で確かめた現在地と、決めていない論点をまとめたページです。">
+<link rel="canonical" href="https://yaenowa.co.jp/outlook/gx-ai">
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="AIと電力（検討中） | 株式会社ヤエノワ">
+<meta property="og:description" content="生成AIを実務で使う立場から、データセンターの電力需要と環境負荷をどう考えるか。検討中のテーマをまとめたページです。">
+<meta property="og:url" content="https://yaenowa.co.jp/outlook/gx-ai">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+
+<!-- 構造化データ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://yaenowa.co.jp/outlook/gx-ai",
+  "url": "https://yaenowa.co.jp/outlook/gx-ai",
+  "name": "AIと電力（検討中） | 株式会社ヤエノワ",
+  "description": "株式会社ヤエノワが検討中のテーマ。生成AIを実務で使う立場から、データセンターの電力需要と環境負荷をどう考えるか。",
+  "inLanguage": "ja",
+  "datePublished": "2026-07-29",
+  "dateModified": "2026-07-29",
+  "isPartOf": {
+    "@type": "CollectionPage",
+    "@id": "https://yaenowa.co.jp/outlook/gx",
+    "name": "GX構想"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "株式会社ヤエノワ",
+    "url": "https://yaenowa.co.jp/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+    { "@type": "ListItem", "position": 2, "name": "今後の展望", "item": "https://yaenowa.co.jp/outlook/" },
+    { "@type": "ListItem", "position": 3, "name": "GX構想", "item": "https://yaenowa.co.jp/outlook/gx" },
+    { "@type": "ListItem", "position": 4, "name": "AIと電力", "item": "https://yaenowa.co.jp/outlook/gx-ai" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+<!-- 今後の展望セクション共通の拡張スタイル（モダンCSSは @supports でガード） -->
+<link rel="stylesheet" href="/outlook/outlook.css">
+
+<style>
+  /* 本ページ固有スタイルのみ。色・ダークモード・リセット等の共通分は theme.css 側 */
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--paper-dark);
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-home {
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-home:hover { color: var(--accent); }
+
+  /* ── CONTENT ── */
+  .concept {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 9rem 1.5rem 5rem;
+  }
+
+  .crumbs {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-light);
+    margin-bottom: 1.2rem;
+  }
+  .crumbs a { color: var(--ink-light); text-decoration: none; }
+  .crumbs a:hover { color: var(--accent); }
+
+  .concept-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .concept-title {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+    text-wrap: balance;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent-gold);
+    margin: 1.2rem 0 2.5rem;
+  }
+
+  .concept-status {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--accent-gold);
+    border: 1px solid var(--accent-gold);
+    border-radius: 999px;
+    padding: 0.15rem 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .concept-note {
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+    margin-bottom: 3rem;
+  }
+
+  .concept-section { margin-bottom: 3rem; }
+
+  .concept-section h2 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+    padding-left: 0.8rem;
+    border-left: 2px solid var(--accent-gold);
+    margin-bottom: 1rem;
+  }
+
+  .concept-section p {
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 2.0;
+    letter-spacing: 0.03em;
+    margin-bottom: 1rem;
+  }
+  .concept-section p:last-child { margin-bottom: 0; }
+
+  .concept-section ul {
+    list-style: none;
+    margin: 0.6rem 0 0;
+    padding: 0;
+  }
+  .concept-section li {
+    position: relative;
+    padding-left: 1.2rem;
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 2.0;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.6rem;
+  }
+  .concept-section li::before {
+    content: "・";
+    position: absolute;
+    left: 0;
+    color: var(--accent-gold);
+  }
+
+  .concept-meta {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 0.5px solid var(--paper-dark);
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    line-height: 2.0;
+  }
+  .concept-meta a { color: var(--accent-gold); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface-inverse);
+    color: rgba(247,244,238,0.5);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--inverse-ink);
+  }
+  .footer-link {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: rgba(247,244,238,0.7);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-link:hover { color: var(--inverse-ink); }
+  .footer-copy {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <div class="nav-right">
+    <a href="/outlook/gx" class="nav-home">← GX構想へ戻る</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<main class="concept">
+  <p class="crumbs"><a href="/outlook/">今後の展望</a> › <a href="/outlook/gx">GX構想</a> › AIと電力</p>
+  <p class="concept-label">GX Concept</p>
+  <h1 class="concept-title">AIと電力 ──<br>使う側から考える。</h1>
+  <div class="divider"></div>
+
+  <span class="concept-status">構想段階の検討テーマ</span>
+  <p class="concept-note">
+    ※ 本ページは検討中のテーマをまとめたものであり、現在提供中のサービスを紹介するものではありません。掲載している数値は外部の公開資料からの引用で、当社が算定・検証したものではありません。検討の経緯は<a href="/outlook/" class="text-link">今後の展望</a>に日付つきで記録しています。
+  </p>
+
+  <div class="concept-section">
+    <h2>このテーマについて</h2>
+    <p>
+      当社は生成AIを要件定義・設計の実務に取り入れています。同時に、GX（グリーントランスフォーメーション）を次の事業の軸の候補として検討しています。この二つを並べると、避けて通れない問いが立ち上がります。自分がいちばん頼っている道具は、その足元でどれだけの電力を使っているのか。
+    </p>
+    <p>
+      排出を減らす仕組みを考えながら、自分の使う道具の負荷には触れない──それでは筋が通りません。都合の悪い側も含めて公開情報を確かめ、いま何が言えて何が言えないのかを書き残しておくためのページです。結論は出ていません。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>まず、数字を確かめた</h2>
+    <p>
+      国際エネルギー機関（IEA）が2025年4月に公表した特別報告書『Energy and AI』が、現時点でもっとも参照しやすい公開資料でした。同報告書の見通し（ベースケース）は次のように整理されています。
+    </p>
+    <ul>
+      <li>世界のデータセンターの電力消費は2024年時点で約415TWh。世界全体の電力消費のおよそ1.5%にあたる</li>
+      <li>これが2030年には約945TWh、全体の3%弱まで倍増する見通し。年率にすると約15%の伸びで、他部門を合計した電力消費の伸びの4倍を超える速さ</li>
+      <li>伸びを牽引するのはAI向けの高性能サーバーで、その電力消費は年率約30%で伸びると見込まれる（従来型サーバーは約9%）</li>
+      <li>2024年の消費の内訳は米国が約45%、中国が約25%、欧州が約15%</li>
+    </ul>
+    <p style="margin-top:1rem;">
+      倍増という数字は重い。一方で、2030年時点でも世界の電力消費に占める割合は3%弱にとどまる、というのも同じ報告書の指摘です。「AIが電力を食い尽くす」という語り方も、「全体から見れば誤差だ」という語り方も、どちらも同じ資料から切り出せてしまう。だからこそ、出典と前提（どのシナリオの数字か）を付けずに語らないことが、まず自分に課すべき作法だと考えています。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>日本の事情 ── 伸びしろの多くをデータセンターが占める</h2>
+    <p>
+      同報告書では、先進国ほど電力需要の伸びに占めるデータセンターの割合が高くなるとされ、日本については2030年までの需要増の過半をデータセンターが占めると見込まれています。同報告書が示す世界平均（電力需要の伸びのうちデータセンター分は1割程度）とは、意味合いがかなり違う。国内の議論では、電源をどう確保するか、立地をどこに置くかが論点になりつつあります。
+    </p>
+    <p>
+      効率側の制度も動いています。省エネ法（エネルギー使用の合理化及び非化石エネルギーへの転換等に関する法律）のベンチマーク制度では、データセンター業に対してPUE（施設全体の消費電力をIT機器の消費電力で割った指標）の目標が設定され、新設施設にはより厳しい基準が段階的に示されています。制度の詳細は改定が続いているため、判断に使う際は一次情報を確認する前提です。
+    </p>
+    <p>
+      ここで気づいたことがあります。この制度もまた「測って、報告して、基準に照らす」という順番でできている。<a href="/outlook/gx-pipeline" class="text-link">排出量算定の前工程構想</a>で扱っている構造と同じです。対象が会社の排出でも施設の電力効率でも、最初に立ちはだかるのは「そのデータは、どこに、どんな形であるのか」という問いになる。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>もう一方の側面 ── 減らす側は「条件付き」</h2>
+    <p>
+      AIは電力を使う側であると同時に、排出を減らす道具にもなりうる、という議論があります。IEAも、既存のAI応用が各分野に広く普及した場合、2035年に14億トン規模のCO2削減につながりうると試算しています。同報告書がデータセンターの電力由来排出を現在の約1.8億トンから2035年に3億トン規模（ベースケース）と見込んでいることと並べれば、削減側の桁のほうが大きい。
+    </p>
+    <p>
+      ただし同じ報告書は、そうした普及を確実にする勢いは現時点では存在せず、条件が整わなければ効果は限定的にとどまりうる、とも述べています。増える分はインフラ投資として着実に積み上がるのに対し、減る分は「普及すれば」という仮定の上にある。この非対称性は、都合よく読み飛ばしたくないところです。
+    </p>
+    <p>
+      <a href="/outlook/gx-decokatsu" class="text-link">個人のデコ活の実践</a>で得た感覚が、ここでも効きます。エコっぽく見えることと、実際に排出が減ることは別物だ、という線引きです。AIを使って何かが速くなったとして、それは移動や手戻りを実際に置き換えたのか、それとも単に処理の量が増えただけなのか。置き換え元を問わない削減の話は、個人の暮らしでも事業でも成立しません。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>一人法人の実務に引き寄せると</h2>
+    <p>
+      <a href="/outlook/gx-pipeline-demo" class="text-link">自社の仕訳データで排出量を概算してみた</a>ときに見えてきたのは、当社の排出はほぼすべてScope3──買っているもの由来──になりそうだ、ということでした（同プロトタイプの原単位はサンプル値であり、正式な算定ではなく構成の見当をつけるための概算です）。AIやクラウドの利用も例外ではありません。電力を使っているのは自社の設備ではなく、事業者側のデータセンターです。
+    </p>
+    <p>
+      すると、仕訳ベースの概算では「支払額 × 原単位」という形でしか乗ってきません。実際に使った計算資源や、その電源構成とは結びつかない。金額が増えれば排出も増えたことになり、効率が改善しても数字は動かない。粗い概算の割り切りとしては妥当でも、AI利用が費用の中で存在感を増していくなら、この扱いのままでいいのかは考えておきたい論点です。前工程構想の宿題がひとつ増えた、という受け止めをしています。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>検討中の論点 ── 決めていないことも書いておく</h2>
+    <ul>
+      <li>小さな会社が自社のAI利用に伴う排出を実務的に測れるかは、現時点では見通せていない。事業者ごとに開示の粒度が異なり、推計の幅も大きい。測れないものを数字で語らない、という線は守りたい</li>
+      <li>「使うのをやめる」は答えにしないつもりでいる。上流工程の検討の速度と質に効いている実感があるため。減らす余地があるとすれば、無駄な試行錯誤の回数のほう──ただしこれは仮説で、検証していない</li>
+      <li>AI利用分をScope3のどのカテゴリでどう扱うのが妥当か。金額按分以外の考え方が実務的に成立するのかを調べたい</li>
+      <li>このテーマを事業に結びつけるかは決めていない。まず自分の足元を説明できるようにするのが先だと考えている</li>
+    </ul>
+  </div>
+
+  <div class="concept-section">
+    <h2>これから取り組むこと</h2>
+    <p>
+      一次情報を読み続けること、自社の概算にクラウド・AI利用の費目がどう乗るかを実際に確かめること、そして分かったことも分からなかったことも<a href="/outlook/" class="text-link">今後の展望</a>に日付つきで書き残すこと。この三つから始めます。数字が動くテーマなので、本ページの記述も更新していきます。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>参考資料</h2>
+    <p>
+      本ページの記述の根拠としている公開資料です（いずれも外部サイト）。数値の引用はいずれも各資料の見通し・試算であり、前提となるシナリオによって変わります。本ページは各機関・団体と提携し、またはその監修・確認を受けたものではありません。記載の名称は各権利者に帰属します。判断に用いる際は必ず一次情報をご確認ください。
+    </p>
+    <ul>
+      <li><a href="https://www.iea.org/reports/energy-and-ai" target="_blank" rel="noopener" class="text-link">IEA『Energy and AI』（2025年4月）</a> ── データセンターの電力消費見通し、AIによる排出削減の可能性と条件</li>
+      <li><a href="https://www.enecho.meti.go.jp/about/special/johoteikyo/data_center2026.html" target="_blank" rel="noopener" class="text-link">資源エネルギー庁 スペシャルコンテンツ（データセンターの省エネ）</a> ── 国内のデータセンター電力需要と省エネ制度の解説</li>
+      <li><a href="https://www.jdcc.or.jp/pue_guide/" target="_blank" rel="noopener" class="text-link">日本データセンター協会 PUEガイドライン／ベンチマーク制度</a> ── PUEの定義と、省エネ法ベンチマーク制度の運用</li>
+    </ul>
+  </div>
+
+  <div class="concept-section">
+    <h2>共創のご縁を探しています</h2>
+    <p>
+      AIの利用と環境負荷の両立を考えている方、社内でこの話題をどう扱うか迷っている方がいらっしゃいましたら、ぜひ<a href="/#contact" class="text-link">お問い合わせ</a>からご連絡ください。答えを持っている立場ではありませんが、一緒に考える相手は探しています。
+    </p>
+  </div>
+
+  <p class="concept-meta">
+    公開日：2026年7月29日 ／ 最終更新：2026年7月29日（内容は検討の進展にあわせて更新します）
+  </p>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/outlook/gx" class="footer-link">GX構想</a>
+  <a href="/outlook/" class="footer-link">今後の展望</a>
+  <a href="/" class="footer-link">ホームへ戻る</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+</body>
+</html>
