@@ -92,7 +92,7 @@
   - 語り口は「検討中・考えている」を保ち、提供中のサービスと誤認される断定表現を避ける
     （ページ冒頭に「検討中であり提供中のサービスではない」旨の注記あり。景表法配慮）
   - 数字や成果が出たテーマは独立ページに切り出す（切り出したら sitemap・ナビを更新）
-  - 追記時は JSON-LD の `dateModified` と sitemap.xml の lastmod を更新し、
+  - 追記時は JSON-LD の `dateModified` を更新し（outlook 配下は sitemap 非掲載のため lastmod 同期は不要）、
     検討テーマが変わったら llms.txt の「今後の展望」セクションも同期する
   - **outlook 内の構造化**: index は `CollectionPage` ＋ `hasPart`（配下ページ一覧）、
     配下ページは `isPartOf` ＋ `BreadcrumbList` の JSON-LD と、見えるパンくず
@@ -105,8 +105,8 @@
   最初の個別テーマページ。**全編「構想段階・検討中」の語り口を厳守**し、ページ冒頭に
   「提供中のサービスではない」旨の注記を置いている。サービスとして正式提供を始める際は、
   本ページの位置づけ（注記・タイトルの「検討中」表記・index の提供サービスとの関係）を
-  見直すこと。内容更新時は JSON-LD の `dateModified`・sitemap の lastmod・llms.txt の
-  GX 記述を同期する。
+  見直すこと。内容更新時は JSON-LD の `dateModified` と llms.txt の GX 記述を同期する
+  （sitemap 非掲載のため lastmod 同期は不要）。
 - `outlook/gx-demo.html` … 排出量ざっくり概算プロトタイプ（公開URLは `/outlook/gx-demo`、noindex）。
   仕訳CSVをブラウザ内でのみ処理して概算するツール（サーバー送信なし・外部ライブラリなし・
   静的HTML1枚）。**原単位はダミーのサンプル値**（環境省DB実数値の同梱はライセンス未確認のため
