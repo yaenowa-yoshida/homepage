@@ -39,11 +39,18 @@
     background-image: linear-gradient(var(--accent-gold), var(--accent-gold));
     background-repeat: no-repeat;
     background-position: 0 100%;
-    background-size: var(--subnav-underline) 1px;
+    /* フォールバック値は必須。@property 非対応ブラウザでは --subnav-underline が
+       未登録のため var() が無効となり、指定がないと background-size が auto に落ちて
+       リンク全体が塗りつぶされてしまう */
+    background-size: var(--subnav-underline, 0%) 1px;
     transition: --subnav-underline 0.35s ease, color 0.3s;
   }
   .outlook-subnav a:hover,
   .outlook-subnav a.current { --subnav-underline: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .outlook-subnav a { transition: none; }
 }
 
 /* ── ページ間のクロスフェード時に、パンくずとサブナビを固定要素として引き継ぐ
