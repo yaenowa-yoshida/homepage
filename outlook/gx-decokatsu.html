@@ -40,7 +40,7 @@
   "description": "環境省の国民運動「デコ活」を代表個人の暮らしで実践する記録。個人の行動変容の実感を事業者向けのGX構想に持ち帰る。",
   "inLanguage": "ja",
   "datePublished": "2026-07-29",
-  "dateModified": "2026-07-29",
+  "dateModified": "2026-07-30",
   "isPartOf": {
     "@type": "CollectionPage",
     "@id": "https://yaenowa.co.jp/outlook/gx",
@@ -75,211 +75,9 @@
 
 <!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
 <link rel="stylesheet" href="/theme.css">
-<!-- 今後の展望セクション共通の拡張スタイル（モダンCSSは @supports でガード） -->
+<!-- 今後の展望セクション共通のスタイル（nav・パンくず・本文・フッターの土台＋モダンCSSの拡張） -->
 <link rel="stylesheet" href="/outlook/outlook.css">
 
-<style>
-  /* 本ページ固有スタイルのみ。色・ダークモード・リセット等の共通分は theme.css 側 */
-
-  html { scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-  }
-
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Noto Sans JP', sans-serif;
-    font-weight: 300;
-    line-height: 1.9;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.2rem 4rem;
-    background: var(--nav-bg);
-    backdrop-filter: blur(8px);
-    border-bottom: 0.5px solid var(--paper-dark);
-  }
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-  }
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'Zen Old Mincho', serif;
-    font-size: 1.15rem;
-    letter-spacing: 0.2em;
-    color: var(--ink);
-    text-decoration: none;
-  }
-  .nav-home {
-    font-size: 0.78rem;
-    letter-spacing: 0.15em;
-    color: var(--ink-mid);
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-  .nav-home:hover { color: var(--accent); }
-
-  /* ── CONTENT ── */
-  .concept {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 9rem 1.5rem 5rem;
-  }
-
-  .crumbs {
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    color: var(--ink-light);
-    margin-bottom: 1.2rem;
-  }
-  .crumbs a { color: var(--ink-light); text-decoration: none; }
-  .crumbs a:hover { color: var(--accent); }
-
-  .concept-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.4em;
-    color: var(--accent-gold);
-    text-transform: uppercase;
-    margin-bottom: 0.8rem;
-  }
-
-  .concept-title {
-    font-family: 'Zen Old Mincho', serif;
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: var(--ink);
-    margin-bottom: 1.2rem;
-    text-wrap: balance;
-  }
-
-  .divider {
-    width: 40px;
-    height: 1px;
-    background: var(--accent-gold);
-    margin: 1.2rem 0 2.5rem;
-  }
-
-  .concept-status {
-    display: inline-block;
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    color: var(--accent-gold);
-    border: 1px solid var(--accent-gold);
-    border-radius: 999px;
-    padding: 0.15rem 0.9rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .concept-note {
-    font-size: 0.8rem;
-    color: var(--ink-light);
-    line-height: 1.9;
-    letter-spacing: 0.03em;
-    margin-bottom: 3rem;
-  }
-
-  .concept-section { margin-bottom: 3rem; }
-
-  .concept-section h2 {
-    font-family: 'Shippori Mincho', serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--ink);
-    letter-spacing: 0.05em;
-    padding-left: 0.8rem;
-    border-left: 2px solid var(--accent-gold);
-    margin-bottom: 1rem;
-  }
-
-  .concept-section p {
-    font-size: 0.9rem;
-    color: var(--ink-mid);
-    line-height: 2.0;
-    letter-spacing: 0.03em;
-    margin-bottom: 1rem;
-  }
-  .concept-section p:last-child { margin-bottom: 0; }
-
-  .concept-section ul {
-    list-style: none;
-    margin: 0.6rem 0 0;
-    padding: 0;
-  }
-  .concept-section li {
-    position: relative;
-    padding-left: 1.2rem;
-    font-size: 0.9rem;
-    color: var(--ink-mid);
-    line-height: 2.0;
-    letter-spacing: 0.03em;
-    margin-bottom: 0.6rem;
-  }
-  .concept-section li::before {
-    content: "・";
-    position: absolute;
-    left: 0;
-    color: var(--accent-gold);
-  }
-
-  .concept-meta {
-    margin-top: 3rem;
-    padding-top: 1.5rem;
-    border-top: 0.5px solid var(--paper-dark);
-    font-size: 0.85rem;
-    color: var(--ink-light);
-    line-height: 2.0;
-  }
-  .concept-meta a { color: var(--accent-gold); }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--surface-inverse);
-    color: rgba(247,244,238,0.5);
-    padding: 3rem 4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .footer-logo {
-    font-family: 'Zen Old Mincho', serif;
-    font-size: 1.1rem;
-    letter-spacing: 0.2em;
-    color: var(--inverse-ink);
-  }
-  .footer-link {
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    color: rgba(247,244,238,0.7);
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-  .footer-link:hover { color: var(--inverse-ink); }
-  .footer-copy {
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-  }
-
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
-    footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
-  }
-</style>
 </head>
 <body>
 
@@ -312,8 +110,15 @@
 
   <span class="concept-status">個人の実践記録</span>
   <p class="concept-note">
-    ※ 本ページは代表個人の暮らしにおける脱炭素アクションの実践記録であり、現在提供中のサービスを紹介するものではありません。経過は<a href="/outlook/" class="text-link">今後の展望</a>にも日付つきで記録しています。
+    ※ 本ページは代表個人の暮らしにおける脱炭素アクションの実践記録であり、現在提供中のサービスを紹介するものではありません。また、環境省その他の機関と提携し、またはその監修・確認を受けたものではありません（「デコ活」等の名称は各権利者に帰属します）。経過は<a href="/outlook/" class="text-link">今後の展望</a>にも日付つきで記録しています。
   </p>
+
+  <div class="concept-section">
+    <h2>このテーマについて</h2>
+    <p>
+      環境省の国民運動「デコ活」を、代表個人の暮らしで実際に試している記録です。一人法人では個人と会社の境目が薄く、暮らしの側で得た実感はそのまま会社側の検討の材料になると考えています。何を試して、何が続き、何が続かなかったのか。事業者向けの<a href="/outlook/gx-pipeline" class="text-link">排出量算定の前工程構想</a>と対になる、個人の側からの検討として続けています。
+    </p>
+  </div>
 
   <div class="concept-section">
     <h2>デコ活とは</h2>
@@ -379,8 +184,15 @@
     </p>
   </div>
 
+  <div class="concept-section">
+    <h2>共創のご縁を探しています</h2>
+    <p>
+      デコ活を暮らしで試している方、同じように個人の側から脱炭素を考えている方がいらっしゃいましたら、ぜひ<a href="/#contact" class="text-link">お問い合わせ</a>からご連絡ください。うまくいかなかった話ほど参考になると思っています（サービスのご案内ではなく、実践の情報交換のお誘いです）。
+    </p>
+  </div>
+
   <p class="concept-meta">
-    公開日：2026年7月29日 ／ 最終更新：2026年7月29日（実践の進展にあわせて更新します）
+    公開日：2026年7月29日 ／ 最終更新：2026年7月30日（章立てを他のテーマページと揃えました。実践の進展にあわせて更新します）
   </p>
 </main>
 

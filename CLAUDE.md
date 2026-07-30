@@ -120,7 +120,14 @@
     gx-pipeline / gx-decokatsu のナビは「← GX構想へ戻る」・isPartOf は gx を、
     gx-pipeline-demo のナビは「← 前工程構想へ戻る」・isPartOf は gx-pipeline を指す）
   - **outlook 内の共通スタイル**: `outlook/outlook.css`（theme.css の後に読み込む）。
-    サブナビの見た目と、本セクション限定のモダンCSS拡張を集約する:
+    **outlook 配下の全ページが theme.css と outlook.css の両方を読み込むこと**（片方だけだと
+    回遊ナビが未装飾で出る）。ページ共通の土台（body・nav・`.crumbs`・`.concept-*`・footer・
+    レスポンシブ／モーション低減のメディアクエリ）は本ファイルにあるので、**新しいページで
+    これらをインラインに書き直さない**（2026-07-30 に各ページの重複インラインCSS
+    約1,700行を集約済み。ページの `<style>` には固有の指定だけを置く）。
+    なお `nav { position: fixed }` も本ファイルにあるため、outlook 配下で新たに `<nav>` 要素を
+    足すと意図せず固定配置になる（nav.js が `div` ＋ `role="navigation"` を使っているのはこのため）。
+    あわせて、サブナビの見た目と、本セクション限定のモダンCSS拡張を集約する:
     `::details-content` ＋ `interpolate-size` によるアコーディオンの高さアニメーション、
     `:has()` による開いているエントリの強調、`animation-timeline: view()` の
     スクロール駆動アニメーション（エントリの立ち上がり・ジャーナル縦線の伸長）、
@@ -129,9 +136,18 @@
     非対応環境では従来表示にフォールバックさせること（内容が見えなくなる実装は禁止）。
     色は theme.css のカスタムプロパティのみ参照する
   - **outlook 内の回遊**: 配下全ページのテーマ間ナビは `outlook/nav.js` が `.crumbs` 直後に
-    注入する（JS無効時はパンくず＋ハブ経由が残る）。見た目は outlook.css 側が持つ。**テーマページを増やしたら
-    3点セットで更新**する: ① `outlook/nav.js` の THEMES、② index の `.topics` 一覧、
-    ③ index の JSON-LD hasPart（テーマの子はさらにハブのカードと hasPart も）
+    注入する（JS無効時はパンくず＋ハブ経由が残る）。見た目は outlook.css 側が持つ。
+    ナビは2段構成で、1段目がテーマ一覧（THEMES）、2段目は `children` を持つテーマの
+    配下にいるときだけ出る兄弟ページ一覧（`.outlook-subnav-child`）。2段目の現在地は
+    最長一致で決まるため、デモページでは親テーマが選択状態になる。**テーマページを増やしたら
+    4点セットで更新**する: ① `outlook/nav.js` の THEMES（ハブ配下なら `children` も）、
+    ② index の `.topics` 一覧、③ index の JSON-LD hasPart、
+    ④ ハブのテーマカードと hasPart（ハブ配下のページの場合）
+  - **テーマページの章立て**: 「**このテーマについて**」（そのページが何かを一段落で。必須）→
+    テーマ固有の本編 →「これから取り組むこと」「現在地」など現状の位置づけ →
+    「**参考資料**」（出典がある場合のみ）→「**共創のご縁を探しています**」（CTAなので必ず最後）。
+    単一ページのテーマ（local / sports / academics）は本編の代わりに
+    「考えていること（すべて検討中）」＋「現在地」を置く型でよい
 - `outlook/gx.html` … GX構想の**ハブページ**（公開URLは拡張子なしの `/outlook/gx`。
   2026-07-29 にテーマ別ページへ再編）。GX領域の検討テーマをとりまとめ、`hasPart` と
   テーマカード（`.theme-card`）で配下ページ（gx-pipeline / gx-decokatsu / gx-ai /
