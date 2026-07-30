@@ -281,7 +281,10 @@ footer {
    （theme.css の @view-transition による遷移で、共通UIだけが動かずに残る） ── */
 @supports (view-transition-name: none) {
   .crumbs { view-transition-name: outlook-crumbs; }
-  .outlook-subnav { view-transition-name: outlook-subnav; }
+  /* 同じ view-transition-name が同一ページに2つあると遷移全体が skip されるため、
+     1段目と2段目に別々の名前を与える（2段目は nav.js が両クラスを付けて注入する） */
+  .outlook-subnav:not(.outlook-subnav-child) { view-transition-name: outlook-subnav; }
+  .outlook-subnav-child { view-transition-name: outlook-subnav-child; }
 }
 
 /* ── 本文の折り返しを最適化（末尾の泣き別れを防ぐ） ── */
