@@ -7,9 +7,15 @@
 (function () {
   'use strict';
 
+  // children を持つテーマでは、その配下にいる間だけ 2段目に兄弟ページを出す
   var THEMES = [
     { href: '/outlook/', label: 'ジャーナル' },
-    { href: '/outlook/gx', label: 'GX' },
+    { href: '/outlook/gx', label: 'GX', children: [
+      { href: '/outlook/gx', label: 'GX構想' },
+      { href: '/outlook/gx-pipeline', label: '前工程' },
+      { href: '/outlook/gx-decokatsu', label: 'デコ活' },
+      { href: '/outlook/gx-ai', label: 'AIと電力' }
+    ] },
     { href: '/outlook/local', label: '地域' },
     { href: '/outlook/academics', label: '学び' },
     { href: '/outlook/sports', label: 'スポーツ' }
@@ -41,24 +47,54 @@
     if (!anchor || document.querySelector('.outlook-subnav')) { return; }
 
     var path = currentPath();
-    var box = document.createElement('div');
-    box.className = 'outlook-subnav';
-    box.setAttribute('role', 'navigation');
-    box.setAttribute('aria-label', '今後の展望のテーマ一覧');
 
+    function row(items, className, label, currentHref) {
+      var box = document.createElement('div');
+      box.className = className;
+      box.setAttribute('role', 'navigation');
+      box.setAttribute('aria-label', label);
+      items.forEach(function (t) {
+        var a = document.createElement('a');
+        a.href = t.href;
+        a.textContent = t.label;
+        if (currentHref === undefined ? isCurrent(t, path) : currentHref === t.href) {
+          a.className = 'current';
+          a.setAttribute('aria-current', 'true');
+        }
+        box.appendChild(a);
+      });
+      return box;
+    }
+
+    // 配下ページのうち、いま開いているページに最も近いもの（デモページなら親テーマ）を選ぶ
+    function nearest(children) {
+      var best = '';
+      children.forEach(function (c) {
+        if ((path === c.href || path.indexOf(c.href + '-') === 0) && c.href.length > best.length) {
+          best = c.href;
+        }
+      });
+      return best;
+    }
+
+    var rows = [row(THEMES, 'outlook-subnav', '今後の展望のテーマ一覧')];
+
+    // 配下ページを持つテーマの中にいるときは、兄弟ページへ直接移動できる行を足す
+    // （これがないと、同じテーマの別ページへ行くのに毎回ハブへ戻ることになる）
+    var open = null;
     THEMES.forEach(function (t) {
-      var a = document.createElement('a');
-      a.href = t.href;
-      a.textContent = t.label;
-      if (isCurrent(t, path)) {
-        a.className = 'current';
-        a.setAttribute('aria-current', 'true');
-      }
-      box.appendChild(a);
+      if (t.children && isCurrent(t, path)) { open = t; }
     });
+    if (open) {
+      rows.push(row(open.children, 'outlook-subnav outlook-subnav-child',
+                    open.label + 'の配下ページ', nearest(open.children)));
+    }
 
-
-    anchor.insertAdjacentElement(before ? 'beforebegin' : 'afterend', box);
+    var target = anchor;
+    rows.forEach(function (box) {
+      target.insertAdjacentElement(before ? 'beforebegin' : 'afterend', box);
+      if (!before) { target = box; }
+    });
   }
 
   if (document.readyState === 'loading') {
