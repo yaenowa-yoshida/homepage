@@ -93,7 +93,8 @@
   .journal-label {
     font-size: 0.7rem;
     letter-spacing: 0.4em;
-    color: var(--accent-gold);
+    /* 差し色（藍）。セクション識別色として outlook 配下で統一 */
+    color: var(--accent-cool);
     text-transform: uppercase;
     margin-bottom: 0.8rem;
   }
@@ -239,6 +240,9 @@
 </style>
 </head>
 <body>
+
+<!-- スクロール駆動の読書プログレス（CSSのみ・対応ブラウザで表示） -->
+<div class="reading-progress" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav>

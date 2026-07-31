@@ -88,7 +88,8 @@ nav {
 .concept-label {
     font-size: 0.7rem;
     letter-spacing: 0.4em;
-    color: var(--accent-gold);
+    /* 差し色（藍）。「今後の展望」セクションであることを示す */
+    color: var(--accent-cool);
     text-transform: uppercase;
     margin-bottom: 0.8rem;
   }
@@ -114,8 +115,9 @@ nav {
     display: inline-block;
     font-size: 0.75rem;
     letter-spacing: 0.15em;
-    color: var(--accent-gold);
-    border: 1px solid var(--accent-gold);
+    color: var(--accent-cool);
+    border: 1px solid var(--accent-cool);
+    background: color-mix(in srgb, var(--accent-cool) 7%, transparent);
     border-radius: 999px;
     padding: 0.15rem 0.9rem;
     margin-bottom: 1.5rem;
@@ -240,7 +242,7 @@ footer {
   transition: color 0.3s;
 }
 .outlook-subnav a:hover { color: var(--accent); }
-.outlook-subnav a.current { color: var(--accent-gold); }
+.outlook-subnav a.current { color: var(--accent-cool); }
 
 /* 2段目（テーマ配下のページ一覧）。1段目より控えめにして親子関係を示す */
 .outlook-subnav-child {
@@ -260,7 +262,7 @@ footer {
 }
 @supports (background-size: 0%) {
   .outlook-subnav a {
-    background-image: linear-gradient(var(--accent-gold), var(--accent-gold));
+    background-image: linear-gradient(var(--accent-cool), var(--accent-cool));
     background-repeat: no-repeat;
     background-position: 0 100%;
     /* フォールバック値は必須。@property 非対応ブラウザでは --subnav-underline が
@@ -370,4 +372,106 @@ footer {
 /* ── 概算プロトタイプ: 結果バーの伸長を滑らかにする ── */
 @media (prefers-reduced-motion: no-preference) {
   .bar-fill { transition: width 0.6s cubic-bezier(0.2, 0.7, 0.3, 1); }
+}
+
+/* ============================================================
+   日本語組版の最適化（対応ブラウザのみ）
+   ============================================================ */
+
+/* 見出しを文節単位で改行し、日本語が不自然な位置で折り返されるのを防ぐ
+   （非対応環境は従来の文字単位の折り返し）。
+   注: ページタイトルや entry の見出しには `text-wrap: balance` を効かせており、
+   balance が指定された要素では auto-phrase は適用されないため、
+   ここでは balance を使っていない中見出しのみを対象にする */
+@supports (word-break: auto-phrase) {
+  .concept-section h2,
+  .theme-card h3 { word-break: auto-phrase; }
+}
+
+/* ============================================================
+   読書体験
+   ============================================================ */
+
+/* スクロール駆動の読書プログレスバー（JS不要）。
+   要素自体は既定でスタイルを持たないため、非対応環境では
+   高さ0の空要素となり、レイアウトに影響しない */
+@supports (animation-timeline: scroll(root block)) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reading-progress {
+      position: fixed;
+      inset-block-start: 0;
+      inset-inline: 0;
+      block-size: 2px;
+      z-index: 200;
+      background: var(--accent-cool);
+      transform: scaleX(0);
+      transform-origin: left center;
+      animation: outlook-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+@keyframes outlook-progress {
+  to { transform: scaleX(1); }
+}
+
+/* テキストフラグメント（#:~:text=…）で共有されたリンクから訪れたとき、
+   該当箇所をサイトの配色でハイライトする */
+@supports selector(::target-text) {
+  ::target-text {
+    background: color-mix(in srgb, var(--accent-cool) 22%, transparent);
+    color: var(--ink);
+  }
+}
+
+/* ============================================================
+   コンテナクエリ／段階的な立ち上がり
+   ============================================================ */
+
+/* 画面幅ではなく「置かれた場所の幅」に応じて内部を組み替える。
+   コンテナ自身は問い合わせ対象にできないため、カードの親を
+   コンテナにして、その中のカードを調整する */
+@supports (container-type: inline-size) {
+  .concept-section,
+  .topics,
+  .supported { container-type: inline-size; }
+
+  /* コンテナ化すると独立整形コンテキストになり、末尾要素の下マージンが
+     親から抜けなくなる。従来と同じ間隔を保つためにリセットする */
+  .concept-section > ul > li:last-child { margin-bottom: 0; }
+
+  @container (max-width: 26rem) {
+    .theme-card { padding: 1.1rem; }
+    .theme-card h3 { font-size: 0.95rem; }
+    .topics li,
+    .supported li { line-height: 1.9; }
+  }
+}
+
+/* テーマ一覧の各項目を、順番に少しずつ遅らせて立ち上げる。
+   sibling-index() により、項目を増やしても遅延指定の追記は不要
+   （非対応環境では遅延なしで一斉に表示されるだけ）。
+   スクロール駆動アニメーションを持つ要素とは重ねない */
+@supports (transition-behavior: allow-discrete) {
+  @media (prefers-reduced-motion: no-preference) {
+    .topics li {
+      transition: opacity 0.5s ease, translate 0.5s ease;
+      transition-delay: calc(sibling-index() * 60ms);
+    }
+    @starting-style {
+      .topics li {
+        opacity: 0;
+        translate: 0 8px;
+      }
+    }
+  }
+}
+
+/* 概算プロトタイプの列選択を、選んだ項目の幅に合わせて伸縮させる。
+   長い列名でパネルからはみ出さないよう上限を設ける */
+@supports (field-sizing: content) {
+  .mapping-panel select {
+    field-sizing: content;
+    max-inline-size: min(22rem, 100%);
+  }
 }

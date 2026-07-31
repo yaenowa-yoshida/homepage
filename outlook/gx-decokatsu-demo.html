@@ -90,7 +90,7 @@
   .app-label {
     font-size: 0.7rem;
     letter-spacing: 0.4em;
-    color: var(--accent-gold);
+    color: var(--accent-cool);
     text-transform: uppercase;
     margin-bottom: 0.8rem;
   }
@@ -109,8 +109,9 @@
     display: inline-block;
     font-size: 0.75rem;
     letter-spacing: 0.15em;
-    color: var(--accent-gold);
-    border: 1px solid var(--accent-gold);
+    color: var(--accent-cool);
+    border: 1px solid var(--accent-cool);
+    background: color-mix(in srgb, var(--accent-cool) 7%, transparent);
     border-radius: 999px;
     padding: 0.15rem 0.9rem;
     margin-bottom: 1.5rem;
@@ -265,6 +266,9 @@
 </style>
 </head>
 <body>
+
+<!-- スクロール駆動の読書プログレス（CSSのみ・対応ブラウザで表示） -->
+<div class="reading-progress" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav>
