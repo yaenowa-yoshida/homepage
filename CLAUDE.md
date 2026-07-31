@@ -132,9 +132,17 @@
     `:has()` による開いているエントリの強調、`animation-timeline: view()` の
     スクロール駆動アニメーション（エントリの立ち上がり・ジャーナル縦線の伸長）、
     `@property` による下線アニメーション、`view-transition-name` でのページ間の連続性、
-    `text-wrap: pretty`。**すべて `@supports` と `prefers-reduced-motion` でガード**し、
+    `text-wrap: pretty`、日本語組版（`word-break: auto-phrase` で文節改行、`text-autospace`
+    で和欧間のアキ）、`animation-timeline: scroll(root)` の読書プログレスバー（各ページ
+    `<body>` 直後の `.reading-progress`。**新ページを作るときはこの1行も入れる**）、
+    `::target-text`、コンテナクエリ、`@starting-style` ＋ `sibling-index()` の順次表示、
+    `field-sizing`。**すべて `@supports` と `prefers-reduced-motion` でガード**し、
     非対応環境では従来表示にフォールバックさせること（内容が見えなくなる実装は禁止）。
     色は theme.css のカスタムプロパティのみ参照する
+  - **差し色（藍）**: `--accent-cool`（theme.css で定義）は「今後の展望」セクションの
+    識別色。セクションラベル・サブナビの現在地と下線・「構想段階」バッジ・開いている
+    エントリの目印・スクロール駆動の線とプログレスバーに使う。本文・見出し・区切り線は
+    紅系（`--accent` / `--accent-gold`）のままにして、サイト全体の統一感を保つこと
   - **outlook 内の回遊**: 配下全ページのテーマ間ナビは `outlook/nav.js` が `.crumbs` 直後に
     注入する（JS無効時はパンくず＋ハブ経由が残る）。見た目は outlook.css 側が持つ。
     ナビは2段構成で、1段目がテーマ一覧（THEMES）、2段目は `children` を持つテーマの
