@@ -378,26 +378,14 @@ footer {
    日本語組版の最適化（対応ブラウザのみ）
    ============================================================ */
 
-/* 見出しを文節単位で改行する。日本語の長い見出しが不自然な位置で
-   折り返されるのを防ぐ（非対応環境は従来の文字単位の折り返し） */
+/* 見出しを文節単位で改行し、日本語が不自然な位置で折り返されるのを防ぐ
+   （非対応環境は従来の文字単位の折り返し）。
+   注: ページタイトルや entry の見出しには `text-wrap: balance` を効かせており、
+   balance が指定された要素では auto-phrase は適用されないため、
+   ここでは balance を使っていない中見出しのみを対象にする */
 @supports (word-break: auto-phrase) {
-  .journal-title,
-  .concept-title,
-  .app-title,
-  .entry h2,
   .concept-section h2,
   .theme-card h3 { word-break: auto-phrase; }
-}
-
-/* 和文と欧文・数字の間に自動でアキを入れる。
-   本サイトは「GXが」「Scope3で」のような和欧混植が多い */
-@supports (text-autospace: normal) {
-  .journal-intro,
-  .entry-body,
-  .concept-section,
-  .theme-card,
-  .topics,
-  .supported { text-autospace: normal; }
 }
 
 /* ============================================================
@@ -407,7 +395,7 @@ footer {
 /* スクロール駆動の読書プログレスバー（JS不要）。
    要素自体は既定でスタイルを持たないため、非対応環境では
    高さ0の空要素となり、レイアウトに影響しない */
-@supports (animation-timeline: scroll()) {
+@supports (animation-timeline: scroll(root block)) {
   @media (prefers-reduced-motion: no-preference) {
     .reading-progress {
       position: fixed;
@@ -447,6 +435,10 @@ footer {
   .concept-section,
   .topics,
   .supported { container-type: inline-size; }
+
+  /* コンテナ化すると独立整形コンテキストになり、末尾要素の下マージンが
+     親から抜けなくなる。従来と同じ間隔を保つためにリセットする */
+  .concept-section > ul > li:last-child { margin-bottom: 0; }
 
   @container (max-width: 26rem) {
     .theme-card { padding: 1.1rem; }

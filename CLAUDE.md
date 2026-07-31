@@ -132,16 +132,20 @@
     `:has()` による開いているエントリの強調、`animation-timeline: view()` の
     スクロール駆動アニメーション（エントリの立ち上がり・ジャーナル縦線の伸長）、
     `@property` による下線アニメーション、`view-transition-name` でのページ間の連続性、
-    `text-wrap: pretty`、日本語組版（`word-break: auto-phrase` で文節改行、`text-autospace`
-    で和欧間のアキ）、`animation-timeline: scroll(root)` の読書プログレスバー（各ページ
+    `text-wrap: pretty`、`word-break: auto-phrase` による中見出しの文節改行
+    （`text-wrap: balance` を指定した要素では効かないため、balance を使う
+    タイトル・エントリ見出しは対象外にしている）、
+    `animation-timeline: scroll(root block)` の読書プログレスバー（各ページ
     `<body>` 直後の `.reading-progress`。**新ページを作るときはこの1行も入れる**）、
     `::target-text`、コンテナクエリ、`@starting-style` ＋ `sibling-index()` の順次表示、
     `field-sizing`。**すべて `@supports` と `prefers-reduced-motion` でガード**し、
     非対応環境では従来表示にフォールバックさせること（内容が見えなくなる実装は禁止）。
     色は theme.css のカスタムプロパティのみ参照する
   - **差し色（藍）**: `--accent-cool`（theme.css で定義）は「今後の展望」セクションの
-    識別色。セクションラベル・サブナビの現在地と下線・「構想段階」バッジ・開いている
-    エントリの目印・スクロール駆動の線とプログレスバーに使う。本文・見出し・区切り線は
+    識別色。使う対象は **①ページ先頭のセクションラベル（`.concept-label` /
+    `.journal-label` / `.app-label`）②ステータスバッジ（`.concept-status` / `.app-status`）
+    ③サブナビの現在地と下線 ④読書プログレスバー** の4種類に限定する。
+    本文・見出し・区切り線・時系列（エントリの日付とドット）・ジャーナルの縦線は
     紅系（`--accent` / `--accent-gold`）のままにして、サイト全体の統一感を保つこと
   - **outlook 内の回遊**: 配下全ページのテーマ間ナビは `outlook/nav.js` が `.crumbs` 直後に
     注入する（JS無効時はパンくず＋ハブ経由が残る）。見た目は outlook.css 側が持つ。
