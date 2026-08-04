@@ -8,7 +8,7 @@
 <!-- outlook共通の回遊ナビ（パンくず直後にテーマ一覧を注入） -->
 <script src="/outlook/nav.js" defer></script>
 <title>歩くと語り出す仕組みの試作（プロトタイプ） | 株式会社ヤエノワ</title>
-<meta name="description" content="株式会社ヤエノワが検討中の歴史音声ガイド構想の実験。現在地から次に話す対象を選び、一件を読み終えるまで割り込まない「直列再生」の仕組みを、ブラウザ内だけで動かして確かめるプロトタイプです。原稿はサンプルで、位置情報は端末の外に送信しません。">
+<meta name="description" content="株式会社ヤエノワが検討中の歴史音声ガイド構想の実験。現在地から次に話す対象を選び、一件を読み終えるまで割り込まない「直列再生」の仕組みを、ブラウザ内だけで動かして確かめるプロトタイプです。原稿はサンプルで、当社は位置情報を取得・保存・送信しません。">
 <link rel="canonical" href="https://yaenowa.co.jp/outlook/academics/guide-demo">
 <meta name="robots" content="noindex, follow">
 
@@ -19,7 +19,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="歩くと語り出す仕組みの試作（プロトタイプ） | 株式会社ヤエノワ">
-<meta property="og:description" content="現在地から次に話す対象を選び、読み終えるまで割り込まない「直列再生」を確かめる実験。ブラウザ内で完結します。">
+<meta property="og:description" content="現在地から次に話す対象を選び、読み終えるまで割り込まない「直列再生」を確かめる実験。処理はブラウザ内で完結します。">
 <meta property="og:url" content="https://yaenowa.co.jp/outlook/academics/guide-demo">
 <meta property="og:site_name" content="株式会社ヤエノワ">
 <meta property="og:locale" content="ja_JP">
@@ -37,7 +37,7 @@
   "@id": "https://yaenowa.co.jp/outlook/academics/guide-demo",
   "url": "https://yaenowa.co.jp/outlook/academics/guide-demo",
   "name": "歩くと語り出す仕組みの試作（プロトタイプ） | 株式会社ヤエノワ",
-  "description": "歴史音声ガイド構想の実験。現在地から次に話す対象を選び、一件を読み終えるまで割り込まない直列再生の仕組みを、ブラウザ内だけで動かして確かめるプロトタイプ。原稿はサンプルで、位置情報は端末の外に送信しない。",
+  "description": "歴史音声ガイド構想の実験。現在地から次に話す対象を選び、一件を読み終えるまで割り込まない直列再生の仕組みを、ブラウザ内だけで動かして確かめるプロトタイプ。原稿はサンプルで、当社は位置情報を取得・保存・送信しない。",
   "inLanguage": "ja",
   "datePublished": "2026-08-04",
   "dateModified": "2026-08-04",
@@ -249,6 +249,15 @@
     margin-top: 0.7rem;
   }
 
+  /* 免責。既存デモ（gx/pipeline-demo・gx/decokatsu-demo）と同じ体裁 */
+  .disclaimer {
+    margin-top: 2.5rem;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--paper-dark);
+    border-radius: 8px;
+    font-size: 0.76rem; color: var(--ink-light); line-height: 1.9;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .mode-opt span, .btn { transition: none; }
   }
@@ -287,9 +296,9 @@
   <h1 class="concept-title">読み終えてから、<br>次を選ぶ。</h1>
   <div class="divider"></div>
 
-  <span class="app-status">プロトタイプ・実験公開</span>
+  <span class="app-status">プロトタイプ（実験公開）</span>
   <p class="concept-note">
-    ※ <a href="/outlook/academics/guide" class="text-link">歴史音声ガイド構想</a>の実験として、仕組みの一部だけを試作したものです。提供中のサービスやアプリではありません。<strong>収録している原稿はすべてサンプル</strong>で、歴史の解説は入っていません。座標もおおよその値です。位置情報はブラウザの中でのみ使い、サーバーには送信しません。
+    ※ <a href="/outlook/academics/guide" class="text-link">歴史音声ガイド構想</a>の実験として、仕組みの一部だけを試作したものです。提供中のサービスやアプリではありません。<strong>収録している原稿はすべてサンプル</strong>で、歴史の解説は入っていません。座標もおおよその値です。位置情報の処理はお使いのブラウザの中で完結し、<strong>当社は位置情報を取得・保存・送信しません</strong>（当社にサーバーはなく、履歴も残しません）。ただし測位そのものはブラウザ・OSの提供元の仕組みを利用するため、その事業者側で通信が行われる場合があります。<strong>運転中は操作しないでください。</strong>詳しくはページ下部の「ご利用にあたって」をご覧ください。
   </p>
 
   <div class="concept-section">
@@ -301,7 +310,7 @@
       そこで考えたのが、割り込みをなくす作りです。<strong>一件を読み終えるまで中断せず、終わってから改めて現在地を取り、次に話す対象を選ぶ。</strong>この直列のループにすると、位置情報の常時監視も、再生中の優先度の比較も要らなくなります。仕組みを足すのではなく減らすことで成立するのではないか——という見立てを、実際に動かして確かめるための試作です。
     </p>
     <p>
-      音声合成はブラウザの読み上げ機能（Web Speech API）を使っています。外部のライブラリやサービスは使っていません。
+      音声合成はブラウザの読み上げ機能（Web Speech API）を使っています。外部のライブラリやサービスは使っていません。読み上げ文には現在地から作った距離と方角が入るため、<strong>端末の中で処理される音声だけを使い、見つからない場合は読み上げずに画面表示だけで進めます</strong>。
     </p>
   </div>
 
@@ -336,7 +345,7 @@
           <button type="button" class="btn" id="btn-reset">再生履歴を消す</button>
         </div>
         <p class="note-inline">
-          はじめて再生するときは、端末の設定で音量を確認してください。iPhone では、画面操作をきっかけにしないと読み上げが始まらないことがあります。
+          はじめて再生するときは、端末の設定で音量を確認してください。一部のスマートフォンでは、画面操作をきっかけにしないと読み上げが始まらないことがあります。
         </p>
       </div>
     </div>
@@ -363,7 +372,7 @@
 
   <div class="concept-section">
     <h2>この試作で分かること・分からないこと</h2>
-    <p>確かめられるのは、次のあたりです。</p>
+    <p>この試作を動かして確かめようとしているのは、次のあたりです（<strong>実地を歩いての確認はまだ行っていません</strong>）。</p>
     <ul>
       <li>読み終えてから次を選ぶ流れが、体験として自然に感じられるか</li>
       <li>移動中に読み終えると対象が去ってしまう問題を、語りの言い回し（徒歩は「ここから〈方角〉へ〈距離〉ほど」、自動車は「この先に」）で吸収できるか</li>
@@ -373,9 +382,18 @@
     <ul>
       <li><strong>肝心の中身。</strong>原稿がサンプルなので、「点が線になる」かどうかは判定できません</li>
       <li><strong>バックグラウンド動作。</strong>ブラウザでは画面を消すと止まります。ポケットに入れて歩く形にはネイティブアプリが要ります</li>
-      <li><strong>読み上げの質。</strong>ブラウザの読み上げ機能をそのまま使っている（端末内で処理される音声を優先して選びます）ため、実際に配る場合の品質とは別物です</li>
+      <li><strong>読み上げの質。</strong>ブラウザの読み上げ機能のうち、端末内で処理される音声だけを使っているため、実際に配る場合の品質とは別物です</li>
       <li><strong>ビル街での測位のずれ。</strong>実地でしか確かめられません</li>
     </ul>
+  </div>
+
+  <div class="disclaimer">
+    <strong>【ご利用にあたって】</strong><br>
+    本ページは検討中の構想の仕組みを確かめるためのプロトタイプであり、提供中のサービスやアプリではありません。<br>
+    <strong>運転中は操作しないでください。</strong>「自動車」は語りの言い回しの違いを比べるための設定で、運転しながらの利用を想定したものではありません。自動車でお試しになる場合は、停車中に操作を済ませるか、同乗の方が操作してください（運転中の携帯電話等の使用・画像注視は法令で禁止されています）。<br>
+    <strong>徒歩でお試しになる場合も、歩きながら画面を見ないでください。</strong>周囲の交通と足元の安全を最優先し、操作は立ち止まって行ってください。<br>
+    位置情報の処理はお使いのブラウザの中で完結し、当社は位置情報を取得・保存・送信しません。読み上げには端末内で処理される音声だけを使い、見つからない場合は読み上げを行いません。ただし測位そのものはブラウザ・OSの提供元の仕組みを利用するため、その事業者側で通信・処理が行われる場合があり、その取り扱いは各事業者のプライバシーポリシーによります。<br>
+    本プロトタイプの利用により生じたいかなる損害についても、当社は責任を負いかねます。
   </div>
 
   <div class="concept-section">
@@ -676,31 +694,50 @@
     return { intro: intro, body: SAMPLE_BODY };
   }
 
-  /* 読み上げに使う音声を選ぶ。端末内で処理されるもの（localService）を優先し、
-     見つからなければ日本語の音声、それも無ければブラウザ任せにする。 */
-  function pickVoice() {
+  /* 読み上げに使う音声を選ぶ。**端末の中で処理されるものだけ**を使う。
+     ブラウザによっては読み上げを提供元のサーバーで処理する実装があり、
+     読み上げ文には現在地から作った距離と方角が入るため、そちらへは渡さない。
+     見つからないときは読み上げず、画面表示だけで進める。 */
+  function pickLocalVoice() {
     if (!('speechSynthesis' in window)) { return null; }
     var all = window.speechSynthesis.getVoices() || [];
-    var ja = all.filter(function (v) { return /^ja/i.test(v.lang); });
-    var local = ja.filter(function (v) { return v.localService; });
-    return local[0] || ja[0] || null;
+    var local = all.filter(function (v) { return v.localService; });
+    var ja = local.filter(function (v) { return /^ja/i.test(v.lang); });
+    return ja[0] || null;
+  }
+
+  /* getVoices() は最初の呼び出しで空を返すことがあるので、一覧が揃うのを待つ */
+  function ensureVoices() {
+    return new Promise(function (resolve) {
+      if (!('speechSynthesis' in window)) { resolve(); return; }
+      if ((window.speechSynthesis.getVoices() || []).length) { resolve(); return; }
+      var done = false;
+      function fin() { if (!done) { done = true; resolve(); } }
+      window.speechSynthesis.addEventListener('voiceschanged', fin, { once: true });
+      setTimeout(fin, 1500);
+    });
+  }
+
+  /* 読み上げないときに、代わりに置く間。文字数からおおよその読み上げ時間を見積もる */
+  function readingMs(text) {
+    return Math.max(8000, Math.round(text.length * 180));
   }
 
   /* ── 読み上げ ─────────────────────────────────
      読み終わるまで割り込まない。終わったら次のループへ。 */
   function speak(text) {
     return new Promise(function (resolve) {
-      if (!('speechSynthesis' in window)) {
-        log('！ この環境は読み上げに対応していません。文字だけ表示して先へ進みます');
-        setTimeout(resolve, 3000);
+      var v = pickLocalVoice();
+      if (!v) {
+        log('！ 端末の中で処理される日本語の音声が見つかりません。'
+            + '外部で処理される音声には現在地から作った文言を渡さない方針のため、'
+            + '読み上げは行わず画面表示だけで進めます');
+        setTimeout(resolve, readingMs(text));
         return;
       }
       var u = new SpeechSynthesisUtterance(text);
       u.lang = 'ja-JP';
-      // 端末の中にある音声を優先する。ブラウザによっては読み上げを提供元の
-      // サーバーで処理するものがあり、そのままだと距離や方角を含む文言が外に出る
-      var v = pickVoice();
-      if (v) { u.voice = v; }
+      u.voice = v;
       u.rate = 1.0;
       u.pitch = 1.0;
       var done = false;
@@ -824,7 +861,12 @@
     } else {
       log('開始（実際のGPS・' + mode().label + '）');
     }
-    loop();
+    ensureVoices().then(function () {
+      var v = pickLocalVoice();
+      log(v ? ('読み上げに使う音声: ' + v.name + '（端末内で処理）')
+            : '端末内で処理される日本語の音声なし → 読み上げは行わず画面表示のみ');
+      if (running) { loop(); }
+    });
   }
 
   function stop() {
