@@ -17,7 +17,10 @@
       { href: '/outlook/gx-ai', label: 'AIと電力' }
     ] },
     { href: '/outlook/local', label: '地域' },
-    { href: '/outlook/academics', label: '学び' },
+    { href: '/outlook/academics', label: '学び', children: [
+      { href: '/outlook/academics', label: '学びの記録' },
+      { href: '/outlook/academics-guide', label: '音声ガイド' }
+    ] },
     { href: '/outlook/sports', label: 'スポーツ' }
   ];
 

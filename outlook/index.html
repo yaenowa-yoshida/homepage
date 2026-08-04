@@ -40,7 +40,7 @@
   "description": "株式会社ヤエノワが、いま考えていることを日付とともに記録するページ。検討中のテーマを時系列で公開しています。",
   "inLanguage": "ja",
   "datePublished": "2026-07-26",
-  "dateModified": "2026-08-02",
+  "dateModified": "2026-08-04",
   "hasPart": [
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx", "name": "GX構想（検討中）" },
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx-pipeline", "name": "排出量算定の前工程構想（検討中）" },
@@ -50,6 +50,7 @@
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx-pipeline-demo", "name": "排出量ざっくり概算（プロトタイプ）" },
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/local", "name": "地域構想（検討中）" },
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/academics", "name": "学びの記録と構想" },
+    { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/academics-guide", "name": "歴史音声ガイド構想（検討中）" },
     { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/sports", "name": "スポーツ構想（検討中）" }
   ],
   "publisher": {
@@ -283,13 +284,43 @@
     <ul>
       <li><a href="/outlook/gx" class="text-link">GX構想</a> ── <a href="/outlook/gx-pipeline" class="text-link">排出量算定の前工程</a>、<a href="/outlook/gx-decokatsu" class="text-link">個人のデコ活実践</a>、<a href="/outlook/gx-ai" class="text-link">AIと電力</a>（<a href="/outlook/gx-pipeline-demo" class="text-link">概算</a>・<a href="/outlook/gx-decokatsu-demo" class="text-link">デコ活判定</a>のプロトタイプを実験公開中）</li>
       <li><a href="/outlook/local" class="text-link">地域</a> ── 縁のある土地と、ITの仕事をつなぐ</li>
-      <li><a href="/outlook/academics" class="text-link">学び</a> ── 学びの記録（継続更新中）と、学びの場に実務の知を返す構想</li>
+      <li><a href="/outlook/academics" class="text-link">学び</a> ── 学びの記録（継続更新中）と、学びの場に実務の知を返す構想（<a href="/outlook/academics-guide" class="text-link">歴史音声ガイド</a>＝位置情報と音声で歴史を伝える企画案を検討中）</li>
       <li><a href="/outlook/sports" class="text-link">スポーツ</a> ── スポーツの現場に、設計の力を</li>
     </ul>
   </div>
 
   <!-- 新しいエントリはこの直下に追加する（新しい順） -->
   <div class="entries">
+
+    <article class="entry">
+      <time datetime="2026-08-04">2026年8月4日</time>
+      <details class="entry-details">
+        <summary>
+          <h2>教科書で習った出来事を、その場所で聴けないか</h2>
+          <span class="entry-toggle" aria-hidden="true"></span>
+        </summary>
+        <div class="entry-body">
+          <p>
+            思いつきから始まった。スマートフォンの位置情報から現在地を取り、その周辺にゆかりのある歴史を音声で流すアプリは作れないか。技術としては手が届く範囲に見える。位置情報も、音声合成も、周辺の情報を探す仕組みも、部品としては出そろっているように思う（実際に組み上がるかは、これから確かめる）。
+          </p>
+          <p>
+            考えを進めるうちに、面白いのは技術ではないと分かってきた。<strong>何を話すかより、何を話さないか</strong>のほうが効く。近くにあるものを片端から読み上げれば、ただの騒音になる。そこで扱う範囲を「小中高の教科書に出てくる水準の出来事」に絞ってみた。すると企画の性格が変わった。網羅ではなく選抜になり、狙う感情が「へえ」から「あ、教科書で見たやつだ」に変わる。
+          </p>
+          <p>
+            対象も、子どもではなく大人に置いた。大人が忘れているのは単語ではなく、出来事どうしのつながりのほうだと思う。名前だけなら出てくるのに、何がどう連なって次の出来事を呼んだのかは抜け落ちている。そして東京では、教科書の上では別々の章に分かれていた出来事の舞台が、狭い範囲に重なっている。章をまたいで分断されていたものが、土地の上を移動すると一本の線になるかもしれない。ここが賭けどころだと考えている。
+          </p>
+          <p>
+            設計で一番厄介なのは、何を・いつ話すかの制御だった。ここは割り切りで解けそうだという感触がある。一件を読み終えるまで割り込まない。読み終えてから改めて現在地を取り、次を選ぶ。この直列の形にすれば、位置情報の常時監視も、再生中の優先度の比較も要らなくなるはずだ。仕組みを足すのではなく減らすことで、測位の誤差にも強くなると見ている。移動手段の判別も、速度だけでは自動車と自転車が重なりうると整理したので、当面は利用者に選んでもらえばよいと考えた。いずれも机の上での見立てで、確かめるのはこれからだが、作らないと決めることのほうが設計を前に進めている。
+          </p>
+          <p>
+            似たものが既にあるかは調べようとした。ただ、この環境では外部サイトを開けず、得られたのは検索の要約だけだった。一昨日の反省がそのまま効いていて、要約に出てきたアプリ名や機能を、読んでいないページを出典として書くことはできない。競合の実態は未確認のまま置いておく。分からないことを分からないまま残せるようになったのは、たぶん前進のほうだと思う。
+          </p>
+          <p>
+            構想は<a href="/outlook/academics-guide" class="text-link">歴史音声ガイド構想</a>としてまとめた。名前はまだ決めていない。<a href="/outlook/academics" class="text-link">学びのテーマ</a>の下に置いたのは、「学びの場に返す」の相手を学生に限らず捉え直したものだからだ。次は範囲をもっと絞って区間をひとつ試作し、実際にその道を歩いて確かめる。点が線になる手応えが本当に生まれるのかは、机の上では分からない。
+          </p>
+        </div>
+      </details>
+    </article>
 
     <article class="entry">
       <time datetime="2026-08-02">2026年8月2日</time>
