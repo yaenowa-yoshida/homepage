@@ -19,7 +19,7 @@
     { href: '/outlook/local', label: '地域' },
     { href: '/outlook/academics', label: '学び', children: [
       { href: '/outlook/academics', label: '学びの記録' },
-      { href: '/outlook/academics-tvn', label: '東京音声ナビ' }
+      { href: '/outlook/academics-guide', label: '音声ガイド' }
     ] },
     { href: '/outlook/sports', label: 'スポーツ' }
   ];
