@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<!-- outlook共通の回遊ナビ（パンくず直後にテーマ一覧を注入） -->
+<script src="/outlook/nav.js" defer></script>
+<title>歩くと語り出す仕組みの試作（プロトタイプ） | 株式会社ヤエノワ</title>
+<meta name="description" content="株式会社ヤエノワが検討中の歴史音声ガイド構想の実験。現在地から次に話す対象を選び、一件を読み終えるまで割り込まない「直列再生」の仕組みを、ブラウザ内だけで動かして確かめるプロトタイプです。原稿はサンプルで、位置情報は端末の外に送信しません。">
+<link rel="canonical" href="https://yaenowa.co.jp/outlook/academics-guide-demo">
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="歩くと語り出す仕組みの試作（プロトタイプ） | 株式会社ヤエノワ">
+<meta property="og:description" content="現在地から次に話す対象を選び、読み終えるまで割り込まない「直列再生」を確かめる実験。ブラウザ内で完結します。">
+<meta property="og:url" content="https://yaenowa.co.jp/outlook/academics-guide-demo">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+
+<!-- 構造化データ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://yaenowa.co.jp/outlook/academics-guide-demo",
+  "url": "https://yaenowa.co.jp/outlook/academics-guide-demo",
+  "name": "歩くと語り出す仕組みの試作（プロトタイプ） | 株式会社ヤエノワ",
+  "description": "歴史音声ガイド構想の実験。現在地から次に話す対象を選び、一件を読み終えるまで割り込まない直列再生の仕組みを、ブラウザ内だけで動かして確かめるプロトタイプ。原稿はサンプルで、位置情報は端末の外に送信しない。",
+  "inLanguage": "ja",
+  "datePublished": "2026-08-04",
+  "dateModified": "2026-08-04",
+  "isPartOf": {
+    "@type": "WebPage",
+    "@id": "https://yaenowa.co.jp/outlook/academics-guide",
+    "name": "歴史音声ガイド構想（検討中）"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "株式会社ヤエノワ",
+    "url": "https://yaenowa.co.jp/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+    { "@type": "ListItem", "position": 2, "name": "今後の展望", "item": "https://yaenowa.co.jp/outlook/" },
+    { "@type": "ListItem", "position": 3, "name": "学びの記録と構想", "item": "https://yaenowa.co.jp/outlook/academics" },
+    { "@type": "ListItem", "position": 4, "name": "歴史音声ガイド構想", "item": "https://yaenowa.co.jp/outlook/academics-guide" },
+    { "@type": "ListItem", "position": 5, "name": "歩くと語り出す仕組みの試作", "item": "https://yaenowa.co.jp/outlook/academics-guide-demo" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+<!-- 今後の展望セクション共通のスタイル（nav・パンくず・本文・フッターの土台＋モダンCSSの拡張） -->
+<link rel="stylesheet" href="/outlook/outlook.css">
+
+<style>
+  /* 本ページ固有のスタイルのみ。
+     色・ダークモード・リセットは theme.css、outlook 配下で共通の
+     nav・パンくず・本文・フッターは outlook/outlook.css を参照。 */
+
+  /* ── ページ先頭のラベルとバッジ（差し色の藍を使うのはこの2つとログの見出しまで） ── */
+  .app-label {
+    font-size: 0.7rem; letter-spacing: 0.4em;
+    color: var(--accent-cool); text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .app-status {
+    display: inline-block;
+    font-size: 0.75rem; letter-spacing: 0.15em;
+    color: var(--accent-cool);
+    border: 1px solid var(--accent-cool);
+    background: color-mix(in srgb, var(--accent-cool) 7%, transparent);
+    border-radius: 999px;
+    padding: 0.15rem 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+
+  /* ── 操作パネル ── */
+  .app-panel {
+    background: var(--paper-mid);
+    border-radius: 12px;
+    padding: 1.4rem 1.5rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .field { margin-bottom: 1.2rem; }
+  .field:last-child { margin-bottom: 0; }
+
+  .field-label {
+    display: block;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--accent-gold);
+    margin-bottom: 0.6rem;
+  }
+
+  /* モード選択（徒歩／自動車）。ラジオを隠してボタン状に見せる */
+  .mode-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .mode-opt { position: relative; }
+  .mode-opt input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+  }
+  .mode-opt span {
+    display: block;
+    padding: 0.5rem 1.1rem;
+    border: 1px solid var(--paper-dark);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .mode-opt input:checked + span {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .mode-opt input:focus-visible + span { outline: 2px solid var(--accent-cool); outline-offset: 2px; }
+
+  .btn-row { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+
+  .btn {
+    font-family: inherit;
+    font-size: 0.88rem;
+    letter-spacing: 0.06em;
+    padding: 0.7rem 1.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, opacity 0.3s;
+  }
+  .btn-primary { background: var(--accent); color: var(--paper); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn:not(:disabled):hover { opacity: 0.8; }
+
+  /* ── 状態表示 ── */
+  .status {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    padding: 0.9rem 1.1rem;
+    border-radius: 10px;
+    background: var(--paper);
+    margin-bottom: 1rem;
+  }
+  .status-badge {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    /* 差し色（藍）はステータスバッジに限って使う */
+    border: 1px solid var(--accent-cool);
+    color: var(--accent-cool);
+    white-space: nowrap;
+  }
+  .status-text {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.8;
+  }
+
+  /* いま読み上げている原稿 */
+  .now-speaking {
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .now-speaking h3 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+  }
+  .now-speaking p {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.95;
+    letter-spacing: 0.03em;
+    margin: 0;
+  }
+  .now-speaking .said { color: var(--ink-light); }
+
+  /* ログ（状態遷移の可視化。仕組みを確かめるのが目的なので前面に出す） */
+  .log {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72rem;
+    line-height: 1.9;
+    color: var(--ink-light);
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    max-height: 16rem;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .spot-list { list-style: none; margin: 0; padding: 0; }
+  .spot-list li {
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    line-height: 2.0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .spot-list li::before {
+    content: "・";
+    position: absolute;
+    left: 0;
+    color: var(--accent-gold);
+  }
+  .spot-list li.done { color: var(--ink-light); text-decoration: line-through; }
+
+  .note-inline {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.9;
+    margin-top: 0.7rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mode-opt span, .btn { transition: none; }
+  }
+</style>
+
+</head>
+<body>
+
+<!-- スクロール駆動の読書プログレス（CSSのみ・対応ブラウザで表示） -->
+<div class="reading-progress" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <div class="nav-right">
+    <a href="/outlook/academics-guide" class="nav-home">← 歴史音声ガイド構想へ戻る</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<main class="concept">
+  <p class="crumbs"><a href="/outlook/">今後の展望</a> › <a href="/outlook/academics">学びの記録と構想</a> › <a href="/outlook/academics-guide">歴史音声ガイド構想</a> › 歩くと語り出す仕組みの試作</p>
+  <p class="app-label">Prototype</p>
+  <h1 class="concept-title">読み終えてから、<br>次を選ぶ。</h1>
+  <div class="divider"></div>
+
+  <span class="app-status">プロトタイプ・実験公開</span>
+  <p class="concept-note">
+    ※ <a href="/outlook/academics-guide" class="text-link">歴史音声ガイド構想</a>の実験として、仕組みの一部だけを試作したものです。提供中のサービスやアプリではありません。<strong>収録している原稿はすべてサンプル</strong>で、歴史の解説は入っていません。座標もおおよその値です。位置情報はブラウザの中でのみ使い、サーバーには送信しません。
+  </p>
+
+  <div class="concept-section">
+    <h2>何を確かめる試作か</h2>
+    <p>
+      この構想でいちばん厄介なのは、音声を鳴らすことではなく「<strong>何を・いつ話すか</strong>」の制御でした。近くにあるものを片端から読み上げると騒音になり、密度の高い場所では語りが重なって潰し合います。
+    </p>
+    <p>
+      そこで考えたのが、割り込みをなくす作りです。<strong>一件を読み終えるまで中断せず、終わってから改めて現在地を取り、次に話す対象を選ぶ。</strong>この直列のループにすると、位置情報の常時監視も、再生中の優先度の比較も要らなくなります。仕組みを足すのではなく減らすことで成立するのではないか——という見立てを、実際に動かして確かめるための試作です。
+    </p>
+    <p>
+      音声合成はブラウザの読み上げ機能（Web Speech API）を使っています。外部のライブラリやサービスは使っていません。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>動かしてみる</h2>
+
+    <div class="app-panel">
+      <div class="field">
+        <span class="field-label" id="mode-label">移動手段</span>
+        <div class="mode-row" role="radiogroup" aria-labelledby="mode-label">
+          <label class="mode-opt"><input type="radio" name="mode" value="walk" checked><span>徒歩</span></label>
+          <label class="mode-opt"><input type="radio" name="mode" value="car"><span>自動車</span></label>
+        </div>
+        <p class="note-inline" id="mode-desc"></p>
+      </div>
+
+      <div class="field">
+        <span class="field-label" id="src-label">現在地</span>
+        <div class="mode-row" role="radiogroup" aria-labelledby="src-label">
+          <label class="mode-opt"><input type="radio" name="src" value="sim" checked><span>シミュレーション</span></label>
+          <label class="mode-opt"><input type="radio" name="src" value="gps"><span>実際のGPS</span></label>
+        </div>
+        <p class="note-inline">
+          シミュレーションは、コース上を仮想的に移動します（外に出ずに仕組みを確かめられます）。地点の間が遠いと実時間では何十分もかかるため、<strong>徒歩なら40倍、自動車なら8倍の速さで移動します</strong>。実際のGPSを選ぶと端末の位置情報を使います。<strong>コースは東京の想定なので、離れた場所では何も鳴りません。</strong>
+        </p>
+      </div>
+
+      <div class="field">
+        <div class="btn-row">
+          <button type="button" class="btn btn-primary" id="btn-start">開始</button>
+          <button type="button" class="btn" id="btn-stop" disabled>停止</button>
+          <button type="button" class="btn" id="btn-reset">再生履歴を消す</button>
+        </div>
+        <p class="note-inline">
+          はじめて再生するときは、端末の設定で音量を確認してください。iPhone では、画面操作をきっかけにしないと読み上げが始まらないことがあります。
+        </p>
+      </div>
+    </div>
+
+    <div class="status">
+      <span class="status-badge" id="state-badge">停止中</span>
+      <span class="status-text" id="state-text">「開始」を押すと、現在地の取得から始まります。</span>
+    </div>
+
+    <div class="now-speaking" id="now-box" hidden>
+      <h3 id="now-title"></h3>
+      <p id="now-script"></p>
+    </div>
+
+    <p class="field-label">動作ログ</p>
+    <div class="log" id="log" role="log" aria-live="polite" aria-label="動作ログ">まだ動かしていません。</div>
+
+    <p class="field-label" style="margin-top:1.6rem;">収録しているサンプル地点</p>
+    <ul class="spot-list" id="spot-list"></ul>
+    <p class="note-inline">
+      いずれも原稿はサンプルで、歴史の解説は入っていません。実際の原稿は、一次資料と突き合わせてから用意します。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>この試作で分かること・分からないこと</h2>
+    <p>確かめられるのは、次のあたりです。</p>
+    <ul>
+      <li>読み終えてから次を選ぶ流れが、体験として自然に感じられるか</li>
+      <li>移動中に読み終えると対象が後方に去ってしまう問題を、語りの言い回し（「歩いてきた方向に」「この先に」）で吸収できるか</li>
+      <li>立ち止まったときに黙る条件（一定距離を動くまで次を再生しない）が、うるさくない程度に効くか</li>
+    </ul>
+    <p style="margin-top:1.2rem;">一方、この試作では分からないことのほうが多く残ります。</p>
+    <ul>
+      <li><strong>肝心の中身。</strong>原稿がサンプルなので、「点が線になる」かどうかは判定できません</li>
+      <li><strong>バックグラウンド動作。</strong>ブラウザでは画面を消すと止まります。ポケットに入れて歩く形にはネイティブアプリが要ります</li>
+      <li><strong>読み上げの質。</strong>端末に入っている音声をそのまま使っているため、実際に配る場合の品質とは別物です</li>
+      <li><strong>ビル街での測位のずれ。</strong>実地でしか確かめられません</li>
+    </ul>
+  </div>
+
+  <div class="concept-section">
+    <h2>共創のご縁を探しています</h2>
+    <p>
+      歴史や地域の学び、音声を使った体験づくりに関心のある方がいらっしゃいましたら、<a href="/#contact" class="text-link">お問い合わせ</a>からご連絡ください。
+    </p>
+  </div>
+
+  <p class="concept-meta">
+    公開日：2026年8月4日 ／ 最終更新：2026年8月4日（内容は検討の進展にあわせて更新します）
+  </p>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/outlook/" class="footer-link">今後の展望</a>
+  <a href="/" class="footer-link">ホームへ戻る</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+<script>
+/* 歩くと語り出す仕組みの試作。
+   ブラウザ内で完結する（位置情報も再生履歴も外部に送らない）。外部ライブラリ不使用。
+
+   中核は「直列再生ループ」:
+     現在地を取る → 次に話す対象を選ぶ → 読み終わるまで割り込まない → 最初に戻る
+   位置情報を常時監視せず、再生の切れ目でだけ取りに行くのが要点。 */
+(function () {
+  'use strict';
+
+  /* ── コースデータ ──────────────────────────────
+     座標はおおよその値。実際のコースを作る際に測り直す。
+     原稿はすべてサンプルで、歴史の解説は入れていない（一次資料と
+     突き合わせてから用意する）。intro は再生時に距離と方角から組み立てる。 */
+  var COURSE = {
+    name: '東京・幕末から明治へ（サンプル）',
+    spots: [
+      { id: 'sakuradamon', name: '桜田門のあたり',   lat: 35.6786, lng: 139.7516 },
+      { id: 'edojo',       name: '江戸城のあたり',   lat: 35.6874, lng: 139.7530 },
+      { id: 'nihonbashi',  name: '日本橋のあたり',   lat: 35.6839, lng: 139.7744 },
+      { id: 'ueno',        name: '上野のあたり',     lat: 35.7138, lng: 139.7745 },
+      { id: 'sengakuji',   name: '泉岳寺のあたり',   lat: 35.6389, lng: 139.7402 }
+    ]
+  };
+
+  /* サンプル原稿。実際の原稿は「問いかけ → 本題 → つながり」の三部構成を想定している。 */
+  var SAMPLE_BODY = [
+    'ここで何があったか、覚えていますか。',
+    'ここにはサンプルの原稿が入っています。実際の解説は、一次資料と突き合わせてから用意します。',
+    'この試作で確かめたいのは中身ではなく、読み終えてから次を選ぶという流れが自然に感じられるかどうかです。'
+  ].join('');
+
+  /* ── 移動手段ごとの設定 ────────────────────────
+     徒歩と自動車では、探索する距離も語りの時制も変わる。 */
+  var MODES = {
+    walk: {
+      label: '徒歩',
+      radius: 800,      // 探索半径（m）
+      minMove: 50,      // これだけ動くまで次を再生しない（m）
+      forwardOnly: false,
+      desc: '半径800m以内から選びます。読み終えたとき対象は後方にあるので、過去形で語ります。50m動くまで次を再生しません。'
+    },
+    car: {
+      label: '自動車',
+      radius: 5000,
+      minMove: 300,
+      forwardOnly: true, // 進行方向の前方（±60度）に絞る
+      desc: '半径5km以内、進行方向の前方から選びます。読み終える頃には通り過ぎているため、未来形で語ります。300m動くまで次を再生しません。'
+    }
+  };
+
+  /* シミュレーションの移動速度（m/秒）。徒歩は時速およそ4.5km、自動車は時速およそ36km。
+     ただし実時間で歩かせると地点間の移動に何十分もかかるため、SIM_FACTOR 倍に早送りする。 */
+  var SIM_SPEED = { walk: 1.25, car: 10 };
+  var SIM_FACTOR = { walk: 40, car: 8 };
+  var SIM_TICK_MS = 1000;
+
+  /* ── DOM ── */
+  var el = {
+    start: document.getElementById('btn-start'),
+    stop: document.getElementById('btn-stop'),
+    reset: document.getElementById('btn-reset'),
+    badge: document.getElementById('state-badge'),
+    stateText: document.getElementById('state-text'),
+    nowBox: document.getElementById('now-box'),
+    nowTitle: document.getElementById('now-title'),
+    nowScript: document.getElementById('now-script'),
+    log: document.getElementById('log'),
+    spotList: document.getElementById('spot-list'),
+    modeDesc: document.getElementById('mode-desc')
+  };
+
+  /* ── 状態 ── */
+  var running = false;
+  var played = [];        // 再生済みの spot id
+  var lastPos = null;     // 直前に取得した位置（進行方向の算出に使う）
+  var lastPickPos = null; // 最後に「次を選んだ」ときの位置（立ち止まり判定に使う）
+  var simPos = null;      // シミュレーションの現在地
+  var simTimer = null;
+  var simRoute = [];
+  var simIndex = 0;
+  var retryTimer = null;
+  var currentUtterance = null;
+
+  function mode() {
+    var v = document.querySelector('input[name="mode"]:checked');
+    return MODES[v ? v.value : 'walk'];
+  }
+  function modeKey() {
+    var v = document.querySelector('input[name="mode"]:checked');
+    return v ? v.value : 'walk';
+  }
+  function useGps() {
+    var v = document.querySelector('input[name="src"]:checked');
+    return !!v && v.value === 'gps';
+  }
+
+  /* ── ログ ── */
+  var logLines = [];
+  function log(msg) {
+    var t = new Date();
+    var hh = String(t.getHours()).padStart(2, '0');
+    var mm = String(t.getMinutes()).padStart(2, '0');
+    var ss = String(t.getSeconds()).padStart(2, '0');
+    logLines.push(hh + ':' + mm + ':' + ss + '  ' + msg);
+    if (logLines.length > 200) { logLines.shift(); }
+    el.log.textContent = logLines.join('\n');
+    el.log.scrollTop = el.log.scrollHeight;
+  }
+
+  function setState(badge, text) {
+    el.badge.textContent = badge;
+    el.stateText.textContent = text;
+  }
+
+  /* ── 距離と方角 ───────────────────────────────
+     ヒュベニではなく球面近似（この用途では十分な精度）。 */
+  var R = 6378137;
+  function toRad(d) { return d * Math.PI / 180; }
+
+  function distance(a, b) {
+    var dLat = toRad(b.lat - a.lat);
+    var dLng = toRad(b.lng - a.lng);
+    var la1 = toRad(a.lat), la2 = toRad(b.lat);
+    var h = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+  }
+
+  /* 真北を0度とした方位角（0-360） */
+  function bearing(a, b) {
+    var dLng = toRad(b.lng - a.lng);
+    var la1 = toRad(a.lat), la2 = toRad(b.lat);
+    var y = Math.sin(dLng) * Math.cos(la2);
+    var x = Math.cos(la1) * Math.sin(la2) - Math.sin(la1) * Math.cos(la2) * Math.cos(dLng);
+    return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+  }
+
+  /* 2つの方位の差（0-180） */
+  function angleDiff(a, b) {
+    var d = Math.abs(a - b) % 360;
+    return d > 180 ? 360 - d : d;
+  }
+
+  var COMPASS = ['北', '北東', '東', '南東', '南', '南西', '西', '北西'];
+  function compass(deg) {
+    return COMPASS[Math.round(deg / 45) % 8];
+  }
+
+  function humanDistance(m) {
+    if (m < 25) { return 'すぐそば'; }
+    if (m < 100) { return Math.round(m / 10) * 10 + 'メートル'; }
+    if (m < 1000) { return Math.round(m / 50) * 50 + 'メートル'; }
+    return (Math.round(m / 100) / 10) + 'キロ';
+  }
+
+  /* ── 位置の取得 ───────────────────────────────
+     常時監視（watchPosition）はしない。再生の切れ目で一度だけ取りに行く。 */
+  function getPosition() {
+    return new Promise(function (resolve, reject) {
+      if (!useGps()) {
+        if (!simPos) { simPos = { lat: COURSE.spots[0].lat - 0.004, lng: COURSE.spots[0].lng - 0.004 }; }
+        resolve({ lat: simPos.lat, lng: simPos.lng, accuracy: 5, simulated: true });
+        return;
+      }
+      if (!navigator.geolocation) {
+        reject(new Error('この環境では位置情報を取得できません'));
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        function (p) {
+          resolve({
+            lat: p.coords.latitude,
+            lng: p.coords.longitude,
+            accuracy: p.coords.accuracy,
+            simulated: false
+          });
+        },
+        function (e) { reject(new Error('位置情報を取得できませんでした（' + e.message + '）')); },
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
+      );
+    });
+  }
+
+  /* ── シミュレーション ──────────────────────────
+     あらかじめ経路（近いものから順に辿る順番）を決めておき、その上を一定速度で進む。
+     再生済みかどうかとは切り離すのが要点。目標を「未再生のうち最も近いもの」に
+     すると、地点の真上で止まったり行ったり来たりして、距離の表示が壊れる。 */
+  function buildSimRoute(start) {
+    var rest = COURSE.spots.slice();
+    var cur = start;
+    var route = [];
+    while (rest.length) {
+      rest.sort(function (a, b) { return distance(cur, a) - distance(cur, b); });
+      cur = rest.shift();
+      route.push(cur);
+    }
+    return route;
+  }
+
+  function startSim() {
+    if (simTimer) { return; }
+    if (!simRoute.length) { simRoute = buildSimRoute(simPos); simIndex = 0; }
+    simTimer = setInterval(function () {
+      var step = SIM_SPEED[modeKey()] * SIM_FACTOR[modeKey()] * (SIM_TICK_MS / 1000);
+      var remaining = step;
+      // 1ティック分の距離を、経路上で順に消費する（地点を通過したら次の区間へ）
+      while (remaining > 0 && simIndex < simRoute.length) {
+        var t = simRoute[simIndex];
+        var d = distance(simPos, t);
+        if (d <= remaining) {
+          simPos = { lat: t.lat, lng: t.lng };
+          remaining -= d;
+          simIndex++;
+        } else {
+          simPos = movePoint(simPos, bearing(simPos, t), remaining);
+          remaining = 0;
+        }
+      }
+    }, SIM_TICK_MS);
+  }
+
+  function stopSim() {
+    if (simTimer) { clearInterval(simTimer); simTimer = null; }
+  }
+
+  /* 指定の方位へ指定の距離だけ進んだ座標 */
+  function movePoint(from, deg, meters) {
+    var b = toRad(deg);
+    var lat = toRad(from.lat), lng = toRad(from.lng);
+    var dr = meters / R;
+    var lat2 = Math.asin(Math.sin(lat) * Math.cos(dr) + Math.cos(lat) * Math.sin(dr) * Math.cos(b));
+    var lng2 = lng + Math.atan2(Math.sin(b) * Math.sin(dr) * Math.cos(lat),
+                                Math.cos(dr) - Math.sin(lat) * Math.sin(lat2));
+    return { lat: lat2 * 180 / Math.PI, lng: lng2 * 180 / Math.PI };
+  }
+
+  /* ── 次に話す対象を選ぶ ────────────────────────
+     再生済みを除き、探索半径に入っているものから最も近いものを選ぶ。
+     自動車では進行方向の前方（±60度）に絞る。 */
+  function pickNext(pos, heading) {
+    var m = mode();
+    var cands = [];
+    COURSE.spots.forEach(function (s) {
+      if (played.indexOf(s.id) >= 0) { return; }
+      var d = distance(pos, s);
+      if (d > m.radius) { return; }
+      var b = bearing(pos, s);
+      if (m.forwardOnly && heading !== null && angleDiff(heading, b) > 60) { return; }
+      cands.push({ spot: s, dist: d, bearing: b });
+    });
+    if (!cands.length) { return null; }
+    cands.sort(function (a, b) { return a.dist - b.dist; });
+    return cands[0];
+  }
+
+  /* ── 原稿を組み立てる ──────────────────────────
+     徒歩は過去形（もう通り過ぎている前提）、自動車は未来形（これから近づく前提）。 */
+  function buildScript(cand) {
+    var car = modeKey() === 'car';
+    var intro;
+    if (cand.dist < 25) {
+      // 目の前にあるときは、距離も方角も言わない
+      intro = car ? 'まもなく、' + cand.spot.name + 'です。'
+                  : 'いまいるあたりが、' + cand.spot.name + 'です。';
+    } else if (car) {
+      // 自動車は前方（±60度）からしか選ばないので、未来形で言い切れる
+      intro = 'この先、' + humanDistance(cand.dist) + 'ほど' + compass(cand.bearing) +
+              'の方向に、' + cand.spot.name + 'があります。';
+    } else {
+      // 徒歩は前後どちらもありうるので、方角と距離だけを言う
+      intro = 'ここから' + compass(cand.bearing) + 'へ' + humanDistance(cand.dist) +
+              'ほど。' + cand.spot.name + 'です。';
+    }
+    return { intro: intro, body: SAMPLE_BODY };
+  }
+
+  /* ── 読み上げ ─────────────────────────────────
+     読み終わるまで割り込まない。終わったら次のループへ。 */
+  function speak(text) {
+    return new Promise(function (resolve) {
+      if (!('speechSynthesis' in window)) {
+        log('！ この環境は読み上げに対応していません。文字だけ表示して先へ進みます');
+        setTimeout(resolve, 3000);
+        return;
+      }
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = 'ja-JP';
+      u.rate = 1.0;
+      u.pitch = 1.0;
+      var done = false;
+      function finish() {
+        if (done) { return; }
+        done = true;
+        currentUtterance = null;
+        resolve();
+      }
+      u.onend = finish;
+      u.onerror = function () {
+        log('！ 読み上げでエラーが起きました。次へ進みます');
+        finish();
+      };
+      currentUtterance = u;
+      window.speechSynthesis.speak(u);
+    });
+  }
+
+  /* ── 直列ループ本体 ────────────────────────────
+     ここがこの試作の中心。位置取得 → 選定 → 再生 を順番に、重ならないように回す。 */
+  function loop() {
+    if (!running) { return; }
+
+    setState('位置を取得中', '現在地を取りに行っています。');
+    getPosition().then(function (pos) {
+      if (!running) { return; }
+
+      var acc = Math.round(pos.accuracy);
+      log('位置を取得: ' + pos.lat.toFixed(5) + ', ' + pos.lng.toFixed(5) +
+          '（誤差およそ' + acc + 'm' + (pos.simulated ? '・シミュレーション' : '') + '）');
+
+      // 進行方向は、直前の位置との差分から求める（方位センサーは使わない）
+      var heading = null;
+      if (lastPos && distance(lastPos, pos) > 5) {
+        heading = bearing(lastPos, pos);
+        log('進行方向: ' + compass(heading) + '（' + Math.round(heading) + '度）');
+      }
+
+      // 立ち止まっているあいだは黙る
+      if (lastPickPos) {
+        var moved = distance(lastPickPos, pos);
+        if (moved < mode().minMove) {
+          setState('待機中', Math.round(moved) + 'm しか動いていないので、次は再生しません（' +
+                   mode().minMove + 'm 以上で再開）。');
+          log('待機: 前回の選定から ' + Math.round(moved) + 'm（しきい値 ' + mode().minMove + 'm）');
+          lastPos = pos;
+          retryTimer = setTimeout(loop, 4000);
+          return;
+        }
+      }
+
+      var cand = pickNext(pos, heading);
+      lastPos = pos;
+
+      if (!cand) {
+        var rest = COURSE.spots.length - played.length;
+        if (rest === 0) {
+          setState('完了', 'サンプル地点をすべて再生しました。「再生履歴を消す」で最初からやり直せます。');
+          log('完了: 未再生の地点がなくなりました');
+          stop();
+          return;
+        }
+        setState('待機中', '探索範囲に未再生の地点がありません（残り ' + rest + '件）。移動すると再開します。');
+        log('該当なし: 半径' + mode().radius + 'm 以内に未再生の地点なし（残り' + rest + '件）');
+        retryTimer = setTimeout(loop, 4000);
+        return;
+      }
+
+      // ここから先は読み終えるまで割り込まない
+      lastPickPos = pos;
+      played.push(cand.spot.id);
+      renderSpotList();
+
+      var script = buildScript(cand);
+      var full = script.intro + script.body;
+
+      el.nowBox.hidden = false;
+      el.nowTitle.textContent = cand.spot.name;
+      el.nowScript.textContent = full;
+      el.nowScript.classList.remove('said');
+
+      setState('読み上げ中', '読み終わるまで、次の判定は行いません。');
+      log('選定: ' + cand.spot.name + '（' + Math.round(cand.dist) + 'm・' +
+          compass(cand.bearing) + '）→ 再生開始');
+
+      speak(full).then(function () {
+        if (!running) { return; }
+        log('再生終了: ' + cand.spot.name + ' → 位置の取得へ戻る');
+        el.nowScript.classList.add('said');
+        loop();
+      });
+    }).catch(function (e) {
+      log('！ ' + e.message);
+      setState('エラー', e.message + ' 4秒後にもう一度試します。');
+      if (running) { retryTimer = setTimeout(loop, 4000); }
+    });
+  }
+
+  /* ── 開始・停止 ── */
+  function start() {
+    if (running) { return; }
+    running = true;
+    el.start.disabled = true;
+    el.stop.disabled = false;
+    el.nowScript.classList.remove('said');
+
+    // iPhone 対策。利用者の操作を起点に一度だけ空の発話を通しておく
+    if ('speechSynthesis' in window) {
+      try {
+        var warm = new SpeechSynthesisUtterance(' ');
+        warm.volume = 0;
+        window.speechSynthesis.speak(warm);
+      } catch (e) { /* 対応していない環境では黙って無視する */ }
+    }
+
+    if (!useGps()) {
+      if (!simPos) { simPos = { lat: COURSE.spots[0].lat - 0.004, lng: COURSE.spots[0].lng - 0.004 }; }
+      startSim();
+      log('開始（シミュレーション・' + mode().label + '）');
+    } else {
+      log('開始（実際のGPS・' + mode().label + '）');
+    }
+    loop();
+  }
+
+  function stop() {
+    running = false;
+    el.start.disabled = false;
+    el.stop.disabled = true;
+    stopSim();
+    if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
+    if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); }
+    currentUtterance = null;
+    setState('停止中', '「開始」を押すと、現在地の取得から始まります。');
+    log('停止');
+  }
+
+  function reset() {
+    played = [];
+    lastPos = null;
+    lastPickPos = null;
+    simPos = null;
+    simRoute = [];
+    simIndex = 0;
+    el.nowBox.hidden = true;
+    el.nowScript.classList.remove('said');
+    renderSpotList();
+    log('再生履歴を消しました');
+  }
+
+  /* ── 一覧の描画 ── */
+  function renderSpotList() {
+    el.spotList.innerHTML = '';
+    COURSE.spots.forEach(function (s) {
+      var li = document.createElement('li');
+      li.textContent = s.name;
+      if (played.indexOf(s.id) >= 0) {
+        li.className = 'done';
+        li.textContent = s.name + '（再生済み）';
+      }
+      el.spotList.appendChild(li);
+    });
+  }
+
+  function renderModeDesc() {
+    el.modeDesc.textContent = mode().desc;
+  }
+
+  /* ── 起動 ── */
+  el.start.addEventListener('click', start);
+  el.stop.addEventListener('click', stop);
+  el.reset.addEventListener('click', reset);
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="mode"]'), function (r) {
+    r.addEventListener('change', renderModeDesc);
+  });
+
+  renderSpotList();
+  renderModeDesc();
+})();
+</script>
+
+</body>
+</html>
