@@ -8,7 +8,7 @@
 <!-- outlook共通の回遊ナビ（パンくず直後にテーマ一覧を注入） -->
 <script src="/outlook/nav.js" defer></script>
 <title>学びの記録と構想 | 株式会社ヤエノワ</title>
-<meta name="description" content="株式会社ヤエノワ代表の学びの記録（GX・生成AIなど）と、学びの場に実務の知を返す構想のページ。学んだことを日付つきで記録し、母校（大阪工業大学 情報科学部・和歌山県立海南高校）との接点づくりを検討しています。">
+<meta name="description" content="株式会社ヤエノワ代表の学びの記録（GX・生成AIなど）と、学びの場に実務の知を返す構想のページ。学んだことを日付つきで記録し、母校（大阪工業大学 情報科学部・和歌山県立海南高校）との接点づくりを検討しています。大人の学び直しに向けた企画案（東京音声ナビゲーター構想）も配下にまとめています。">
 <link rel="canonical" href="https://yaenowa.co.jp/outlook/academics">
 <meta name="robots" content="noindex, follow">
 
@@ -33,19 +33,22 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebPage",
+  "@type": "CollectionPage",
   "@id": "https://yaenowa.co.jp/outlook/academics",
   "url": "https://yaenowa.co.jp/outlook/academics",
   "name": "学びの記録と構想 | 株式会社ヤエノワ",
-  "description": "株式会社ヤエノワ代表の学びの記録（GX・生成AIなど）と、学びの場に実務の知を返す構想のページ。記録は継続更新中、構想は検討段階。",
+  "description": "株式会社ヤエノワ代表の学びの記録（GX・生成AIなど）と、学びの場に実務の知を返す構想のページ。大人の学び直しに向けた東京音声ナビゲーター構想を配下にまとめている。記録は継続更新中、構想は検討段階。",
   "inLanguage": "ja",
   "datePublished": "2026-07-26",
-  "dateModified": "2026-07-29",
+  "dateModified": "2026-08-04",
   "isPartOf": {
     "@type": "CollectionPage",
     "@id": "https://yaenowa.co.jp/outlook/",
     "name": "今後の展望"
   },
+  "hasPart": [
+    { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/academics-tvn", "name": "東京音声ナビゲーター構想（検討中）" }
+  ],
   "publisher": {
     "@type": "Organization",
     "name": "株式会社ヤエノワ",
@@ -74,6 +77,51 @@
 <!-- 今後の展望セクション共通のスタイル（nav・パンくず・本文・フッターの土台＋モダンCSSの拡張） -->
 <link rel="stylesheet" href="/outlook/outlook.css">
 
+<style>
+  /* 本ページ固有のスタイルのみ。
+     色・ダークモード・リセットは theme.css、outlook 配下で共通の
+     nav・パンくず・本文・フッターは outlook/outlook.css を参照。 */
+  /* ── テーマカード ── */
+  .theme-card {
+    background: var(--paper-mid);
+    border-radius: 12px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .theme-card:last-child { margin-bottom: 0; }
+  .theme-card h3 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.0rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1.8;
+    margin-bottom: 0.4rem;
+  }
+  .theme-card h3 a {
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .theme-card h3 a:hover { color: var(--accent); }
+  .theme-card .theme-kind {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+  }
+  .theme-card p {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-card h3 a { transition: none; }
+  }
+</style>
 </head>
 <body>
 
@@ -162,6 +210,21 @@
   </div>
 
   <div class="concept-section">
+    <h2>このテーマから育った企画案</h2>
+    <p>
+      「学びの場に返す」を考えるうちに、相手を学生に限らず捉え直した企画案です。個別のページにまとめています。
+    </p>
+
+    <div class="theme-card">
+      <span class="theme-kind">企画案</span>
+      <h3><a href="/outlook/academics-tvn">東京音声ナビゲーター ── 教科書の点を、土地の上でつなぐ</a></h3>
+      <p>
+        小中高で習った歴史上の出来事を、その舞台となった土地で音声として受け取れないかという構想。大人の学び直しに照準を合わせ、まず東京に範囲を絞って検討しています（名称は仮称・すべて検討段階）。
+      </p>
+    </div>
+  </div>
+
+  <div class="concept-section">
     <h2>現在地</h2>
     <p>
       本ページの内容は代表個人の構想であり、大学・学部や出身校（高校）との公式な連携や合意に基づくものではありません。まずは一人の卒業生としてできる接点づくりと、上の「学びの記録」を続けることから始めています。経緯は<a href="/outlook/" class="text-link">今後の展望</a>に記録していきます。
@@ -176,7 +239,7 @@
   </div>
 
   <p class="concept-meta">
-    公開日：2026年7月26日 ／ 最終更新：2026年7月29日（内容は検討の進展にあわせて更新します）
+    公開日：2026年7月26日 ／ 最終更新：2026年8月4日（内容は検討の進展にあわせて更新します）
   </p>
 </main>
 
