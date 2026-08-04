@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<!-- outlook共通の回遊ナビ（パンくず直後にテーマ一覧を注入） -->
+<script src="/outlook/nav.js" defer></script>
+<title>排出量ざっくり概算（プロトタイプ） | 株式会社ヤエノワ</title>
+<meta name="description" content="仕訳CSVをブラウザに読み込むと、勘定科目ベースでScope1・2・3の排出量をざっくり概算するプロトタイプです。データはブラウザ内でのみ処理され、サーバーには送信されません。検討中のGX構想の実験として公開しています。">
+<link rel="canonical" href="https://yaenowa.co.jp/outlook/gx/pipeline-demo">
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="排出量ざっくり概算（プロトタイプ） | 株式会社ヤエノワ">
+<meta property="og:description" content="仕訳CSVから排出量をざっくり概算するブラウザ完結のプロトタイプ。データはサーバーに送信されません。">
+<meta property="og:url" content="https://yaenowa.co.jp/outlook/gx/pipeline-demo">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+
+<!-- 構造化データ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://yaenowa.co.jp/outlook/gx/pipeline-demo",
+  "url": "https://yaenowa.co.jp/outlook/gx/pipeline-demo",
+  "name": "排出量ざっくり概算（プロトタイプ） | 株式会社ヤエノワ",
+  "description": "仕訳CSVをブラウザ内でのみ処理して排出量をざっくり概算するプロトタイプ。データはサーバーに送信されない。原単位はサンプル値であり、結果は参考値。",
+  "inLanguage": "ja",
+  "datePublished": "2026-07-27",
+  "dateModified": "2026-07-29",
+  "isPartOf": {
+    "@type": "WebPage",
+    "@id": "https://yaenowa.co.jp/outlook/gx/pipeline",
+    "name": "排出量算定の前工程構想（検討中）"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "株式会社ヤエノワ",
+    "url": "https://yaenowa.co.jp/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+    { "@type": "ListItem", "position": 2, "name": "今後の展望", "item": "https://yaenowa.co.jp/outlook/" },
+    { "@type": "ListItem", "position": 3, "name": "GX構想", "item": "https://yaenowa.co.jp/outlook/gx/" },
+    { "@type": "ListItem", "position": 4, "name": "排出量算定の前工程構想", "item": "https://yaenowa.co.jp/outlook/gx/pipeline" },
+    { "@type": "ListItem", "position": 5, "name": "排出量ざっくり概算", "item": "https://yaenowa.co.jp/outlook/gx/pipeline-demo" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+<!-- 今後の展望セクション共通のスタイル（nav・パンくず・本文・フッターの土台＋モダンCSSの拡張） -->
+<link rel="stylesheet" href="/outlook/outlook.css">
+
+<style>
+  /* 本ページ固有のスタイルのみ。
+     色・ダークモード・リセットは theme.css、outlook 配下で共通の
+     nav・パンくず・本文・フッターは outlook/outlook.css を参照。 */
+  .app {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 9rem 1.5rem 5rem;
+  }
+
+  .app-label {
+    font-size: 0.7rem; letter-spacing: 0.4em;
+    color: var(--accent-cool); text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .app-title {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700; letter-spacing: 0.06em;
+    color: var(--ink); margin-bottom: 1.2rem; text-wrap: balance;
+  }
+  .divider { width: 40px; height: 1px; background: var(--accent-gold); margin: 1.2rem 0 2rem; }
+
+  .app-status {
+    display: inline-block;
+    font-size: 0.75rem; letter-spacing: 0.15em;
+    color: var(--accent-cool);
+    border: 1px solid var(--accent-cool);
+    background: color-mix(in srgb, var(--accent-cool) 7%, transparent);
+    border-radius: 999px;
+    padding: 0.15rem 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+  .app-note {
+    font-size: 0.8rem; color: var(--ink-light);
+    line-height: 1.9; letter-spacing: 0.03em; margin-bottom: 2.5rem;
+  }
+  .app-note strong { font-weight: 500; color: var(--ink-mid); }
+
+  /* ── 入力エリア ── */
+  .dropzone {
+    border: 1.5px dashed var(--paper-dark);
+    border-radius: 12px;
+    padding: 2.2rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s, background 0.3s;
+    margin-bottom: 1rem;
+  }
+  .dropzone:hover, .dropzone.dragover {
+    border-color: var(--accent-gold);
+    background: var(--paper-mid);
+  }
+  .dropzone p { font-size: 0.9rem; color: var(--ink-mid); margin-bottom: 0.4rem; }
+  .dropzone .sub { font-size: 0.78rem; color: var(--ink-light); }
+  .dropzone input { display: none; }
+
+  .demo-row { text-align: center; margin-bottom: 1.5rem; }
+  .demo-note { font-size: 0.72rem; color: var(--ink-light); margin-top: 0.5rem; }
+
+  .supported {
+    background: var(--paper-mid);
+    border-radius: 12px;
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 2.5rem;
+  }
+  .supported-title {
+    font-size: 0.78rem; letter-spacing: 0.15em;
+    color: var(--accent-gold); margin-bottom: 0.4rem;
+  }
+  .supported ul { list-style: none; margin: 0; padding: 0; }
+  .supported li {
+    position: relative; padding-left: 1.1rem;
+    font-size: 0.82rem; color: var(--ink-mid); line-height: 1.9;
+  }
+  .supported li::before {
+    content: "・"; position: absolute; left: 0; color: var(--accent-gold);
+  }
+  .supported li strong { font-weight: 500; }
+  .supported-note {
+    font-size: 0.72rem; color: var(--ink-light);
+    line-height: 1.8; margin-top: 0.6rem;
+  }
+  .btn-secondary {
+    display: inline-block;
+    font-size: 0.82rem; letter-spacing: 0.08em;
+    color: var(--accent-gold);
+    background: none;
+    border: 1px solid var(--accent-gold);
+    border-radius: 999px;
+    padding: 0.45rem 1.4rem;
+    cursor: pointer;
+    transition: color 0.3s, background 0.3s;
+    font-family: inherit;
+  }
+  .btn-secondary:hover { background: var(--accent-pale); }
+
+  /* ── 列選択 ── */
+  .mapping-panel {
+    background: var(--paper-mid);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+    display: none;
+  }
+  .mapping-panel.visible { display: block; }
+  .mapping-panel label {
+    font-size: 0.82rem; color: var(--ink-mid);
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    margin-right: 1.5rem; margin-bottom: 0.5rem;
+  }
+  .mapping-panel select {
+    font-family: inherit; font-size: 0.85rem;
+    color: var(--ink); background: var(--paper);
+    border: 1px solid var(--paper-dark); border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+  }
+  .mapping-panel .file-info { font-size: 0.78rem; color: var(--ink-light); margin-bottom: 0.6rem; }
+
+  /* ── 結果 ── */
+  .results { display: none; }
+  .results.visible { display: block; }
+
+  .total-card {
+    text-align: center;
+    padding: 1.8rem 1rem 1.4rem;
+    background: var(--paper-mid);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+  }
+  .total-card .total-label { font-size: 0.75rem; letter-spacing: 0.25em; color: var(--ink-light); }
+  .total-card .total-value {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 2.4rem; font-weight: 700; color: var(--accent);
+    line-height: 1.4;
+  }
+  .total-card .total-unit { font-size: 0.9rem; color: var(--ink-mid); margin-left: 0.3rem; }
+  .total-card .total-sub { font-size: 0.75rem; color: var(--ink-light); }
+
+  .section-h {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.05rem; font-weight: 600;
+    color: var(--ink); letter-spacing: 0.05em;
+    padding-left: 0.8rem;
+    border-left: 2px solid var(--accent-gold);
+    margin: 2.2rem 0 1rem;
+  }
+
+  .bar-row { margin-bottom: 0.9rem; }
+  .bar-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 0.82rem; color: var(--ink-mid); margin-bottom: 0.25rem;
+  }
+  .bar-head .bar-val { font-size: 0.78rem; color: var(--ink-light); }
+  .bar-track {
+    height: 10px; border-radius: 999px;
+    background: var(--paper-mid);
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 999px;
+    background: var(--accent-gold);
+  }
+  .bar-fill.s1 { background: var(--accent); }
+  .bar-fill.s2 { background: var(--sakura-deep); }
+  .bar-fill.s3 { background: var(--accent-gold); }
+
+  table.acc {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+  table.acc th, table.acc td {
+    text-align: left; padding: 0.45rem 0.5rem;
+    border-bottom: 0.5px solid var(--paper-dark);
+    color: var(--ink-mid);
+  }
+  table.acc th { font-weight: 500; color: var(--ink-light); font-size: 0.75rem; letter-spacing: 0.08em; }
+  table.acc td.num, table.acc th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .unmatched {
+    font-size: 0.8rem; color: var(--ink-light); line-height: 1.9;
+    background: var(--paper-mid); border-radius: 8px;
+    padding: 0.8rem 1rem; margin-top: 1rem;
+  }
+
+  .disclaimer {
+    margin-top: 2.5rem;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--paper-dark);
+    border-radius: 8px;
+    font-size: 0.76rem; color: var(--ink-light); line-height: 1.9;
+  }
+
+  details.factors { margin-top: 2rem; }
+  details.factors summary {
+    cursor: pointer; font-size: 0.82rem; color: var(--accent-gold);
+    letter-spacing: 0.05em;
+  }
+  details.factors .factors-note { font-size: 0.76rem; color: var(--ink-light); margin: 0.6rem 0; }
+
+  .app-meta {
+    margin-top: 3rem; padding-top: 1.5rem;
+    border-top: 0.5px solid var(--paper-dark);
+    font-size: 0.8rem; color: var(--ink-light); line-height: 2.0;
+  }
+  .app-meta a { color: var(--accent-gold); }
+</style>
+</head>
+<body>
+
+<!-- スクロール駆動の読書プログレス（CSSのみ・対応ブラウザで表示） -->
+<div class="reading-progress" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <div class="nav-right">
+    <a href="/outlook/gx/pipeline" class="nav-home">← 前工程構想へ戻る</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<main class="app">
+  <p class="crumbs"><a href="/outlook/">今後の展望</a> › <a href="/outlook/gx/">GX構想</a> › <a href="/outlook/gx/pipeline">排出量算定の前工程構想</a> › 排出量ざっくり概算</p>
+  <p class="app-label">GX Demo</p>
+  <h1 class="app-title">排出量ざっくり概算</h1>
+  <div class="divider"></div>
+
+  <span class="app-status">プロトタイプ（実験公開）</span>
+  <p class="app-note">
+    会計ソフトから書き出した仕訳CSVを読み込むと、勘定科目ごとの金額に<strong>サンプルの排出原単位</strong>を掛けて、Scope1・2・3の排出量をざっくり概算します。<br>
+    <strong>読み込んだデータは、お使いのブラウザの中でのみ処理されます。サーバーには一切送信されません。</strong>ページを閉じればデータは残りません。<br>
+    本ツールは検討中の<a href="/outlook/gx/pipeline" class="text-link">排出量算定の前工程構想</a>の実験として公開しているプロトタイプであり、正式なサービスとして提供しているものではありません。
+  </p>
+
+  <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="仕訳CSVファイルを選択">
+    <p>仕訳CSVをここにドロップ、またはクリックして選択</p>
+    <p class="sub">UTF-8 / Shift_JIS 対応。勘定科目と金額の列があれば読み込める想定です（列は手動でも選べます）</p>
+    <input type="file" id="fileInput" accept=".csv,text/csv">
+  </div>
+  <div class="demo-row">
+    <button class="btn-secondary" id="demoBtn" type="button">サンプルデータで試す</button>
+    <p class="demo-note">（サンプルは架空の仕訳データです。実在の取引・当社の会計データではありません）</p>
+  </div>
+
+  <div class="supported">
+    <p class="supported-title">対応を想定しているCSV</p>
+    <ul>
+      <li><strong>freee会計</strong> ── 仕訳帳（仕訳データ）のエクスポートCSV</li>
+      <li><strong>マネーフォワード クラウド会計</strong> ── 仕訳帳のエクスポートCSV</li>
+      <li><strong>弥生会計</strong> ── 仕訳日記帳の書き出しCSV（Shift_JIS のまま読み込める想定）</li>
+      <li>その他 ── 「勘定科目（または借方勘定科目）」と「金額（または借方金額）」の列を持つCSV全般</li>
+    </ul>
+    <p class="supported-note">
+      経費が借方に計上された仕訳帳形式を前提としています。各形式での動作確認は順次進めており、読み込めない形式がありましたらお知らせいただけると助かります。記載の製品・サービス名は各社の商標または登録商標です。当社と各社の間に提携関係はありません。
+    </p>
+  </div>
+
+  <div class="mapping-panel" id="mappingPanel">
+    <p class="file-info" id="fileInfo"></p>
+    <label>勘定科目の列
+      <select id="accountCol"></select>
+    </label>
+    <label>金額の列
+      <select id="amountCol"></select>
+    </label>
+  </div>
+
+  <div class="results" id="results">
+    <div class="total-card">
+      <p class="total-label">概算排出量（参考値）</p>
+      <p><span class="total-value" id="totalValue">–</span><span class="total-unit">t-CO2e / 年換算なし（読み込んだ期間の合計）</span></p>
+      <p class="total-sub" id="totalSub"></p>
+    </div>
+
+    <h2 class="section-h">Scope別の内訳</h2>
+    <div id="scopeBars"></div>
+
+    <h2 class="section-h">排出量の大きい勘定科目（上位10件）</h2>
+    <table class="acc">
+      <thead>
+        <tr><th>勘定科目</th><th>分類</th><th class="num">金額（円）</th><th class="num">概算排出量（t-CO2e）</th></tr>
+      </thead>
+      <tbody id="accBody"></tbody>
+    </table>
+    <div class="unmatched" id="unmatched" hidden></div>
+
+    <details class="factors">
+      <summary>使用している対応表と原単位（サンプル値）を見る</summary>
+      <p class="factors-note">
+        このプロトタイプの原単位は<strong>動作を示すためのサンプル値（ダミー）</strong>です。実際の算定では、環境省の排出原単位データベース等の公的な原単位を、自社の勘定科目体系に合わせて設定します。この「対応表づくり」こそが、当社が構想している支援の中心です。
+      </p>
+      <table class="acc">
+        <thead><tr><th>勘定科目（部分一致）</th><th>分類</th><th class="num">原単位（t-CO2e/百万円）</th></tr></thead>
+        <tbody id="factorBody"></tbody>
+      </table>
+    </details>
+
+    <div class="disclaimer">
+      【ご利用にあたって】本ツールは検討中の構想を体験いただくためのプロトタイプであり、正式な排出量算定・報告・第三者検証に代わるものではありません。概算結果は入力データとサンプル原単位に基づく参考値であり、正確性を保証するものではありません。本ツールの利用により生じたいかなる損害についても、当社は責任を負いかねます。
+    </div>
+  </div>
+
+  <p class="app-meta">
+    このプロトタイプは<a href="/outlook/gx/pipeline">排出量算定の前工程構想</a>（<a href="/outlook/gx/">GX構想</a>の一テーマ）の実験として公開しているものです。検討の経緯は<a href="/outlook/">今後の展望</a>に記録しています。ご意見・ご関心のある方は<a href="/#contact">お問い合わせ</a>からご連絡ください。
+  </p>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/outlook/gx/pipeline" class="footer-link">前工程構想</a>
+  <a href="/outlook/gx/" class="footer-link">GX構想</a>
+  <a href="/" class="footer-link">ホームへ戻る</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── 対応表（サンプル原単位。単位: t-CO2e / 百万円）──
+     実際の算定では環境省の排出原単位DB等に基づき自社の科目体系に合わせて設定する。
+     ここではプロトタイプの動作を示すためのダミー値。 */
+  var FACTORS = [
+    { match: ['燃料', 'ガソリン', '車両'],           scope: 'Scope1', label: '燃料の燃焼（社用車等）', factor: 7.0 },
+    { match: ['水道光熱', '電気', '電力'],           scope: 'Scope2', label: '電力の使用（電気想定）', factor: 4.5 },
+    { match: ['旅費', '交通'],                        scope: 'Scope3', label: 'カテゴリ6: 出張・移動', factor: 3.0 },
+    { match: ['通信'],                                scope: 'Scope3', label: 'カテゴリ1: 購入したサービス', factor: 1.2 },
+    { match: ['消耗品', '事務用品', '備品'],          scope: 'Scope3', label: 'カテゴリ1: 購入した製品', factor: 2.5 },
+    { match: ['外注', '業務委託', '支払手数料'],      scope: 'Scope3', label: 'カテゴリ1: 購入したサービス', factor: 1.0 },
+    { match: ['広告', '宣伝'],                        scope: 'Scope3', label: 'カテゴリ1: 購入したサービス', factor: 1.1 },
+    { match: ['荷造', '運賃', '配送', '発送'],        scope: 'Scope3', label: 'カテゴリ4/9: 輸配送', factor: 5.5 },
+    { match: ['地代', '家賃', '賃借'],                scope: 'Scope3', label: 'カテゴリ8: リース資産（オフィス）', factor: 1.5 },
+    { match: ['新聞', '図書', '書籍'],                scope: 'Scope3', label: 'カテゴリ1: 購入した製品', factor: 1.8 },
+    { match: ['会議', '交際'],                        scope: 'Scope3', label: 'カテゴリ1: 購入したサービス', factor: 1.6 },
+    { match: ['研修', 'セミナー', '教育'],            scope: 'Scope3', label: 'カテゴリ1: 購入したサービス', factor: 1.0 },
+    { match: ['会費'],                                scope: 'Scope3', label: 'カテゴリ1: 購入したサービス', factor: 1.0 }
+  ];
+
+  /* 集計対象外とする科目（費用でない・排出と結びつけない。人件費・税・B/S科目・決算振替など） */
+  var EXCLUDE = ['売上', '仕入', '給料', '給与', '賞与', '役員報酬', '法定福利', '福利厚生',
+                 '租税', '公課', '法人税', '消費税', '源泉', '保険', '減価償却', '償却',
+                 '支払利息', '雑収入', '預金', '現金', '売掛', '買掛', '未払', '未収',
+                 '仮払', '仮受', '前払', '前受', '預り', '貸付', '借入', '出資', '敷金', '保証金',
+                 '繰延', '損益', '元入', '資本', '事業主'];
+
+  var state = { rows: [], headers: [] };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var dropzone = $('dropzone'), fileInput = $('fileInput');
+
+  /* ── CSV 読み込み（UTF-8 → 失敗時 Shift_JIS）── */
+  function decodeBuffer(buf) {
+    try {
+      var utf8 = new TextDecoder('utf-8', { fatal: true }).decode(buf);
+      return utf8;
+    } catch (e) {
+      return new TextDecoder('shift_jis').decode(buf);
+    }
+  }
+
+  function parseCSV(text) {
+    var rows = [];
+    var row = [], field = '', inQuotes = false;
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (inQuotes) {
+        if (c === '"') {
+          if (text[i + 1] === '"') { field += '"'; i++; }
+          else { inQuotes = false; }
+        } else { field += c; }
+      } else {
+        if (c === '"') { inQuotes = true; }
+        else if (c === ',') { row.push(field); field = ''; }
+        else if (c === '\n' || c === '\r') {
+          if (c === '\r' && text[i + 1] === '\n') { i++; }
+          row.push(field); field = '';
+          if (row.length > 1 || row[0] !== '') { rows.push(row); }
+          row = [];
+        } else { field += c; }
+      }
+    }
+    if (field !== '' || row.length) { row.push(field); rows.push(row); }
+    return rows;
+  }
+
+  function handleFile(file) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var text = decodeBuffer(reader.result);
+      var rows = parseCSV(text);
+      if (rows.length < 2) { alert('CSVの読み込みに失敗しました。ヘッダー行とデータ行があるか確認してください。'); return; }
+      state.headers = rows[0];
+      state.rows = rows.slice(1);
+      setupColumnSelect(file.name + '（' + state.rows.length + '行）');
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  /* ── 列の自動推定と選択UI ──
+     キーワードの優先順に探し、貸方側の列は候補から除外する
+     （freee・マネーフォワード・弥生会計の仕訳帳は借方/貸方が対になるため、
+      経費が計上される借方側を採用する） */
+  function guessCol(keywords) {
+    for (var k = 0; k < keywords.length; k++) {
+      for (var i = 0; i < state.headers.length; i++) {
+        var h = String(state.headers[i]);
+        if (h.indexOf('貸方') !== -1) { continue; }
+        if (h.indexOf(keywords[k]) !== -1) { return i; }
+      }
+    }
+    return -1;
+  }
+
+  function setupColumnSelect(info) {
+    $('fileInfo').textContent = '読み込み: ' + info;
+    var accSel = $('accountCol'), amtSel = $('amountCol');
+    accSel.innerHTML = ''; amtSel.innerHTML = '';
+    state.headers.forEach(function (h, i) {
+      var o1 = document.createElement('option'); o1.value = i; o1.textContent = h || ('列' + (i + 1));
+      var o2 = o1.cloneNode(true);
+      accSel.appendChild(o1); amtSel.appendChild(o2);
+    });
+    var accGuess = guessCol(['借方勘定科目', '勘定科目', '科目']);
+    var amtGuess = guessCol(['借方金額', '税込金額', '金額']);
+    accSel.value = accGuess >= 0 ? accGuess : 0;
+    amtSel.value = amtGuess >= 0 ? amtGuess : Math.min(1, state.headers.length - 1);
+    $('mappingPanel').classList.add('visible');
+    compute();
+  }
+
+  /* ── 集計 ── */
+  function matchFactor(account) {
+    for (var i = 0; i < FACTORS.length; i++) {
+      for (var k = 0; k < FACTORS[i].match.length; k++) {
+        if (account.indexOf(FACTORS[i].match[k]) !== -1) { return FACTORS[i]; }
+      }
+    }
+    return null;
+  }
+
+  function isExcluded(account) {
+    for (var i = 0; i < EXCLUDE.length; i++) {
+      if (account.indexOf(EXCLUDE[i]) !== -1) { return true; }
+    }
+    return false;
+  }
+
+  function compute() {
+    var accIdx = Number($('accountCol').value);
+    var amtIdx = Number($('amountCol').value);
+    var byAccount = {}; var unmatched = {};
+    state.rows.forEach(function (r) {
+      var account = String(r[accIdx] || '').trim();
+      if (!account) { return; }
+      var amount = Number(String(r[amtIdx] || '').replace(/[,\s円¥"]/g, ''));
+      if (!isFinite(amount) || amount <= 0) { return; }
+      if (isExcluded(account)) { return; }
+      var f = matchFactor(account);
+      if (!f) {
+        unmatched[account] = (unmatched[account] || 0) + amount;
+        return;
+      }
+      if (!byAccount[account]) { byAccount[account] = { amount: 0, factor: f }; }
+      byAccount[account].amount += amount;
+    });
+
+    var scopes = { Scope1: 0, Scope2: 0, Scope3: 0 };
+    var list = [];
+    Object.keys(byAccount).forEach(function (acc) {
+      var e = byAccount[acc];
+      var t = (e.amount / 1e6) * e.factor.factor; /* 百万円あたり原単位 */
+      scopes[e.factor.scope] += t;
+      list.push({ account: acc, label: e.factor.label, scope: e.factor.scope, amount: e.amount, t: t });
+    });
+    list.sort(function (a, b) { return b.t - a.t; });
+
+    render(scopes, list, unmatched);
+  }
+
+  function fmt(n, digits) {
+    return n.toLocaleString('ja-JP', { maximumFractionDigits: digits, minimumFractionDigits: 0 });
+  }
+
+  function render(scopes, list, unmatched) {
+    var total = scopes.Scope1 + scopes.Scope2 + scopes.Scope3;
+    $('totalValue').textContent = fmt(total, 2);
+    $('totalSub').textContent = 'Scope1: ' + fmt(scopes.Scope1, 2) + ' ／ Scope2: ' + fmt(scopes.Scope2, 2) + ' ／ Scope3: ' + fmt(scopes.Scope3, 2) + '（t-CO2e）';
+
+    var bars = $('scopeBars'); bars.innerHTML = '';
+    var max = Math.max(scopes.Scope1, scopes.Scope2, scopes.Scope3, 1e-9);
+    [['Scope1', '燃料の燃焼など（直接排出）', 's1'],
+     ['Scope2', '購入した電力など（間接排出）', 's2'],
+     ['Scope3', '購入した製品・サービス、出張、輸配送など', 's3']].forEach(function (s) {
+      var v = scopes[s[0]];
+      var row = document.createElement('div'); row.className = 'bar-row';
+      row.innerHTML =
+        '<div class="bar-head"><span>' + s[0] + '<span style="color:var(--ink-light);"> ── ' + s[1] + '</span></span>' +
+        '<span class="bar-val">' + fmt(v, 2) + ' t-CO2e</span></div>' +
+        '<div class="bar-track"><div class="bar-fill ' + s[2] + '" style="width:' + Math.max(1, Math.round(v / max * 100)) + '%"></div></div>';
+      bars.appendChild(row);
+    });
+
+    var body = $('accBody'); body.innerHTML = '';
+    list.slice(0, 10).forEach(function (e) {
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + escapeHtml(e.account) + '</td><td>' + e.scope + '｜' + escapeHtml(e.label) + '</td>' +
+        '<td class="num">' + fmt(e.amount, 0) + '</td><td class="num">' + fmt(e.t, 3) + '</td>';
+      body.appendChild(tr);
+    });
+
+    var um = Object.keys(unmatched);
+    var umEl = $('unmatched');
+    if (um.length) {
+      umEl.hidden = false;
+      umEl.textContent = '対応表にない科目（今回は集計対象外）: ' + um.slice(0, 15).join('、') + (um.length > 15 ? ' ほか' : '') +
+        ' ── 実際の支援では、こうした科目の扱いを一つずつ決めていきます。';
+    } else {
+      umEl.hidden = true;
+    }
+
+    var fb = $('factorBody');
+    if (!fb.dataset.filled) {
+      FACTORS.forEach(function (f) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + f.match.join('・') + '</td><td>' + f.scope + '｜' + escapeHtml(f.label) + '</td><td class="num">' + f.factor.toFixed(1) + '</td>';
+        fb.appendChild(tr);
+      });
+      fb.dataset.filled = '1';
+    }
+
+    $('results').classList.add('visible');
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  /* ── サンプルデータ ── */
+  function loadDemo() {
+    state.headers = ['日付', '勘定科目', '摘要', '金額'];
+    state.rows = [
+      ['2026-04-05', '旅費交通費', '客先訪問（電車）', '18400'],
+      ['2026-04-10', '通信費', 'インターネット・携帯', '12800'],
+      ['2026-04-15', '消耗品費', 'PC周辺機器', '34600'],
+      ['2026-04-20', '水道光熱費', '事務所電気代', '9800'],
+      ['2026-04-28', '外注費', 'デザイン業務委託', '110000'],
+      ['2026-05-02', '旅費交通費', '出張（新幹線）', '29160'],
+      ['2026-05-10', '広告宣伝費', 'Web広告', '50000'],
+      ['2026-05-15', '新聞図書費', '技術書', '8580'],
+      ['2026-05-20', '荷造運賃', '機材配送', '4400'],
+      ['2026-05-25', '地代家賃', 'オフィス利用料', '66000'],
+      ['2026-06-03', '旅費交通費', 'イベント参加（電車）', '1660'],
+      ['2026-06-12', '消耗品費', '文具ほか', '6200'],
+      ['2026-06-18', '会議費', '打ち合わせ', '3800'],
+      ['2026-06-25', '支払手数料', 'クラウドサービス利用料', '28600'],
+      ['2026-06-30', '給料手当', '（集計対象外の例）', '250000']
+    ];
+    setupColumnSelect('サンプルデータ（' + state.rows.length + '行・架空の仕訳）');
+  }
+
+  /* ── イベント配線 ── */
+  dropzone.addEventListener('click', function () { fileInput.click(); });
+  dropzone.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+  });
+  fileInput.addEventListener('change', function () {
+    if (fileInput.files.length) { handleFile(fileInput.files[0]); }
+  });
+  ['dragover', 'dragenter'].forEach(function (ev) {
+    dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.add('dragover'); });
+  });
+  ['dragleave', 'drop'].forEach(function (ev) {
+    dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.remove('dragover'); });
+  });
+  dropzone.addEventListener('drop', function (e) {
+    if (e.dataTransfer.files.length) { handleFile(e.dataTransfer.files[0]); }
+  });
+  $('demoBtn').addEventListener('click', loadDemo);
+  $('accountCol').addEventListener('change', compute);
+  $('amountCol').addEventListener('change', compute);
+
+  /* スクリーンショット・動作確認用: #demo でサンプル自動実行 */
+  if (location.hash === '#demo') { loadDemo(); }
+})();
+</script>
+
+</body>
+</html>

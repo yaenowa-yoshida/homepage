@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<!-- outlook共通の回遊ナビ（パンくず直後にテーマ一覧を注入） -->
+<script src="/outlook/nav.js" defer></script>
+<title>個人の側のGX ── デコ活の実践 | 株式会社ヤエノワ</title>
+<meta name="description" content="環境省の国民運動「デコ活」を、代表個人の暮らしで実践する記録。移動の置き換えから始めた実践と、そこで得た気づきを事業者向けのGX構想に持ち帰るまでをまとめたページです。">
+<link rel="canonical" href="https://yaenowa.co.jp/outlook/gx/decokatsu">
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="個人の側のGX ── デコ活の実践 | 株式会社ヤエノワ">
+<meta property="og:description" content="環境省の国民運動「デコ活」を暮らしで実践する記録。個人の行動変容の実感を、事業者向けのGX構想に持ち帰ります。">
+<meta property="og:url" content="https://yaenowa.co.jp/outlook/gx/decokatsu">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+
+<!-- 構造化データ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://yaenowa.co.jp/outlook/gx/decokatsu",
+  "url": "https://yaenowa.co.jp/outlook/gx/decokatsu",
+  "name": "個人の側のGX ── デコ活の実践 | 株式会社ヤエノワ",
+  "description": "環境省の国民運動「デコ活」を代表個人の暮らしで実践する記録。個人の行動変容の実感を事業者向けのGX構想に持ち帰る。",
+  "inLanguage": "ja",
+  "datePublished": "2026-07-29",
+  "dateModified": "2026-07-30",
+  "isPartOf": {
+    "@type": "CollectionPage",
+    "@id": "https://yaenowa.co.jp/outlook/gx/",
+    "name": "GX構想"
+  },
+  "hasPart": [
+    { "@type": "WebPage", "@id": "https://yaenowa.co.jp/outlook/gx/decokatsu-demo", "name": "これってデコ活？判定（プロトタイプ）" }
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "株式会社ヤエノワ",
+    "url": "https://yaenowa.co.jp/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+    { "@type": "ListItem", "position": 2, "name": "今後の展望", "item": "https://yaenowa.co.jp/outlook/" },
+    { "@type": "ListItem", "position": 3, "name": "GX構想", "item": "https://yaenowa.co.jp/outlook/gx/" },
+    { "@type": "ListItem", "position": 4, "name": "個人の側のGX ── デコ活の実践", "item": "https://yaenowa.co.jp/outlook/gx/decokatsu" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+<!-- 今後の展望セクション共通のスタイル（nav・パンくず・本文・フッターの土台＋モダンCSSの拡張） -->
+<link rel="stylesheet" href="/outlook/outlook.css">
+
+</head>
+<body>
+
+<!-- スクロール駆動の読書プログレス（CSSのみ・対応ブラウザで表示） -->
+<div class="reading-progress" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <div class="nav-right">
+    <a href="/outlook/gx/" class="nav-home">← GX構想へ戻る</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<main class="concept">
+  <p class="crumbs"><a href="/outlook/">今後の展望</a> › <a href="/outlook/gx/">GX構想</a> › 個人の側のGX ── デコ活の実践</p>
+  <p class="concept-label">GX Personal</p>
+  <h1 class="concept-title">個人の側のGX ──<br>デコ活の実践</h1>
+  <div class="divider"></div>
+
+  <span class="concept-status">個人の実践記録</span>
+  <p class="concept-note">
+    ※ 本ページは代表個人の暮らしにおける脱炭素アクションの実践記録であり、現在提供中のサービスを紹介するものではありません。また、環境省その他の機関と提携し、またはその監修・確認を受けたものではありません（「デコ活」等の名称は各権利者に帰属します）。経過は<a href="/outlook/" class="text-link">今後の展望</a>にも日付つきで記録しています。
+  </p>
+
+  <div class="concept-section">
+    <h2>このテーマについて</h2>
+    <p>
+      環境省の国民運動「デコ活」を、代表個人の暮らしで実際に試している記録です。一人法人では個人と会社の境目が薄く、暮らしの側で得た実感はそのまま会社側の検討の材料になると考えています。何を試して、何が続き、何が続かなかったのか。事業者向けの<a href="/outlook/gx/pipeline" class="text-link">排出量算定の前工程構想</a>と対になる、個人の側からの検討として続けています。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>デコ活とは</h2>
+    <p>
+      「<a href="https://ondankataisaku.env.go.jp/decokatsu/" target="_blank" rel="noopener" class="text-link">デコ活</a>」は、環境省が進める国民運動です。正式には「脱炭素につながる新しい豊かな暮らしを創る国民運動」。断熱住宅、エコグッズ、食べ残しゼロ、テレワーク──暮らしの中の行動が「<a href="https://ondankataisaku.env.go.jp/decokatsu/action/" target="_blank" rel="noopener" class="text-link">デコ活アクション</a>」として一覧に整理され、国・自治体・企業が連携して個人の行動変容を後押しする枠組みです。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>なぜ個人で実践するのか</h2>
+    <p>
+      一人法人には、個人と会社の境目がほとんどありません。当社の排出はほぼすべてScope3──購入した製品・サービス由来──で、社用車も自社契約の電気もない。代表個人の暮らし方が変われば、会社の排出構造も変わります。個人のデコ活がそのまま会社のGXの一部になる──これは一人法人ならではの面白さです。
+    </p>
+    <p>
+      もうひとつの理由は、事業者向けの構想のためです。個人の行動変容の「続けにくさ」や「続けやすさ」を体験として知っておくことは、<a href="/outlook/gx/pipeline" class="text-link">排出量算定の前工程構想</a>を考えるうえでも材料になるはずだと考えています。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>実践の記録 ── まずは移動から</h2>
+    <p>
+      アクション一覧と暮らしを照らし合わせて最初に見つかったのは、すでに「デコ活になっていた」行動でした。環境省がエコな移動を指して呼ぶ「スマートムーブ」──都内の移動はほとんど電車ですが、乗り換えを挟む数キロの区間だけは、前からシェアサイクルに置き換えています。理由は環境ではなく、乗り換えがないぶん所要時間はむしろ短く、料金も電車と大きく変わらないから。だから続いています。
+    </p>
+    <p>
+      その移動は、いまも変わり続けています。ランニングシューズとコンプレッションパンツを新調したのをきっかけに、シェアサイクルの区間を今度はランニングに置き換え始めました。電車からシェアサイクルへ、シェアサイクルからランニングへ。いきなり行動を変えなくても、暮らしが徐々にエコな方へ動いていく──その感覚は思いのほか心持ちがいいものです。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>暮らしの棚卸し ── デコ活だったもの、違ったもの</h2>
+    <p>
+      移動のほかにも、振り返ると「すでにデコ活になっていた」ものがありました。好きなアーティストのトートバッグを、エコバッグとして使い続けていたこと。デコ活の「コ」──こだわる楽しさ・エコグッズ──を、言葉を知る前から実践していた形です。ここでも動機は環境ではなく「好きなものを持ち歩きたい」でした。
+    </p>
+    <p>
+      ごみの分別も、元からの習慣でした。燃やせるごみ・燃やせないごみ・カン・ビン・段ボール・資源──自治体のルールに沿って分けることは、デコ活アクションにも挙がる分別・リサイクルの実践そのものです。飲み物では、牛乳ではなく豆乳を選んでいます。豆乳やオーツミルクといった植物性ミルクは、生産に伴う温室効果ガスが牛乳の3分の1程度とされており、こちらは日々の買い物の中の小さな置き換えになっています。
+    </p>
+    <p>
+      一方で、デコ活とは呼べないものもありました。最近、食べていなかった朝ごはんをグラノーラに変えましたが、これは何かをエコなものに置き換えたわけではないので、排出の観点では削減になっていません（暮らしとしては良い変化ですが）。エコっぽく見えることと、実際に排出が減ることは別物──この線引きの感覚は、排出量算定で勘定科目を「足すもの・外すもの」に仕分ける対応表づくりにも通じる気がしています。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>気づき ── 続くのは「そのほうが良い」とき</h2>
+    <p>
+      電車はもともと1人あたりの排出が小さい乗り物なので、この置き換えによる削減幅は大きくないはずです。それでも、ここには学びがありました。行動が定着したのは「環境にいいから」ではなく「そのほうが速くて、楽しいから」。道具を新調した楽しさが、いちばん排出の小さい移動──自分の足──を選ばせている。デコ活が「こだわる楽しさ」を掲げる意味が、少し分かった気がします。
+    </p>
+    <p>
+      この実感は事業者の側にも持ち帰れると考えています。排出削減の仕組みは、我慢を求める設計では続かない。日々の業務の中で無理なく回る──むしろ楽になる──形に落とし込めるか。<a href="/outlook/gx/pipeline" class="text-link">前工程構想</a>の設計思想にも、この視点を反映していくつもりです。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>実験 ──「これってデコ活？」判定チェッカー</h2>
+    <p>
+      棚卸しで体験した「置き換えかどうか」の線引きを、そのまま小さなツールにしてみました。始めた行動を自分の言葉で書くか一覧から選び、「以前はどうしていたか」と合わせると、排出削減の方向かどうかの目安を返す「<a href="/outlook/gx/decokatsu-demo" class="text-link">これってデコ活？判定</a>」を実験公開しています（プロトタイプ・判定は定性的な目安・ブラウザ内で完結）。判定表にない行動は「まだありません」と正直に返す仕様で、その取りこぼし自体が対応表を育てる手がかりになります。事業者向けの<a href="/outlook/gx/pipeline" class="text-link">前工程構想</a>で肝になる「対応表づくり」の型を、個人の側でも試す実証を兼ねています。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>これから試すこと</h2>
+    <p>
+      次は、意識して選ぶ番です。アクション一覧から暮らしに当てはまるものを選んで、順に試していきます。何が無理なく続き、何が続かないのか──試した結果や気づきは、<a href="/outlook/" class="text-link">今後の展望</a>のジャーナルと本ページに追記していきます。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>共創のご縁を探しています</h2>
+    <p>
+      デコ活を暮らしで試している方、同じように個人の側から脱炭素を考えている方がいらっしゃいましたら、ぜひ<a href="/#contact" class="text-link">お問い合わせ</a>からご連絡ください。うまくいかなかった話ほど参考になると思っています（サービスのご案内ではなく、実践の情報交換のお誘いです）。
+    </p>
+  </div>
+
+  <p class="concept-meta">
+    公開日：2026年7月29日 ／ 最終更新：2026年7月30日（章立てを他のテーマページと揃えました。実践の進展にあわせて更新します）
+  </p>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/outlook/gx/" class="footer-link">GX構想</a>
+  <a href="/outlook/" class="footer-link">今後の展望</a>
+  <a href="/" class="footer-link">ホームへ戻る</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<!-- outlook共通の回遊ナビ（パンくず直後にテーマ一覧を注入） -->
+<script src="/outlook/nav.js" defer></script>
+<title>歴史音声ガイド構想（検討中） | 株式会社ヤエノワ</title>
+<meta name="description" content="株式会社ヤエノワが検討中の、大人の学び直しに向けた音声ガイドアプリの企画案。教科書で習った歴史上の出来事を、その舞台となった土地で音声として届けられないか——構想の現在地をまとめたページです。名称・内容とも検討段階です。">
+<link rel="canonical" href="https://yaenowa.co.jp/outlook/academics/guide">
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="歴史音声ガイド構想（検討中） | 株式会社ヤエノワ">
+<meta property="og:description" content="教科書で習った出来事を、その舞台で聴く。大人の学び直しに向けた音声ガイドアプリの企画案（検討中）。">
+<meta property="og:url" content="https://yaenowa.co.jp/outlook/academics/guide">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+
+<!-- 構造化データ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://yaenowa.co.jp/outlook/academics/guide",
+  "url": "https://yaenowa.co.jp/outlook/academics/guide",
+  "name": "歴史音声ガイド構想（検討中） | 株式会社ヤエノワ",
+  "description": "株式会社ヤエノワが検討中の、大人の学び直しに向けた音声ガイドアプリの企画案。教科書で習った歴史上の出来事を、その舞台となった土地で音声として届けられないかという構想の現在地。名称・内容とも検討段階。",
+  "inLanguage": "ja",
+  "datePublished": "2026-08-04",
+  "dateModified": "2026-08-04",
+  "isPartOf": {
+    "@type": "CollectionPage",
+    "@id": "https://yaenowa.co.jp/outlook/academics/",
+    "name": "学びの記録と構想"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "株式会社ヤエノワ",
+    "url": "https://yaenowa.co.jp/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+    { "@type": "ListItem", "position": 2, "name": "今後の展望", "item": "https://yaenowa.co.jp/outlook/" },
+    { "@type": "ListItem", "position": 3, "name": "学びの記録と構想", "item": "https://yaenowa.co.jp/outlook/academics/" },
+    { "@type": "ListItem", "position": 4, "name": "歴史音声ガイド構想", "item": "https://yaenowa.co.jp/outlook/academics/guide" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+<!-- 今後の展望セクション共通のスタイル（nav・パンくず・本文・フッターの土台＋モダンCSSの拡張） -->
+<link rel="stylesheet" href="/outlook/outlook.css">
+
+</head>
+<body>
+
+<!-- スクロール駆動の読書プログレス（CSSのみ・対応ブラウザで表示） -->
+<div class="reading-progress" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <div class="nav-right">
+    <a href="/outlook/academics/" class="nav-home">← 学びの記録と構想へ戻る</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<main class="concept">
+  <p class="crumbs"><a href="/outlook/">今後の展望</a> › <a href="/outlook/academics/">学びの記録と構想</a> › 歴史音声ガイド構想</p>
+  <p class="concept-label">Guide Concept</p>
+  <h1 class="concept-title">教科書の点を、<br>土地の上でつなぐ。</h1>
+  <div class="divider"></div>
+
+  <span class="concept-status">構想段階の企画案</span>
+  <p class="concept-note">
+    ※ 本ページは検討中の企画案をまとめたものであり、現在提供中のサービスやリリース予定のアプリを紹介するものではありません。名称は未定で、「歴史音声ガイド」は内容を説明するための仮の呼び方です。また、まず東京を対象に検討していますが、自治体・公的機関との提携や監修に基づくものではありません。検討の経緯は<a href="/outlook/" class="text-link">今後の展望</a>に日付つきで記録しています。
+  </p>
+
+  <div class="concept-section">
+    <h2>このテーマについて</h2>
+    <p>
+      <a href="/outlook/academics/" class="text-link">学びのテーマ</a>では「学び続け、いつか学びの場に返す」ことを考えてきました。その「学びの場」を母校の外にも広げられないか、という方向から出てきた企画案です。対象は学生ではなく、学校を出てからずいぶん経った大人。小学校・中学校・高校で習ったはずの歴史上の出来事を、その舞台となった土地で音声として受け取れないか——というアプリの構想です。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>出発点 ── 忘れているのは、知識ではなくつながり</h2>
+    <p>
+      大人になってから歴史を学び直そうとするとき、足りないのは単語ではないと考えています。井伊直弼、桜田門外の変、江戸城の明け渡し、上野の戦い——名前だけなら、たいていの人が出てきます。抜け落ちているのは、それらがどう連なっていたのかという因果のほうです。
+    </p>
+    <p>
+      幕末から明治への転換は各地に舞台が散っていますが、そのうち東京（江戸）に集まっているものだけを取り出しても、教科書で別々の章として習った出来事がいくつも重なっています。ひとつの事件が起き、その延長線上で城が明け渡され、別の場所で戦いが起きて、江戸での旧幕府側の抵抗が終わる。教科書の上では章をまたいで分断されていたものが、土地の上を移動すると一本の線としてつながる可能性がある。ここに賭けてみたい、というのがこの構想の中心です。
+    </p>
+    <p>
+      情報を音声で読み上げること自体は目的ではありません。<strong>ばらばらに覚えた点が線になる瞬間を、地理の力で起こせないか</strong>を検討しています。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>考えているアプリの姿（すべて検討中）</h2>
+    <ul>
+      <li>スマートフォンの位置情報から現在地を取り、その周辺にゆかりのある歴史上の出来事を音声で伝える</li>
+      <li>扱うのは<strong>小中高の教科書に出てくる水準の出来事</strong>に絞る。専門的な解説ではなく、「聞いたことはあるが、経緯は忘れていた」という層に照準を合わせる</li>
+      <li>対象範囲はまず東京に限定する。範囲を絞ることで、内容を一件ずつ人の目で確かめられる規模に収める。将来的には、<a href="/outlook/local/" class="text-link">地域テーマ</a>で挙げているような土地も含め、地域ごとの版に広げられないかも考えている</li>
+      <li>目的地への経路案内は行わず、通った土地の解説だけを流す</li>
+      <li>画面を見ないで完結させる。運転中は操作も画面の注視も一切求めない前提とし、歩行中も周囲の安全を損なわない形を条件にする</li>
+      <li>語りの順序そのものに意味を持たせる。場所を並べるだけでなく、移動すると出来事の順に話が進む形を検討している</li>
+    </ul>
+  </div>
+
+  <div class="concept-section">
+    <h2>検討中の設計メモ</h2>
+    <p>
+      技術的に難しいのは音声を鳴らすことではなく、<strong>何を・いつ話すかの制御</strong>だと考えています。現時点で有力だと思っている整理を残しておきます。
+    </p>
+    <ul>
+      <li><strong>一件を読み終えるまで割り込まない。</strong>再生が終わってから改めて現在地を取り、次に話す対象を選ぶ。この直列の作りにすれば、位置情報の常時監視も、再生中の優先度比較も要らなくなるはずで、測位の誤差にも強くなると見ている</li>
+      <li><strong>移動手段で語り方が変わる。</strong>徒歩なら、読み終えたときに対象は数百メートル後方にある。自動車なら数キロ先を見ておく必要がある。前者は「歩いてきた方向に」、後者は「この先に」と、同じ仕組みでも語りの時制が変わる</li>
+      <li><strong>立ち止まったら黙る。</strong>位置が動いていないのに次々と話し始めると、周辺の話題を一気に消費してしまう。一定距離を移動したことを再生の条件にする</li>
+      <li><strong>点だけでなく面も扱える器にしておく。</strong>教科書に出る出来事は場所によって密度に差があり、東京のように密度の高い土地なら地点を拾うだけで足りそうだが、地域によっては地点だけでは間が空くのではないかと見ている。国・藩・街道といった広がりのあるまとまりも同じ仕組みで扱えるようにしておけば、地域を広げるときにデータを足すだけで済むはず。東京版だけを見れば要らない作りだが、後から足すのは高くつくと考えている</li>
+      <li><strong>移動手段の判別は自動化を急がない。</strong>速度だけでは自動車と自転車、自動車と鉄道が重なりうると見ている。当面は利用者に選んでもらう形でよいのではないか</li>
+    </ul>
+  </div>
+
+  <div class="concept-section">
+    <h2>確認が必要なこと</h2>
+    <p>
+      構想を進める前に確かめておくべき宿題を、そのまま書き出しておきます。
+    </p>
+    <ul>
+      <li><strong>出典となる資料の利用条件。</strong>百科事典や公的機関のデータベースを情報源にする場合、二次利用の条件（ライセンス・表示義務）の確認が要る。要約や音声化も二次的な利用にあたるという前提で調べる</li>
+      <li><strong>事実の正確性をどう担保するか。</strong>教科書に出る水準の話は多くの人が知っているぶん、誤りがすぐに伝わる。原典にない年号や人名を補わない作り方と、公開前に原文と突き合わせる工程が要る</li>
+      <li><strong>内容の偏り。</strong>教科書に出る出来事は場所が偏っている。何も鳴らない地域が出たときにどう扱うか</li>
+      <li><strong>利用者データの取り扱い。</strong>位置情報を端末の中だけで完結させるのか、外部に送るのか。取得・保存・送信の範囲によってプライバシーポリシーの改定要否が変わるため、設計と同時に決める</li>
+      <li><strong>提供形態。</strong>無償で配るのか課金するのかで、必要な表示（特定商取引法に基づく表記など）が変わる</li>
+      <li><strong>名称。</strong>まだ決めていない。「音声ガイド」のような説明的な語だけでは識別力が弱く、商標として登録できない可能性が高いと考えている（未確認）。検索で埋もれる懸念もあるため、識別のための固有の名前を別に立てる必要があると見ている。地域ごとに版を分ける可能性があるので、地名は名前の末尾に置いて着脱できる形を想定している。試作して体験を確かめてから決め、その段階で商標および既存の名称との重複を確認する</li>
+      <li><strong>技術的な実現可能性。</strong>位置情報から周辺の記事を探す仕組み、音声合成の品質、端末の電力消費、通信の届かない場所での動作——いずれも小さく作って確かめる段階にある</li>
+    </ul>
+  </div>
+
+  <div class="concept-section">
+    <h2>現在地</h2>
+    <p>
+      構想を言葉にしたところです。次は範囲をさらに絞り、区間をひとつ選んで試作し、実際にその道を歩いて（あるいは走って）確かめてみようと考えています。「点が線になる」という手応えが本当に生まれるのかを、まず自分の足で確認する段階です。経緯は<a href="/outlook/" class="text-link">今後の展望</a>に記録していきます。
+    </p>
+  </div>
+
+  <div class="concept-section">
+    <h2>共創のご縁を探しています</h2>
+    <p>
+      歴史や地域の学び、音声を使った体験づくりに関心のある方がいらっしゃいましたら、<a href="/#contact" class="text-link">お問い合わせ</a>からご連絡ください。
+    </p>
+  </div>
+
+  <p class="concept-meta">
+    公開日：2026年8月4日 ／ 最終更新：2026年8月4日（内容は検討の進展にあわせて更新します）
+  </p>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/outlook/" class="footer-link">今後の展望</a>
+  <a href="/" class="footer-link">ホームへ戻る</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+</body>
+</html>
