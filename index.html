@@ -1646,7 +1646,7 @@
       justify-content: center;
       gap: 2rem;
       padding: 2rem 2.5rem;
-      background: rgba(247,244,238,0.98);
+      background: var(--nav-menu-bg);
       backdrop-filter: blur(10px);
       border-left: 0.5px solid var(--paper-dark);
       transform: translateX(100%);
@@ -1698,7 +1698,6 @@
     .profile-grid { grid-template-columns: 1fr; gap: 2rem; }
     .partner-box { grid-template-columns: 1fr; gap: 2rem; }
     footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
-
 
     .to-top { right: 1.1rem; bottom: 1.1rem; width: 44px; height: 44px; }
     .to-top .tt-track, .to-top .tt-bar { cx: 22px; cy: 22px; r: 19px; }
@@ -2387,6 +2386,13 @@ function copyMail() {
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape') closeMenu();
   });
+  // 横並びナビへ戻る幅まで広げたら閉じる（開いたままだとスクロールがロックされ続けるため）
+  if (window.matchMedia) {
+    const wide = window.matchMedia('(min-width: 1201px)');
+    const onWide = function(e){ if (e.matches) closeMenu(); };
+    if (wide.addEventListener) wide.addEventListener('change', onWide);
+    else if (wide.addListener) wide.addListener(onWide);
+  }
 
   // ── スクロール表示演出 ──
   const targets = document.querySelectorAll('.reveal');
