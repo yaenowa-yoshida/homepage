@@ -167,6 +167,24 @@
       "description": "正確性を厳しく問われる基幹システムの設計・構築・実装・テストを通じて専門知識を積み上げ、現在はシステム要件定義・設計を専門に活動。生成AIを実務に取り入れ、技術コミュニティCraftStageの共同主催・登壇者としても発信。"
     },
     {
+      "@type": "SoftwareApplication",
+      "@id": "https://yaenowa.co.jp/services/nippo#software",
+      "name": "日報入力ツール",
+      "url": "https://yaenowa.co.jp/services/nippo",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Windows（Windows PowerShell 5.1）",
+      "description": "15分ごとに「これからやる作業」を尋ね、案件・作業内容を1日1ファイルのCSVに積み上げる常駐ツール。PowerShellスクリプト1ファイルで動作し、ネットワーク通信を行いません。",
+      "license": "https://opensource.org/licenses/MIT",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      },
+      "author": { "@id": "https://yaenowa.co.jp/#organization" },
+      "publisher": { "@id": "https://yaenowa.co.jp/#organization" }
+    },
+    {
       "@type": "WebSite",
       "@id": "https://yaenowa.co.jp/#website",
       "url": "https://yaenowa.co.jp/",
@@ -925,6 +943,87 @@
     color: var(--ink-light);
   }
 
+  /* ── SERVICES（自社サービス） ── */
+  .services {
+    background: var(--paper);
+  }
+
+  .services-lead {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.95rem;
+    line-height: 2.0;
+    color: var(--ink-mid);
+    letter-spacing: 0.05em;
+    margin-top: -1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .service-card {
+    display: grid;
+    grid-template-columns: minmax(0, 38%) 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    padding: 2.2rem;
+    background: var(--paper-mid);
+    border: 0.5px solid var(--paper-dark);
+    border-left: 2px solid var(--sakura-mid);
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-color 0.3s ease;
+  }
+  .service-card:hover,
+  .service-card:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px var(--ring);
+    border-left-color: var(--accent);
+  }
+
+  .service-shot {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--paper);
+    border: 0.5px solid var(--paper-dark);
+  }
+
+  .service-cat {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .service-title {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.45rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+    margin-bottom: 0.9rem;
+    text-wrap: balance;
+  }
+
+  .service-desc {
+    font-size: 0.86rem;
+    color: var(--ink-mid);
+    line-height: 1.95;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.2rem;
+  }
+
+  .service-more {
+    display: inline-block;
+    margin-top: 1.2rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+  }
+  .service-card:hover .service-more { color: var(--accent-gold); }
+
+  @media (max-width: 860px) {
+    .service-card { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem; }
+  }
+
   /* ── VISION ── */
   .vision {
     background: var(--surface-inverse);
@@ -1532,25 +1631,9 @@
   }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
-    section { padding: 5rem 1.5rem; }
-    .hero-stage { padding: 7rem 1.5rem 4rem; }
-    /* スマホでは中央ロゴ（不透明）を隠し、環・花びら・輝きを背景に文字を前面へ */
-    .hero-logo { display: none; }
-    .converge { --cv-r: 33vmin; }
-    .converge-ring circle { stroke: var(--sakura-mid); }
-    .converge-core { background: radial-gradient(circle, rgba(224,140,150,0.28) 0%, rgba(224,140,150,0.08) 42%, rgba(224,140,150,0) 70%); }
-    .hero-text { max-width: 100%; }
-    .pain-grid { grid-template-columns: 1fr; }
-    .strengths-grid { grid-template-columns: 1fr; }
-    .acc-header { padding: 1.2rem 1.2rem; gap: 0.9rem; }
-    .acc-panel-content { padding: 0 1.2rem 1.5rem 1.2rem; }
-    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-    .profile-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .partner-box { grid-template-columns: 1fr; gap: 2rem; }
-    footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
-
+  /* ナビはリンク数が多いため、横並びが窮屈になる 1200px 以下でハンバーガーへ切り替える
+     （レイアウト本体の折り返しは従来どおり 900px） */
+  @media (max-width: 1200px) {
     /* モバイルナビ（ハンバーガー） */
     .nav-toggle { display: flex; }
     .nav-links {
@@ -1589,6 +1672,33 @@
       opacity: 1;
       pointer-events: auto;
     }
+  }
+
+  /* 横並びナビの最狭域（1201〜1500px）は余白を詰めて収める */
+  @media (min-width: 1201px) and (max-width: 1500px) {
+    nav { gap: 1.2rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    section { padding: 5rem 1.5rem; }
+    .hero-stage { padding: 7rem 1.5rem 4rem; }
+    /* スマホでは中央ロゴ（不透明）を隠し、環・花びら・輝きを背景に文字を前面へ */
+    .hero-logo { display: none; }
+    .converge { --cv-r: 33vmin; }
+    .converge-ring circle { stroke: var(--sakura-mid); }
+    .converge-core { background: radial-gradient(circle, rgba(224,140,150,0.28) 0%, rgba(224,140,150,0.08) 42%, rgba(224,140,150,0) 70%); }
+    .hero-text { max-width: 100%; }
+    .pain-grid { grid-template-columns: 1fr; }
+    .strengths-grid { grid-template-columns: 1fr; }
+    .acc-header { padding: 1.2rem 1.2rem; gap: 0.9rem; }
+    .acc-panel-content { padding: 0 1.2rem 1.5rem 1.2rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .profile-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .partner-box { grid-template-columns: 1fr; gap: 2rem; }
+    footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+
 
     .to-top { right: 1.1rem; bottom: 1.1rem; width: 44px; height: 44px; }
     .to-top .tt-track, .to-top .tt-bar { cx: 22px; cy: 22px; r: 19px; }
@@ -1685,6 +1795,7 @@
     <li><a href="#strengths">選ばれる理由</a></li>
     <li><a href="#pain">お悩み</a></li>
     <li><a href="#works">対応領域</a></li>
+    <li><a href="#services">自社サービス</a></li>
     <li><a href="#vision">ビジョン</a></li>
     <li><a href="/outlook/">今後の展望</a></li>
     <li><a href="#contact">お問い合わせ</a></li>
@@ -2125,6 +2236,35 @@
   </div>
 </section>
 
+<!-- SERVICES（自社サービス） -->
+<section class="services" id="services">
+  <div class="section-inner reveal">
+    <p class="section-label">Own Product</p>
+    <h2 class="section-title">自社サービス</h2>
+    <div class="divider"></div>
+    <p class="services-lead">自社の業務のために内製し、日々使っているツールを無償で公開しています。</p>
+
+    <a class="service-card" href="/services/nippo">
+      <img class="service-shot" src="services/img/input-window.png" width="532" height="345" loading="lazy" decoding="async" alt="日報入力ツールの入力ウィンドウ。案件と作業内容を選び、記録する時間を指定して記録するダイアログ（画面の値はダミー）">
+      <div class="service-body">
+        <p class="service-cat">日報入力ツール</p>
+        <h3 class="service-title">日報を、あとで書かない。</h3>
+        <p class="service-desc">
+          15分ごとに「これからやる作業」を尋ね、案件と作業内容をCSVに積み上げていくWindows常駐ツールです。一日の終わりには、月次の集計にそのまま使える記録が残ります。PowerShellスクリプト1ファイルで動き、ネットワーク通信を行いません。MITライセンスで無償公開しています。
+        </p>
+        <div class="tech-tags">
+          <span class="tech-tag">Windows</span>
+          <span class="tech-tag">PowerShell</span>
+          <span class="tech-tag">通信なし・ローカル完結</span>
+          <span class="tech-tag">CSV出力</span>
+          <span class="tech-tag">MITライセンス</span>
+        </div>
+        <span class="service-more">詳しく見る →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
 <!-- VISION -->
 <section class="vision" id="vision">
   <svg class="vision-bg-rings" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
@@ -2420,6 +2560,7 @@ function copyMail() {
 <!-- FOOTER -->
 <footer>
   <span class="footer-logo">株式会社ヤエノワ</span>
+  <a href="/services/nippo" class="footer-link">日報入力ツール</a>
   <a href="/outlook/" class="footer-link">今後の展望</a>
   <a href="/privacy" class="footer-link">プライバシーポリシー</a>
   <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
