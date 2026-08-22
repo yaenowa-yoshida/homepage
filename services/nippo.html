@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<title>日報入力ツール（無償公開） | 株式会社ヤエノワ</title>
+<meta name="description" content="株式会社ヤエノワが自社開発した「日報入力ツール」。15分ごとに「これからやる作業」を尋ね、案件・作業内容をCSVに積み上げるWindows常駐ツールです。PowerShell 1ファイル・通信なし・MITライセンスで無償公開しています。">
+<meta name="keywords" content="日報,工数記録,15分単位,PowerShell,Windows,業務改善,内製,無償,MIT,株式会社ヤエノワ">
+<meta name="author" content="株式会社ヤエノワ">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://yaenowa.co.jp/services/nippo">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="日報入力ツール（無償公開） | 株式会社ヤエノワ">
+<meta property="og:description" content="15分ごとに「これからやる作業」を尋ね、案件・作業内容をCSVに積み上げるWindows常駐ツール。PowerShell 1ファイル・通信なし・MITライセンスで無償公開しています。">
+<meta property="og:url" content="https://yaenowa.co.jp/services/nippo">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+
+<!-- 構造化データ（表示内容と一致させること） -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://yaenowa.co.jp/services/nippo",
+      "url": "https://yaenowa.co.jp/services/nippo",
+      "name": "日報入力ツール（無償公開） | 株式会社ヤエノワ",
+      "description": "株式会社ヤエノワが自社開発した日報入力ツールの紹介ページ。15分ごとに「これからやる作業」を先に記録し、案件・作業内容をCSVに積み上げるWindows常駐ツールです。",
+      "inLanguage": "ja",
+      "datePublished": "2026-08-22",
+      "dateModified": "2026-08-22",
+      "isPartOf": { "@type": "WebSite", "@id": "https://yaenowa.co.jp/#website" },
+      "about": { "@id": "https://yaenowa.co.jp/services/nippo#software" },
+      "publisher": { "@id": "https://yaenowa.co.jp/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://yaenowa.co.jp/services/nippo#software",
+      "name": "日報入力ツール",
+      "url": "https://yaenowa.co.jp/services/nippo",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Windows（Windows PowerShell 5.1）",
+      "description": "15分ごとに「これからやる作業」を尋ね、案件・作業内容を1日1ファイルのCSVに積み上げる常駐ツール。PowerShellスクリプト1ファイルで動作し、ネットワーク通信を行いません。",
+      "softwareRequirements": "Windows、Windows PowerShell 5.1（追加インストール不要）",
+      "downloadUrl": "https://github.com/yaenowa-yoshida/daily-report/archive/refs/heads/main.zip",
+      "license": "https://opensource.org/licenses/MIT",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      },
+      "featureList": [
+        "15分区切りで「これからやる作業」を先に記録する入力ウィンドウ",
+        "案件・作業内容の選択式入力（新しい作業名は次回から選択肢に追加）",
+        "長さを決めずに始められる休憩の記録",
+        "会議の時間帯を先に確保するMTG予約",
+        "1日分の記録を表で直せる一覧編集（過去日も編集可能）",
+        "案件・作業内容の選択肢を画面から編集できる設定メンテナンス",
+        "1日1ファイル・1行15分のCSV出力（UTF-8 BOM）"
+      ],
+      "screenshot": [
+        "https://yaenowa.co.jp/services/img/input-window.png",
+        "https://yaenowa.co.jp/services/img/menu.png",
+        "https://yaenowa.co.jp/services/img/list-edit.png",
+        "https://yaenowa.co.jp/services/img/meeting.png"
+      ],
+      "author": { "@id": "https://yaenowa.co.jp/#organization" },
+      "publisher": { "@id": "https://yaenowa.co.jp/#organization" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+        { "@type": "ListItem", "position": 2, "name": "日報入力ツール", "item": "https://yaenowa.co.jp/services/nippo" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+
+<style>
+  /* ============================================================
+     本ページ固有スタイル（色・リセット等の共通分は theme.css 側）
+       BASE / NAV / HERO / SECTION / SHOTS / TABLE / SPECS / STEPS / FOOTER
+     ============================================================ */
+
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  p { text-wrap: pretty; }
+  img { max-width: 100%; height: auto; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem clamp(1.2rem, 4vw, 4rem);
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--paper-dark);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+    text-decoration: none;
+    margin-right: auto;
+  }
+  .nav-right { display: flex; align-items: center; gap: 1.2rem; }
+  .nav-home {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-mid);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav-home:hover { color: var(--accent); }
+
+  /* ── 本文の器 ── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 7.5rem clamp(1.2rem, 5vw, 2rem) 5rem;
+  }
+
+  .crumbs {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    margin-bottom: 2rem;
+  }
+  .crumbs a { color: var(--ink-light); text-decoration: none; border-bottom: 0.5px solid var(--paper-dark); }
+  .crumbs a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .page-label {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  h1 {
+    font-family: 'Zen Old Mincho', serif;
+    font-weight: 400;
+    font-size: clamp(1.9rem, 5vw, 2.8rem);
+    line-height: 1.5;
+    letter-spacing: 0.06em;
+    text-wrap: balance;
+  }
+  h1 .accent { color: var(--accent); }
+  .divider {
+    width: 46px;
+    height: 1px;
+    background: var(--accent-gold);
+    margin: 1.6rem 0;
+  }
+  .lead {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.02rem;
+    color: var(--ink-mid);
+    line-height: 2;
+  }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.6rem; }
+  .badge {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    border: 0.5px solid var(--paper-dark);
+    background: var(--sakura-pale);
+    padding: 0.3rem 0.75rem;
+  }
+
+  .note {
+    margin-top: 1.8rem;
+    padding: 1rem 1.2rem;
+    border-left: 2px solid var(--sakura-mid);
+    background: var(--paper-mid);
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    line-height: 1.9;
+  }
+
+  /* ── SECTION ── */
+  section { margin-top: 4.2rem; }
+  h2 {
+    font-family: 'Zen Old Mincho', serif;
+    font-weight: 400;
+    font-size: 1.35rem;
+    letter-spacing: 0.08em;
+    padding-bottom: 0.7rem;
+    border-bottom: 0.5px solid var(--paper-dark);
+    margin-bottom: 1.5rem;
+  }
+  h3 {
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+  section p + p { margin-top: 1rem; }
+  section ul { margin: 1rem 0 0 1.2rem; }
+  section li { margin-bottom: 0.5rem; font-size: 0.92rem; }
+
+  /* ── カード ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1.2rem;
+  }
+  .card {
+    border: 0.5px solid var(--paper-dark);
+    border-left: 2px solid var(--sakura-mid);
+    background: var(--paper-mid);
+    padding: 1.1rem 1.2rem;
+  }
+  .card p { font-size: 0.86rem; color: var(--ink-mid); line-height: 1.85; }
+
+  /* ── 対比（従来／この仕組み） ── */
+  .compare { display: grid; gap: 1rem; margin-top: 1.2rem; }
+  @media (min-width: 700px) { .compare { grid-template-columns: 1fr 1fr; } }
+  .compare .old { border-left-color: var(--paper-dark); }
+  .flow { font-size: 0.9rem; color: var(--ink); margin-top: 0.3rem; }
+
+  /* ── 手順 ── */
+  ol.steps { margin: 1.2rem 0 0 1.3rem; }
+  ol.steps li { margin-bottom: 0.9rem; font-size: 0.92rem; }
+
+  /* ── 画面キャプチャ ── */
+  figure {
+    margin-top: 1.6rem;
+    border: 0.5px solid var(--paper-dark);
+    background: var(--paper-mid);
+    padding: 1rem;
+  }
+  figure img { display: block; margin: 0 auto; }
+  figcaption {
+    margin-top: 0.8rem;
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    line-height: 1.8;
+  }
+  figcaption strong { color: var(--accent); font-weight: 500; }
+
+  /* ── CSVサンプル ── */
+  .table-wrap { overflow-x: auto; margin-top: 1.2rem; border: 0.5px solid var(--paper-dark); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.82rem; }
+  th, td { padding: 0.5rem 0.8rem; border-bottom: 0.5px solid var(--paper-dark); text-align: left; white-space: nowrap; }
+  th { background: var(--paper-mid); font-weight: 500; letter-spacing: 0.06em; }
+  td { color: var(--ink-mid); }
+  tr:last-child td { border-bottom: none; }
+  code {
+    font-family: Consolas, "SF Mono", "Courier New", monospace;
+    font-size: 0.85em;
+    background: var(--paper-mid);
+    border: 0.5px solid var(--paper-dark);
+    padding: 0.1em 0.4em;
+    color: var(--ink-mid);
+  }
+
+  .filename {
+    font-family: Consolas, "SF Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    margin-top: 1.2rem;
+  }
+
+  /* ── 技術構成 ── */
+  .specs { margin-top: 1.2rem; border-top: 0.5px solid var(--paper-dark); }
+  .spec-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+    padding: 0.9rem 0;
+    border-bottom: 0.5px solid var(--paper-dark);
+  }
+  @media (min-width: 640px) { .spec-row { grid-template-columns: 190px 1fr; gap: 1rem; } }
+  .spec-key {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+  }
+  .spec-val { font-size: 0.88rem; color: var(--ink-mid); }
+
+  /* ── ダウンロード ── */
+  .actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.6rem; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border: 0.5px solid var(--accent);
+    color: var(--accent);
+    transition: background 0.3s, color 0.3s;
+  }
+  .btn:hover { background: var(--accent); color: var(--paper); }
+  .btn-primary { background: var(--accent); color: var(--paper); }
+  .btn-primary:hover { background: var(--accent-gold); border-color: var(--accent-gold); }
+
+  .disclaimer {
+    margin-top: 1.8rem;
+    padding: 1rem 1.2rem;
+    border: 0.5px solid var(--paper-dark);
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.9;
+  }
+
+  .meta {
+    margin-top: 3.5rem;
+    padding-top: 1.2rem;
+    border-top: 0.5px solid var(--paper-dark);
+    font-size: 0.75rem;
+    color: var(--ink-light);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2.5rem 1.5rem;
+    border-top: 0.5px solid var(--paper-dark);
+    background: var(--paper-mid);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+  .footer-logo { font-family: 'Zen Old Mincho', serif; color: var(--ink); text-decoration: none; }
+  .footer-link { color: var(--ink-mid); text-decoration: none; }
+  .footer-link:hover { color: var(--accent); }
+  .footer-copy { color: var(--ink-light); }
+</style>
+
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <div class="nav-right">
+    <a href="/#services" class="nav-home">← 自社サービスへ</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<main>
+  <p class="crumbs"><a href="/">ホーム</a> › <a href="/#services">自社サービス</a> › 日報入力ツール</p>
+
+  <p class="page-label">Own Product</p>
+  <h1>日報を、<span class="accent">あとで書かない</span>。</h1>
+  <div class="divider"></div>
+  <p class="lead">
+    15分ごとに「これからやる作業」を尋ね、案件と作業内容をCSVに積み上げていくWindows常駐ツールです。一日の終わりに表で確認して締めると、月次の集計にそのまま使える記録が残ります。自社の業務のために内製したものを、そのまま無償で公開しています。
+  </p>
+
+  <div class="badges">
+    <span class="badge">無償公開</span>
+    <span class="badge">MITライセンス</span>
+    <span class="badge">Windows</span>
+    <span class="badge">PowerShell 1ファイル</span>
+    <span class="badge">通信なし・ローカル完結</span>
+  </div>
+
+  <p class="note">
+    ※ 本ツールは当社が自社の業務のために内製し、日々使っているものをそのまま公開したソフトウェアです。MITライセンスの「現状有姿」提供であり、動作の保証・サポートを伴う商品ではありません。導入・運用のご相談は<a href="/#contact" class="text-link">お問い合わせ</a>から承ります。
+  </p>
+
+  <!-- 課題 -->
+  <section id="problem">
+    <h2>日報の「よくある困りごと」</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>思い出せない</h3>
+        <p>終業時にまとめて書こうとすると、午前中に何をしていたかはもう記憶が曖昧。日報の精度が日々落ちていく。</p>
+      </div>
+      <div class="card">
+        <h3>粒度が粗くなる</h3>
+        <p>「終日：開発」のような一行になりがち。月次報告や工数集計に使おうとしても、案件別の内訳が出せない。</p>
+      </div>
+      <div class="card">
+        <h3>書くこと自体が負担</h3>
+        <p>一日の最後に残る「重いタスク」になり、後回し・書き忘れが起きる。翌日まとめて書くと精度はさらに下がる。</p>
+      </div>
+    </div>
+    <p style="margin-top:1.2rem;">原因はひとつ。「あとで、思い出して書く」から。そこで、記録の向きを逆にしました。</p>
+  </section>
+
+  <!-- 仕組み -->
+  <section id="approach">
+    <h2>「思い出して書く」から、「始める前に宣言する」へ</h2>
+    <div class="compare">
+      <div class="card old">
+        <h3 style="color:var(--ink-light);">従来の日報</h3>
+        <p class="flow">作業する → 記憶をたどる → 日報を書く</p>
+        <p>記録の品質が「記憶力」と「終業時の余力」に依存する。</p>
+      </div>
+      <div class="card">
+        <h3>この仕組み</h3>
+        <p class="flow">次の作業を宣言する → 作業する（記録は済んでいる）</p>
+        <p>15分区切りごとに「これからやること」を選ぶだけ。記憶に頼らない。</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2rem;">一日の流れ</h3>
+    <ol class="steps">
+      <li><strong>起動</strong>：デスクトップのショートカットから起動し、「業務開始」を押した時点から記録が始まります（ショートカットは初回起動時に作成され、消えても起動のたびに作り直されます）。</li>
+      <li><strong>日中</strong>：15分区切りで入力ウィンドウが自動で現れ、次の作業を選びます。常駐の「日報メニュー」からは、編集・MTG予約・休憩がいつでも行えます。</li>
+      <li><strong>終業</strong>：一日の記録が表で表示されるので、確認・修正して「締め」でCSVを保存します。</li>
+      <li><strong>月次</strong>：15分粒度・案件別のCSVが日々貯まっているので、集計してそのまま報告書の元データにできます。</li>
+    </ol>
+  </section>
+
+  <!-- 画面 -->
+  <section id="screens">
+    <h2>画面</h2>
+    <p style="font-size:0.85rem;color:var(--ink-light);">※ 掲載している画面の案件名・作業内容は、すべて資料用のダミー値です。</p>
+
+    <figure>
+      <img src="img/input-window.png" width="532" height="345" loading="lazy" decoding="async" alt="入力ウィンドウ。対象の時間帯の表示、案件・作業内容・記録する時間の選択、記録（OK）・スキップ・休憩・業務終了のボタンが並ぶ">
+      <figcaption>
+        <strong>入力ウィンドウ</strong>／15分区切りのタイミングで自動表示されます。案件・作業内容は選択式で、新しい作業名を直接入力すると次回から選択肢に追加されます。宣言した時間（15〜120分）のあいだは表示されません。
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/menu.png" width="352" height="289" loading="lazy" decoding="async" alt="日報メニュー。日付の選択と編集ボタン、MTG予約・休憩・選択肢の編集・業務終了のボタンが縦に並ぶ小窓">
+      <img src="img/break.png" width="392" height="195" loading="lazy" decoding="async" alt="休憩中ウィンドウ。開始時刻と経過分数が表示され、休憩完了ボタンがある" style="margin-top:1rem;">
+      <figcaption>
+        <strong>日報メニュー／休憩中</strong>／常駐の小窓から、編集・MTG予約・休憩・選択肢の編集・業務終了の5操作が行えます（閉じてもタスクトレイに常駐）。休憩は長さを決めずに始められ、戻って「休憩完了」を押した時点までが記録されます。
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/list-edit.png" width="672" height="590" loading="lazy" decoding="async" alt="一覧編集ウィンドウ。時刻・案件・作業内容の表と、選択した行に入力・クリア・この行を入力欄へコピーのボタン">
+      <figcaption>
+        <strong>一覧編集</strong>／一日の記録を表で直せます。記録のある日付なら過去日も開けるので、入力し忘れた枠の穴埋めも修正もここで完結します。保存すると時刻順に並べ直してCSVを書き直します。
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/meeting.png" width="532" height="325" loading="lazy" decoding="async" alt="MTG予約ウィンドウ。開始時刻・時間・案件・作業内容を指定して予約するダイアログ">
+      <figcaption>
+        <strong>MTG予約</strong>／会議の時間帯を先に確保しておくと、その間は入力ウィンドウが出ません。会議の最中に入力を求められる、という弱点を避けるための仕組みです。
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/master-edit.png" width="752" height="567" loading="lazy" decoding="async" alt="選択肢の編集ウィンドウ。左に案件の一覧、右にその案件の作業内容の一覧、それぞれに追加・名前変更・削除・並べ替えのボタンが並ぶ">
+      <figcaption>
+        <strong>選択肢の編集</strong>／案件・作業内容の候補を画面から整理できます。名前変更・削除で変わるのは次回からの選択肢だけで、過去のCSVは当時の表記のまま残します。
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- データ -->
+  <section id="data">
+    <h2>成果物は、素直なCSV</h2>
+    <p>1日1ファイル・1行が15分枠。UTF-8（BOM付き）なのでExcelでそのまま開けます。ピボット集計すれば案件別・作業別の時間が出ます。</p>
+    <p class="filename">日報ログ\日報ログ_2026-07-31.csv</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>日付</th><th>時刻</th><th>案件</th><th>作業内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>2026/07/31</td><td>9:00</td><td>案件A</td><td>API設計レビュー</td></tr>
+          <tr><td>2026/07/31</td><td>9:15</td><td>案件A</td><td>API設計レビュー</td></tr>
+          <tr><td>2026/07/31</td><td>9:30</td><td>案件A</td><td>PRJ-12 商品ページ改修</td></tr>
+          <tr><td>2026/07/31</td><td>9:45</td><td>社内</td><td>週次定例MTG</td></tr>
+          <tr><td>2026/07/31</td><td>12:00</td><td>その他</td><td>休憩</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li>休憩も1行として残るので、空白が「入力し忘れ」なのか「休んでいた」のかを後から迷わない。</li>
+      <li>選択肢の元は <code>案件.txt</code> と <code>作業名.txt</code> のテキスト2ファイルだけ。専用の形式もデータベースもない。</li>
+      <li>ExcelでCSVを開いて日付や時刻の書式が変わっても、読み込み側で吸収します。</li>
+    </ul>
+  </section>
+
+  <!-- 技術構成 -->
+  <section id="tech">
+    <h2>技術構成</h2>
+    <div class="specs">
+      <div class="spec-row">
+        <div class="spec-key">動作環境</div>
+        <div class="spec-val">Windows ／ Windows PowerShell 5.1（追加インストール・管理者権限は不要）</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-key">実装</div>
+        <div class="spec-val">PowerShellスクリプト1ファイル。画面はWindows Forms。バッチ（.bat）からPowerShellを起動する最小構成で、サーバーもデータベースも使いません。</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-key">通信</div>
+        <div class="spec-val">ネットワーク通信を行いません。記録・設定はすべてスクリプトと同じフォルダ内のCSVとテキストに保存され、外部に送信されません。</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-key">配置</div>
+        <div class="spec-val">ログも設定もスクリプトと同じ場所を基準に解決するため、フォルダごと移動しても動きます。インストーラも設定画面もありません。</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-key">保守</div>
+        <div class="spec-val">スクリプトを直せば次回起動から反映されます（ビルド作業なし）。主要な処理をウィンドウを出さずに検証するセルフテストを同梱しています。</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-key">ライセンス</div>
+        <div class="spec-val">MIT License（Copyright © 2026 株式会社ヤエノワ）。改変・再配布ができます。</div>
+      </div>
+    </div>
+    <p style="margin-top:1.2rem;font-size:0.88rem;">
+      設計・実装は、対話型のAI開発ツールと相談しながら進めました。何を作るか・どこで妥協するかを人が決め、実装と検証を任せる進め方の記録を、紹介資料の付録にまとめています。
+    </p>
+  </section>
+
+  <!-- 使い始める -->
+  <section id="download">
+    <h2>使ってみる</h2>
+    <ol class="steps">
+      <li>下のボタンからZIPをダウンロードし、消えない場所（ドキュメントなど）に展開します。</li>
+      <li>フォルダ内の <code>日報入力.bat</code> をダブルクリックすると、デスクトップに「日報入力」のショートカットが作られます。</li>
+      <li>翌日からは、そのショートカットから起動します。案件・作業内容の選択肢は、初回起動時に作られる <code>日報設定</code> フォルダのテキスト、または「選択肢の編集」画面から自分のものに変えてください。</li>
+    </ol>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="https://github.com/yaenowa-yoshida/daily-report/archive/refs/heads/main.zip" target="_blank" rel="noopener">ZIPをダウンロード</a>
+      <a class="btn" href="https://github.com/yaenowa-yoshida/daily-report" target="_blank" rel="noopener">ソースを見る（GitHub）</a>
+      <a class="btn" href="https://github.com/yaenowa-yoshida/daily-report/raw/main/%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%83%9E%E3%83%8B%E3%83%A5%E3%82%A2%E3%83%AB.xlsx" target="_blank" rel="noopener">利用マニュアル（Excel）</a>
+      <a class="btn" href="/services/nippo-slides">紹介資料（スライド）</a>
+    </div>
+
+    <div class="disclaimer">
+      <p>ダウンロード・改変・再配布はMIT Licenseの条件に従ってご利用ください。本ソフトウェアは「現状有姿」で提供され、明示・黙示を問わずいかなる保証も行いません。当社の故意または重過失による場合を除き、利用によって生じた損害について責任を負いかねます。</p>
+      <p style="margin-top:0.6rem;">記録は同じフォルダ内のCSVに保存されます。保存のたびにファイルを書き直す仕様のため、定期的にバックアップのうえご利用ください。</p>
+      <p style="margin-top:0.6rem;">起動用のバッチファイルは、PowerShellの実行ポリシーを回避する指定（<code>-ExecutionPolicy Bypass</code>）でスクリプトを起動します。組織の規程に抵触しないか、情報システム部門にご確認のうえご利用ください。</p>
+    </div>
+  </section>
+
+  <!-- 紹介資料 -->
+  <section id="slides">
+    <h2>紹介資料</h2>
+    <p>
+      仕組み・画面・データ形式をまとめたスライド（全24枚）を公開しています。本編13枚が「何を作ったか」、付録11枚が「AIと相談しながら、どう作ったか」です。
+    </p>
+    <div class="actions">
+      <a class="btn" href="/services/nippo-slides">紹介資料を見る</a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <h2>お問い合わせ</h2>
+    <p>
+      「記録が残らない」「集計に手間がかかる」といった日々の業務の詰まりは、手を動かす人の近くで設計するほど素直に解けます。同じような業務の仕組みづくり、システム化の入口のご相談は、<a href="/#contact" class="text-link">お問い合わせ</a>からお気軽にご連絡ください。当社の対応領域は<a href="/#works" class="text-link">トップページ</a>に掲載しています。
+    </p>
+  </section>
+
+  <p class="meta">公開日：2026年8月22日 ／ 最終更新：2026年8月22日</p>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/#services" class="footer-link">自社サービス</a>
+  <a href="/outlook/" class="footer-link">今後の展望</a>
+  <a href="/privacy" class="footer-link">プライバシーポリシー</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+</body>
+</html>
