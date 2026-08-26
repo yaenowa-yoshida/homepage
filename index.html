@@ -185,6 +185,19 @@
       "publisher": { "@id": "https://yaenowa.co.jp/#organization" }
     },
     {
+      "@type": "SoftwareApplication",
+      "@id": "https://yaenowa.co.jp/services/audio-guide#software",
+      "name": "歴史散歩音声ガイド",
+      "url": "https://yaenowa.co.jp/services/audio-guide",
+      "applicationCategory": "TravelApplication",
+      "operatingSystem": "Android",
+      "description": "位置情報に応じて周辺にゆかりのある歴史上の出来事を音声で案内するアプリ。現在は開発中で、Android向けの試験版（β）を配布して検証している。位置情報は端末内で処理し外部へ送信しない。解説原稿は検証中の下書き。",
+      "downloadUrl": "https://github.com/yaenowa-yoshida/audio-guide-site/releases/download/beta-latest/guide-beta.apk",
+      "isAccessibleForFree": true,
+      "author": { "@id": "https://yaenowa.co.jp/#organization" },
+      "publisher": { "@id": "https://yaenowa.co.jp/#organization" }
+    },
+    {
       "@type": "WebSite",
       "@id": "https://yaenowa.co.jp/#website",
       "url": "https://yaenowa.co.jp/",
@@ -2241,7 +2254,7 @@
     <p class="section-label">Own Product</p>
     <h2 class="section-title">自社サービス</h2>
     <div class="divider"></div>
-    <p class="services-lead">自社の業務のために内製し、日々使っているツールを無償で公開しています。</p>
+    <p class="services-lead">自社で企画・開発したプロダクトです。日々の業務のために内製して無償公開しているツールと、いま開発を進めているアプリを紹介します。</p>
 
     <a class="service-card" href="/services/nippo">
       <img class="service-shot" src="services/img/input-window.png" width="532" height="345" loading="lazy" decoding="async" alt="日報入力ツールの入力ウィンドウ。案件と作業内容を選び、記録する時間を指定して記録するダイアログ（画面の値はダミー）">
@@ -2257,6 +2270,25 @@
           <span class="tech-tag">通信なし・ローカル完結</span>
           <span class="tech-tag">CSV出力</span>
           <span class="tech-tag">MITライセンス</span>
+        </div>
+        <span class="service-more">詳しく見る →</span>
+      </div>
+    </a>
+
+    <a class="service-card" href="/services/audio-guide">
+      <img class="service-shot" src="services/img/audio-guide-feature.png" width="1024" height="500" loading="lazy" decoding="async" alt="歴史散歩音声ガイドのイメージ。深緑の背景に白いピンと桜色の音声バー、サービス名「歴史散歩音声ガイド」">
+      <div class="service-body">
+        <p class="service-cat">歴史散歩音声ガイド（開発中）</p>
+        <h3 class="service-title">歩けば、まちに眠る歴史が聞こえる。</h3>
+        <p class="service-desc">
+          位置情報に応じて、その周辺にゆかりのある歴史上の出来事を音声で案内するアプリです。現在 開発中で、Android 向けの試験版（β）を配布して検証しています。位置情報は端末内で処理し、外部へ送信しません。
+        </p>
+        <div class="tech-tags">
+          <span class="tech-tag">開発中</span>
+          <span class="tech-tag">試験版（β）</span>
+          <span class="tech-tag">Android</span>
+          <span class="tech-tag">位置情報×音声</span>
+          <span class="tech-tag">端末内処理・送信なし</span>
         </div>
         <span class="service-more">詳しく見る →</span>
       </div>
@@ -2567,6 +2599,7 @@ function copyMail() {
 <footer>
   <span class="footer-logo">株式会社ヤエノワ</span>
   <a href="/services/nippo" class="footer-link">日報入力ツール</a>
+  <a href="/services/audio-guide" class="footer-link">歴史散歩音声ガイド</a>
   <a href="/outlook/" class="footer-link">今後の展望</a>
   <a href="/privacy" class="footer-link">プライバシーポリシー</a>
   <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>

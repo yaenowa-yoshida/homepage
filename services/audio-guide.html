@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<title>歴史散歩音声ガイド（開発中・試験版β） | 株式会社ヤエノワ</title>
+<meta name="description" content="株式会社ヤエノワが開発中の「歴史散歩音声ガイド」。位置情報に応じて、周辺にゆかりのある歴史上の出来事を音声で案内するアプリです。現在Android向けの試験版（β）を配布して検証中で、提供中の完成サービスではありません。">
+<meta name="keywords" content="歴史散歩,音声ガイド,位置情報,散歩,歴史,アプリ,Android,試験版,ベータ,株式会社ヤエノワ">
+<meta name="author" content="株式会社ヤエノワ">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://yaenowa.co.jp/services/audio-guide">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="歴史散歩音声ガイド（開発中・試験版β） | 株式会社ヤエノワ">
+<meta property="og:description" content="位置情報に応じて周辺にゆかりのある歴史上の出来事を音声で案内するアプリ。現在Android向けの試験版（β）を配布して検証中で、提供中の完成サービスではありません。">
+<meta property="og:url" content="https://yaenowa.co.jp/services/audio-guide">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+
+<!-- 構造化データ（表示内容と一致させること） -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://yaenowa.co.jp/services/audio-guide",
+      "url": "https://yaenowa.co.jp/services/audio-guide",
+      "name": "歴史散歩音声ガイド（開発中・試験版β） | 株式会社ヤエノワ",
+      "description": "株式会社ヤエノワが開発中の位置情報×音声ガイドアプリ「歴史散歩音声ガイド」の紹介ページ。Android向けの試験版（β）を配布して検証中で、提供中の完成サービスではありません。",
+      "inLanguage": "ja",
+      "datePublished": "2026-08-26",
+      "dateModified": "2026-08-26",
+      "isPartOf": { "@type": "WebSite", "@id": "https://yaenowa.co.jp/#website" },
+      "about": { "@id": "https://yaenowa.co.jp/services/audio-guide#software" },
+      "publisher": { "@id": "https://yaenowa.co.jp/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://yaenowa.co.jp/services/audio-guide#software",
+      "name": "歴史散歩音声ガイド",
+      "url": "https://yaenowa.co.jp/services/audio-guide",
+      "applicationCategory": "TravelApplication",
+      "operatingSystem": "Android",
+      "description": "位置情報に応じて周辺にゆかりのある歴史上の出来事を音声で案内するアプリ。現在は開発中で、Android向けの試験版（β）を配布して検証している。位置情報は端末内で処理し外部へ送信しない。解説原稿は検証中の下書き。",
+      "downloadUrl": "https://github.com/yaenowa-yoshida/audio-guide-site/releases/download/beta-latest/guide-beta.apk",
+      "isAccessibleForFree": true,
+      "author": { "@id": "https://yaenowa.co.jp/#organization" },
+      "publisher": { "@id": "https://yaenowa.co.jp/#organization" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+        { "@type": "ListItem", "position": 2, "name": "自社サービス", "item": "https://yaenowa.co.jp/#services" },
+        { "@type": "ListItem", "position": 3, "name": "歴史散歩音声ガイド", "item": "https://yaenowa.co.jp/services/audio-guide" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+
+<style>
+  /* ============================================================
+     本ページ固有スタイル（色・リセット等の共通分は theme.css 側）
+       BASE / NAV / HERO / SECTION / SHOTS / TABLE / SPECS / STEPS / FOOTER
+     ============================================================ */
+
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  p { text-wrap: pretty; }
+  img { max-width: 100%; height: auto; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem clamp(1.2rem, 4vw, 4rem);
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--paper-dark);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+    text-decoration: none;
+    margin-right: auto;
+  }
+  .nav-right { display: flex; align-items: center; gap: 1.2rem; }
+  .nav-home {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-mid);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav-home:hover { color: var(--accent); }
+
+  /* ── 本文の器 ── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 7.5rem clamp(1.2rem, 5vw, 2rem) 5rem;
+  }
+
+  .crumbs {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    margin-bottom: 2rem;
+  }
+  .crumbs a { color: var(--ink-light); text-decoration: none; border-bottom: 0.5px solid var(--paper-dark); }
+  .crumbs a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .page-label {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  h1 {
+    font-family: 'Zen Old Mincho', serif;
+    font-weight: 400;
+    font-size: clamp(1.9rem, 5vw, 2.8rem);
+    line-height: 1.5;
+    letter-spacing: 0.06em;
+    text-wrap: balance;
+  }
+  h1 .accent { color: var(--accent); }
+  .divider {
+    width: 46px;
+    height: 1px;
+    background: var(--accent-gold);
+    margin: 1.6rem 0;
+  }
+  .lead {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.02rem;
+    color: var(--ink-mid);
+    line-height: 2;
+  }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.6rem; }
+  .badge {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    border: 0.5px solid var(--paper-dark);
+    background: var(--sakura-pale);
+    padding: 0.3rem 0.75rem;
+  }
+
+  .note {
+    margin-top: 1.8rem;
+    padding: 1rem 1.2rem;
+    border-left: 2px solid var(--sakura-mid);
+    background: var(--paper-mid);
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    line-height: 1.9;
+  }
+
+  /* ── SECTION ── */
+  section { margin-top: 4.2rem; }
+  h2 {
+    font-family: 'Zen Old Mincho', serif;
+    font-weight: 400;
+    font-size: 1.35rem;
+    letter-spacing: 0.08em;
+    padding-bottom: 0.7rem;
+    border-bottom: 0.5px solid var(--paper-dark);
+    margin-bottom: 1.5rem;
+  }
+  h3 {
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+  section p + p { margin-top: 1rem; }
+  section ul { margin: 1rem 0 0 1.2rem; }
+  section li { margin-bottom: 0.5rem; font-size: 0.92rem; }
+
+  /* ── カード ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1.2rem;
+  }
+  .card {
+    border: 0.5px solid var(--paper-dark);
+    border-left: 2px solid var(--sakura-mid);
+    background: var(--paper-mid);
+    padding: 1.1rem 1.2rem;
+  }
+  .card p { font-size: 0.86rem; color: var(--ink-mid); line-height: 1.85; }
+
+  /* ── 対比（従来／この仕組み） ── */
+  .compare { display: grid; gap: 1rem; margin-top: 1.2rem; }
+  @media (min-width: 700px) { .compare { grid-template-columns: 1fr 1fr; } }
+  .compare .old { border-left-color: var(--paper-dark); }
+  .flow { font-size: 0.9rem; color: var(--ink); margin-top: 0.3rem; }
+
+  /* ── 手順 ── */
+  ol.steps { margin: 1.2rem 0 0 1.3rem; }
+  ol.steps li { margin-bottom: 0.9rem; font-size: 0.92rem; }
+
+  /* ── 画面キャプチャ ── */
+  figure {
+    margin-top: 1.6rem;
+    border: 0.5px solid var(--paper-dark);
+    background: var(--paper-mid);
+    padding: 1rem;
+  }
+  figure img { display: block; margin: 0 auto; }
+  figcaption {
+    margin-top: 0.8rem;
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    line-height: 1.8;
+  }
+  figcaption strong { color: var(--accent); font-weight: 500; }
+
+  /* ── CSVサンプル ── */
+  .table-wrap { overflow-x: auto; margin-top: 1.2rem; border: 0.5px solid var(--paper-dark); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.82rem; }
+  th, td { padding: 0.5rem 0.8rem; border-bottom: 0.5px solid var(--paper-dark); text-align: left; white-space: nowrap; }
+  th { background: var(--paper-mid); font-weight: 500; letter-spacing: 0.06em; }
+  td { color: var(--ink-mid); }
+  tr:last-child td { border-bottom: none; }
+  code {
+    font-family: Consolas, "SF Mono", "Courier New", monospace;
+    font-size: 0.85em;
+    background: var(--paper-mid);
+    border: 0.5px solid var(--paper-dark);
+    padding: 0.1em 0.4em;
+    color: var(--ink-mid);
+  }
+
+  .filename {
+    font-family: Consolas, "SF Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    margin-top: 1.2rem;
+  }
+
+  /* ── 技術構成 ── */
+  .specs { margin-top: 1.2rem; border-top: 0.5px solid var(--paper-dark); }
+  .spec-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+    padding: 0.9rem 0;
+    border-bottom: 0.5px solid var(--paper-dark);
+  }
+  @media (min-width: 640px) { .spec-row { grid-template-columns: 190px 1fr; gap: 1rem; } }
+  .spec-key {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+  }
+  .spec-val { font-size: 0.88rem; color: var(--ink-mid); }
+
+  /* ── ダウンロード ── */
+  .actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.6rem; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border: 0.5px solid var(--accent);
+    color: var(--accent);
+    transition: background 0.3s, color 0.3s;
+  }
+  .btn:hover { background: var(--accent); color: var(--paper); }
+  .btn-primary { background: var(--accent); color: var(--paper); }
+  .btn-primary:hover { background: var(--accent-gold); border-color: var(--accent-gold); }
+
+  .disclaimer {
+    margin-top: 1.8rem;
+    padding: 1rem 1.2rem;
+    border: 0.5px solid var(--paper-dark);
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.9;
+  }
+
+  .meta {
+    margin-top: 3.5rem;
+    padding-top: 1.2rem;
+    border-top: 0.5px solid var(--paper-dark);
+    font-size: 0.75rem;
+    color: var(--ink-light);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2.5rem 1.5rem;
+    border-top: 0.5px solid var(--paper-dark);
+    background: var(--paper-mid);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+  .footer-logo { font-family: 'Zen Old Mincho', serif; color: var(--ink); text-decoration: none; }
+  .footer-link { color: var(--ink-mid); text-decoration: none; }
+  .footer-link:hover { color: var(--accent); }
+  .footer-copy { color: var(--ink-light); }
+</style>
+
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <div class="nav-right">
+    <a href="/#services" class="nav-home">← 自社サービスへ</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<main>
+  <p class="crumbs"><a href="/">ホーム</a> › <a href="/#services">自社サービス</a> › 歴史散歩音声ガイド</p>
+
+  <p class="page-label">Own Product</p>
+  <h1>歩けば、まちに眠る<span class="accent">歴史が聞こえる</span>。</h1>
+  <div class="divider"></div>
+  <p class="lead">
+    スマートフォンの位置情報に応じて、その周辺にゆかりのある歴史上の出来事を音声で案内するアプリです。現在、当社で企画・開発を進めており、Android 向けの試験版（β）を配布して動作と原稿を検証しています。まだ提供中の完成サービスではありません。
+  </p>
+
+  <img src="/services/img/audio-guide-feature.png" width="1024" height="500" loading="lazy" decoding="async" alt="歴史散歩音声ガイドのイメージ。深緑の背景に、白いピンと桜色の音声バー、サービス名「歴史散歩音声ガイド」" style="width:100%;height:auto;border:0.5px solid var(--paper-dark);margin:1.6rem 0;">
+
+  <div class="badges">
+    <span class="badge">開発中</span>
+    <span class="badge">試験版（β）配布中</span>
+    <span class="badge">Android</span>
+    <span class="badge">位置情報 × 音声</span>
+    <span class="badge">端末内処理・位置情報を外部送信しない</span>
+  </div>
+
+  <p class="note">
+    ※ 本アプリは開発中で、Android 向けの試験版（β）を検証のために配布しているものです。提供中の完成サービスや、リリース時期を確約するものではありません。解説原稿はすべて検証中の下書きであり、内容を史実として引用しないでください（各地点の出典はアプリ内に表示されます）。自治体・公的機関との提携や監修に基づくものではありません。
+  </p>
+
+  <section id="about">
+    <h2>どんなアプリか</h2>
+    <ul class="steps">
+      <li>「始める」を押して歩くと、<strong>現在地の周辺で起きた出来事</strong>を選んで音声で案内します。</li>
+      <li>読み上げは<strong>1件を最後まで聞いてから次へ</strong>進む、割り込みのない設計です。</li>
+      <li><strong>位置情報は端末内でのみ処理し、当社のサーバーへ送信しません</strong>（バックエンドを持たない構成）。移動履歴の蓄積・追跡もしません。</li>
+      <li>読み上げ（音声合成）は<strong>端末内で完結</strong>します。</li>
+      <li>対象範囲はまず東京から。将来的に地域ごとの版へ広げることを検討しています。</li>
+    </ul>
+  </section>
+
+  <section id="status">
+    <h2>いまの段階</h2>
+    <p>実際に移動しながら動きを確かめる検証段階です。原稿は一次資料との突き合わせ・現地確認を人の工程として進めており、その完了までは「検証中の下書き」として扱います。提供形態（無料／広告の有無など）・対応端末の拡大・iPhone 版などは検討中です。</p>
+    <p style="margin-top:0.8rem;">試作に追加した地点は、<a href="/outlook/academics-guide-notes" class="text-link">更新履歴</a>に日付つきで記録しています（地点名と区のみ）。企画の背景は<a href="/outlook/academics-guide" class="text-link">「今後の展望」の企画案</a>にまとめています。</p>
+  </section>
+
+  <section id="download">
+    <h2>試験版（β）を試す</h2>
+    <p>Android 向けの試験版 APK を配布しています。検証目的の暫定版です。お手元の Android 端末のブラウザで下のリンクを開き、表示に従ってインストールしてください（初回は「提供元不明のアプリ」のインストール許可が必要です）。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="https://github.com/yaenowa-yoshida/audio-guide-site/releases/download/beta-latest/guide-beta.apk" target="_blank" rel="noopener">試験版（β）をダウンロード（Android）</a>
+      <a class="btn" href="/outlook/academics-guide-notes">更新履歴を見る</a>
+      <a class="btn" href="/audio-guide-privacy">プライバシーポリシー</a>
+    </div>
+    <div class="disclaimer">
+      <p>本試験版は開発中の暫定版であり、「現状有姿」で提供します。動作の保証・サポートを伴う商品ではありません。予告なく内容を変更・中止する場合があります。</p>
+      <p style="margin-top:0.6rem;">解説原稿は検証中の下書きです。内容を史実として引用しないでください（各地点の出典はアプリ内に表示されます）。</p>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>お問い合わせ</h2>
+    <p>本アプリや、位置情報を使った企画・開発のご相談は、<a href="/#contact" class="text-link">お問い合わせ</a>からご連絡ください。当社の対応領域は<a href="/#works" class="text-link">トップページ</a>に掲載しています。</p>
+  </section>
+
+  <p class="meta">公開日：2026年8月26日 ／ 最終更新：2026年8月26日</p>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/#services" class="footer-link">自社サービス</a>
+  <a href="/outlook/" class="footer-link">今後の展望</a>
+  <a href="/privacy" class="footer-link">プライバシーポリシー</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+</body>
+</html>
