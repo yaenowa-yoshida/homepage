@@ -1,0 +1,4 @@
+# app-ads.txt — AdMob 広告在庫の正当性証明（IAB Tech Lab app-ads.txt v1.0）
+# Google Play のデベロッパー ウェブサイト（yaenowa.co.jp）のルートに設置。
+# pub-9710509760903301 は「歴史散歩音声ガイド」アプリの AdMob パブリッシャー ID。
+google.com, pub-9710509760903301, DIRECT, f08c47fec0942fa0
