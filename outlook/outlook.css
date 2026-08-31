@@ -21,6 +21,7 @@
   --accent: var(--accent-cool-deep);
   --accent-gold: var(--accent-cool);
   --accent-pale: var(--accent-cool-pale);
+  /* 影の色。現状 outlook では未使用だが、カード影を足したときに揃うよう先に寄せておく */
   --ring: var(--ring-cool);
   /* 紙色も寒色寄りの白へ。コーポレート本体の温かいクリーム色と対比させる */
   --paper: var(--paper-cool);

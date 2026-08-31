@@ -21,11 +21,25 @@
     var root = document.documentElement;
     var themeBtn = document.getElementById('theme-toggle');
     if (!themeBtn) return;
+
+    /* アドレスバー色（theme-color）は media 属性つきの meta 2枚で OS 設定に追従するが、
+       サイト内トグルで切り替えたときは OS 設定と食い違うため JS で書き換える。
+       色の値はページ側の宣言をそのまま使う（セクションごとに色が違うため
+       JS にハードコードしない。/outlook は藍系）。書き換え前の宣言値を控えておく。 */
+    var metas = document.querySelectorAll('meta[name="theme-color"]');
+    var declared = {};
+    Array.prototype.forEach.call(metas, function(m){
+      var media = m.getAttribute('media') || '';
+      declared[media.indexOf('dark') !== -1 ? 'dark' : 'light'] = m.getAttribute('content');
+    });
+
     function applyTheme(theme){
       root.setAttribute('data-theme', theme);
       themeBtn.setAttribute('aria-label', theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え');
-      document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
-        m.setAttribute('content', theme === 'dark' ? '#161316' : '#7a3a4a');
+      var color = declared[theme];
+      if (!color) return;
+      Array.prototype.forEach.call(metas, function(m){
+        m.setAttribute('content', color);
       });
     }
     applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
