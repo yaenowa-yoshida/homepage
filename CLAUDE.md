@@ -62,9 +62,12 @@
   〒153-0064 東京都目黒区下目黒1丁目1番14号 コノトラビル7F。
   規約上Web掲載は可（標準的な「所在地」表記に留め、誇大・誤認表現を付けない）。
 - **解約する場合、解約日までにサイト・名刺・登記等から当該住所を全て削除する義務がある**
-  （GMO利用規約 第33条。怠ると違約金・自動更新）。削除箇所は **5箇所**:
-  `index.html` の会社概要テーブルと JSON-LD の address・`llms.txt`・`privacy.html`・
-  `audio-guide-privacy.html`。**住所を書くページを増やしたらこの一覧に追記すること。**
+  （GMO利用規約 第33条。怠ると違約金・自動更新）。
+  **本リポジトリは公開されているため、サイトの表示だけでなくリポジトリ内の記述も削除対象。**
+  削除箇所は **7箇所**: `index.html` の会社概要テーブルと JSON-LD の address・
+  `llms.txt`・`privacy.html`・`audio-guide-privacy.html`・**この `CLAUDE.md` 自身**・
+  `.claude/agents/site-consistency-check.md`。
+  **住所を書く箇所を増やしたらこの一覧に追記すること**（`grep -rn "コノトラ" . --exclude-dir=.git` で確認できる）。
 
 ## 開発フロー
 
