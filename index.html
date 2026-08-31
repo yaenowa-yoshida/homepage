@@ -933,8 +933,18 @@
   .acc-item.open .acc-panel {
     grid-template-rows: 1fr;
   }
+  /* 閉じているパネルの中身はタブ順・支援技術から外す。
+     overflow:hidden のクリップだけではフォーカス可能要素が残るため
+     （パネル内にリンクを置いた際に、見えないままフォーカスが当たっていた）。
+     閉じるアニメーションが終わってから隠すよう遅延させる */
   .acc-panel-inner {
     overflow: hidden;
+    visibility: hidden;
+    transition: visibility 0s 0.4s;
+  }
+  .acc-item.open .acc-panel-inner {
+    visibility: visible;
+    transition: visibility 0s;
   }
   .acc-panel-content {
     padding: 0 1.8rem 1.8rem 5rem;
@@ -1400,10 +1410,12 @@
     font-style: italic;
   }
 
-  /* 対応領域から自社サービスセクションへの導線 */
+  /* 対応領域から自社サービスセクションへの導線。
+     親が flex column のため、align-self を指定しないと全幅に伸びて
+     下線とクリック領域がパネル幅いっぱいになる */
   .work-link {
     display: inline-block;
-    margin-top: 0.9rem;
+    align-self: flex-start;
     font-size: 0.82rem;
     letter-spacing: 0.05em;
     color: var(--accent-gold);
@@ -1763,6 +1775,8 @@
       transition-duration: 0.001ms !important;
       scroll-behavior: auto !important;
     }
+    /* 閉じたパネルを隠す遅延も外す（duration の上書きだけでは delay が残るため） */
+    .acc-panel-inner { transition-delay: 0s !important; }
     .reveal { opacity: 1 !important; transform: none !important; }
     .reveal-item { animation: none !important; }
     .reveal-item > * { opacity: 1 !important; transform: none !important; }
