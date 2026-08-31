@@ -131,7 +131,8 @@
   自社プロダクト（`/services/nippo` の日報入力ツール、`/services/audio-guide` の
   歴史散歩音声ガイド）は、企画から実装・公開までを自ら通すために作ったもので、
   受託対応の裏付けとして位置づける。サイト上で「自社サービスに限る」と読める
-  書き方はしない（対応領域・JSON-LD の hasOfferCatalog・`llms.txt` の3箇所）。
+  書き方はしない（対応領域の表示・JSON-LD の `hasOfferCatalog` と `knowsAbout`・
+  `llms.txt` の3セクション）。
 
 - **DNS（apex）**: `yaenowa.co.jp` の A レコードは GitHub Pages のIP（`185.199.108-111.153`）を
   正しく指しており、追加のDNS作業は不要。`www.yaenowa.co.jp` も github.io へ向いている。
