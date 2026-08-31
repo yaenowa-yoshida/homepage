@@ -88,7 +88,7 @@
 | `--accent` | `--accent-cool-deep` | ホバー、選択範囲、強調 |
 | `--accent-gold` | `--accent-cool` | 区切り線、見出しの罫、箇条書きの点、リンク、日付、タイムライン、バッジ |
 | `--accent-pale` | `--accent-cool-pale` | ボタンのホバー背景 |
-| `--ring` | `--ring-cool` | フォーカスリング等 |
+| `--ring` | `--ring-cool` | 影の色（現状 outlook では未使用。カード影を足したとき揃うよう予約） |
 | `--paper` | `--paper-cool` | 地の紙色（寒色寄りの白。本体の温かいクリーム色と対比） |
 | `--nav-bg` | `--nav-bg-cool` | 固定ナビの半透明背景（紙色と揃える） |
 | `--paper-mid` | `--paper-cool-mid` | パネル・カードの下地 |
