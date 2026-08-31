@@ -33,9 +33,11 @@
   --accent-cool-deep: #2b4f5b;
   --accent-cool-mid: #6a97a3;
   --accent-cool-pale: #dbe7ea;
+  --paper-cool: #fbfcfd;
   --paper-cool-mid: #eef2f3;
   --paper-cool-dark: #c9d6da;
   --ring-cool: rgba(58,100,112,0.14);
+  --nav-bg-cool: rgba(250,252,253,0.92);
 }
 
 /* ── ライト/ダーク両対応（light-dark() 対応ブラウザのみ。非対応はライト表示のまま） ── */
@@ -65,9 +67,11 @@
     --accent-cool-deep: light-dark(#2b4f5b, #a5cdd7);
     --accent-cool-mid: light-dark(#6a97a3, #6f9aa6);
     --accent-cool-pale: light-dark(#dbe7ea, #26363c);
+    --paper-cool: light-dark(#fbfcfd, #141719);
     --paper-cool-mid: light-dark(#eef2f3, #171d1f);
     --paper-cool-dark: light-dark(#c9d6da, #33454a);
     --ring-cool: light-dark(rgba(58,100,112,0.14), rgba(138,180,191,0.18));
+    --nav-bg-cool: light-dark(rgba(250,252,253,0.92), rgba(20,23,25,0.88));
   }
   [data-theme="light"] { color-scheme: light; }
   [data-theme="dark"]  { color-scheme: dark; }

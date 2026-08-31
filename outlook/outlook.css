@@ -22,6 +22,9 @@
   --accent-gold: var(--accent-cool);
   --accent-pale: var(--accent-cool-pale);
   --ring: var(--ring-cool);
+  /* 紙色も寒色寄りの白へ。コーポレート本体の温かいクリーム色と対比させる */
+  --paper: var(--paper-cool);
+  --nav-bg: var(--nav-bg-cool);
   /* パネル・カードの下地と罫線も寒色側へ寄せる */
   --paper-mid: var(--paper-cool-mid);
   --paper-dark: var(--paper-cool-dark);
