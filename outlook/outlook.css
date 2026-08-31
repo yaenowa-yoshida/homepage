@@ -8,6 +8,27 @@
    色は theme.css のカスタムプロパティのみを参照する。
    ============================================================ */
 
+/* ============================================================
+   セクションの色調 ── 差し色（藍）への差し替え
+   「今後の展望」は検討中の思考を置く場所であり、コーポレート本体とは
+   意図的に空気を変えている。個々の要素に色を指定して回るのではなく、
+   theme.css のアクセント系トークンを本セクションだけ藍系に置き換えることで、
+   区切り線・見出しの罫・箇条書きの点・リンク・タイムライン・パネル背景まで
+   一括で色調が変わる（新しいページを足しても自動で揃う）。
+   紙色と文字色は変えないので、可読性とサイト全体の連続性は保たれる。
+   ============================================================ */
+:root {
+  --accent: var(--accent-cool-deep);
+  --accent-gold: var(--accent-cool);
+  --accent-pale: var(--accent-cool-pale);
+  --ring: var(--ring-cool);
+  /* パネル・カードの下地と罫線も寒色側へ寄せる */
+  --paper-mid: var(--paper-cool-mid);
+  --paper-dark: var(--paper-cool-dark);
+  /* 概算プロトタイプのグラフで3系統を描き分けるための中間色 */
+  --sakura-deep: var(--accent-cool-mid);
+}
+
 /* ── ページ共通の土台（nav・パンくず・本文・フッター）
    もとは outlook 配下の各ページに同じ内容がインラインで重複していたものを集約した。
    各ページの <style> にはページ固有の指定だけを残す。
@@ -89,7 +110,7 @@ nav {
     font-size: 0.7rem;
     letter-spacing: 0.4em;
     /* 差し色（藍）。「今後の展望」セクションであることを示す */
-    color: var(--accent-cool);
+    color: var(--accent-gold);
     text-transform: uppercase;
     margin-bottom: 0.8rem;
   }
@@ -115,9 +136,9 @@ nav {
     display: inline-block;
     font-size: 0.75rem;
     letter-spacing: 0.15em;
-    color: var(--accent-cool);
-    border: 1px solid var(--accent-cool);
-    background: color-mix(in srgb, var(--accent-cool) 7%, transparent);
+    color: var(--accent-gold);
+    border: 1px solid var(--accent-gold);
+    background: color-mix(in srgb, var(--accent-gold) 7%, transparent);
     border-radius: 999px;
     padding: 0.15rem 0.9rem;
     margin-bottom: 1.5rem;
@@ -242,7 +263,7 @@ footer {
   transition: color 0.3s;
 }
 .outlook-subnav a:hover { color: var(--accent); }
-.outlook-subnav a.current { color: var(--accent-cool); }
+.outlook-subnav a.current { color: var(--accent-gold); }
 
 /* 2段目（テーマ配下のページ一覧）。1段目より控えめにして親子関係を示す */
 .outlook-subnav-child {
@@ -262,7 +283,7 @@ footer {
 }
 @supports (background-size: 0%) {
   .outlook-subnav a {
-    background-image: linear-gradient(var(--accent-cool), var(--accent-cool));
+    background-image: linear-gradient(var(--accent-gold), var(--accent-gold));
     background-repeat: no-repeat;
     background-position: 0 100%;
     /* フォールバック値は必須。@property 非対応ブラウザでは --subnav-underline が
@@ -403,7 +424,7 @@ footer {
       inset-inline: 0;
       block-size: 2px;
       z-index: 200;
-      background: var(--accent-cool);
+      background: var(--accent-gold);
       transform: scaleX(0);
       transform-origin: left center;
       animation: outlook-progress linear both;
@@ -419,7 +440,7 @@ footer {
    該当箇所をサイトの配色でハイライトする */
 @supports selector(::target-text) {
   ::target-text {
-    background: color-mix(in srgb, var(--accent-cool) 22%, transparent);
+    background: color-mix(in srgb, var(--accent-gold) 22%, transparent);
     color: var(--ink);
   }
 }

@@ -26,9 +26,16 @@
   --surface-inverse: #1a1a18;
   --inverse-ink: #fdf8f6;
   --spot: rgba(192,96,106,0.10);
-  /* 差し色（藍）。紅系のベースに対する寒色のアクセントで、
-     「今後の展望」セクションの識別に使う */
+  /* 差し色（藍）。紅系のベースに対する寒色。
+     「今後の展望」セクションでは outlook.css がこれらを使って
+     アクセント系トークンを丸ごと差し替える（→ outlook/outlook.css 冒頭） */
   --accent-cool: #3a6470;
+  --accent-cool-deep: #2b4f5b;
+  --accent-cool-mid: #6a97a3;
+  --accent-cool-pale: #dbe7ea;
+  --paper-cool-mid: #eef2f3;
+  --paper-cool-dark: #c9d6da;
+  --ring-cool: rgba(58,100,112,0.14);
 }
 
 /* ── ライト/ダーク両対応（light-dark() 対応ブラウザのみ。非対応はライト表示のまま） ── */
@@ -55,6 +62,12 @@
     --inverse-ink: light-dark(#fdf8f6, #ede6e4);
     --spot: light-dark(rgba(192,96,106,0.10), rgba(231,154,164,0.12));
     --accent-cool: light-dark(#3a6470, #8ab4bf);
+    --accent-cool-deep: light-dark(#2b4f5b, #a5cdd7);
+    --accent-cool-mid: light-dark(#6a97a3, #6f9aa6);
+    --accent-cool-pale: light-dark(#dbe7ea, #26363c);
+    --paper-cool-mid: light-dark(#eef2f3, #171d1f);
+    --paper-cool-dark: light-dark(#c9d6da, #33454a);
+    --ring-cool: light-dark(rgba(58,100,112,0.14), rgba(138,180,191,0.18));
   }
   [data-theme="light"] { color-scheme: light; }
   [data-theme="dark"]  { color-scheme: dark; }
