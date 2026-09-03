@@ -6,8 +6,8 @@
 <!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
 <script src="/theme.js"></script>
 <title>会社について | 株式会社ヤエノワ</title>
-<meta name="description" content="株式会社ヤエノワの会社案内。社名の由来、代表・吉田勝大の経歴と専門領域、会社概要、そして「人のご縁が重なり合い、新たな価値を創り出す社会へ」というビジョンをまとめています。">
-<meta name="keywords" content="株式会社ヤエノワ,会社概要,代表取締役,吉田勝大,ビジョン,社名の由来,八重ノ環">
+<meta name="description" content="株式会社ヤエノワの会社案内。社名の由来、代表・吉田 勝大の経歴と専門領域、会社概要、そして「人のご縁が重なり合い、新たな価値を創り出す社会へ」というビジョンをまとめています。">
+<meta name="keywords" content="株式会社ヤエノワ,会社概要,代表取締役,吉田 勝大,ビジョン,社名の由来,八重ノ環">
 <meta name="author" content="株式会社ヤエノワ">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://yaenowa.co.jp/about">
@@ -45,10 +45,10 @@
       "inLanguage": "ja",
       "datePublished": "2026-09-03",
       "dateModified": "2026-09-03",
-      "isPartOf": { "@type": "WebSite", "@id": "https://yaenowa.co.jp/#website" },
-      "about": { "@id": "https://yaenowa.co.jp/#organization" },
+      "isPartOf": { "@type": "WebSite", "@id": "https://yaenowa.co.jp/#website", "name": "株式会社ヤエノワ", "url": "https://yaenowa.co.jp/" },
+      "about": { "@type": "Organization", "@id": "https://yaenowa.co.jp/#organization", "name": "株式会社ヤエノワ", "url": "https://yaenowa.co.jp/" },
       "mainEntity": { "@id": "https://yaenowa.co.jp/#founder" },
-      "publisher": { "@id": "https://yaenowa.co.jp/#organization" }
+      "publisher": { "@type": "Organization", "@id": "https://yaenowa.co.jp/#organization", "name": "株式会社ヤエノワ", "url": "https://yaenowa.co.jp/" }
     },
     {
       "@type": "Person",
@@ -57,7 +57,10 @@
       "alternateName": "Yoshida Katsuhiro",
       "jobTitle": "代表取締役",
       "worksFor": {
-        "@id": "https://yaenowa.co.jp/#organization"
+        "@type": "Organization",
+        "@id": "https://yaenowa.co.jp/#organization",
+        "name": "株式会社ヤエノワ",
+        "url": "https://yaenowa.co.jp/"
       },
       "knowsAbout": [
         "要件定義",
@@ -130,6 +133,8 @@
 
 </head>
 <body>
+
+<a class="skip-link" href="#main">本文へスキップ</a>
 
 <!-- NAV -->
 <nav>
@@ -342,7 +347,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <a href="/" class="footer-logo" style="text-decoration:none;">株式会社ヤエノワ</a>
+  <a href="/" class="footer-logo">株式会社ヤエノワ</a>
   <a href="/#works" class="footer-link">対応領域</a>
   <a href="/services/nippo" class="footer-link">日報入力ツール</a>
   <a href="/services/audio-guide" class="footer-link">歴史散歩音声ガイド</a>
