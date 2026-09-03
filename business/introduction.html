@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<title>システム導入支援 | 株式会社ヤエノワ</title>
+<meta name="description" content="株式会社ヤエノワのシステム導入支援。基幹システムの刷新・移行とEC連携の切り替えに伴走し、接続設計・関係者調整・推進を担います。ベンダー選定の判断材料づくりから相談できます。">
+<meta name="keywords" content="システム導入支援,基幹システム移行,EC連携,OMS,モールEC,プロジェクトマネジメント,ベンダー選定,株式会社ヤエノワ">
+<meta name="author" content="株式会社ヤエノワ">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://yaenowa.co.jp/business/introduction">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="システム導入支援 | 株式会社ヤエノワ">
+<meta property="og:description" content="基幹システムの刷新・移行とEC連携の切り替えに伴走。接続設計・関係者調整・推進を担います。">
+<meta property="og:url" content="https://yaenowa.co.jp/business/introduction">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="株式会社ヤエノワ｜人と人の縁が重なり合い、新たな価値を。要件定義・設計から、AI活用・アプリ開発まで">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+<meta name="twitter:image:alt" content="株式会社ヤエノワ｜人と人の縁が重なり合い、新たな価値を。要件定義・設計から、AI活用・アプリ開発まで">
+
+<!-- 構造化データ（表示内容と一致させること） -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://yaenowa.co.jp/business/introduction",
+      "url": "https://yaenowa.co.jp/business/introduction",
+      "name": "システム導入支援 | 株式会社ヤエノワ",
+      "description": "株式会社ヤエノワのシステム導入支援。基幹システムの刷新・移行とEC連携の切り替えに伴走し、接続設計・関係者調整・推進を担います。ベンダー選定の判断材料づくりから相談できます。",
+      "inLanguage": "ja",
+      "datePublished": "2026-09-03",
+      "dateModified": "2026-09-03",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://yaenowa.co.jp/#website",
+        "name": "株式会社ヤエノワ",
+        "url": "https://yaenowa.co.jp/"
+      },
+      "about": {
+        "@id": "https://yaenowa.co.jp/business/introduction#service"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://yaenowa.co.jp/#organization",
+        "name": "株式会社ヤエノワ",
+        "url": "https://yaenowa.co.jp/"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://yaenowa.co.jp/business/introduction#service",
+      "name": "システム導入支援",
+      "description": "基幹システムの刷新・移行とEC・OMS連携の切り替えに伴走。接続設計・関係者調整・推進と、ベンダー選定の判断支援まで対応します。",
+      "serviceType": "システム導入支援",
+      "provider": {
+        "@type": "Organization",
+        "@id": "https://yaenowa.co.jp/#organization",
+        "name": "株式会社ヤエノワ",
+        "url": "https://yaenowa.co.jp/"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "日本"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "ホーム",
+          "item": "https://yaenowa.co.jp/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "事業内容",
+          "item": "https://yaenowa.co.jp/business/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "システム導入支援",
+          "item": "https://yaenowa.co.jp/business/introduction"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+<!-- トップページ・会社案内・事業ページで共有するスタイル -->
+<link rel="stylesheet" href="/site.css">
+
+</head>
+<body>
+
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="/business/">事業内容</a></li>
+    <li><a href="/#services">自社サービス</a></li>
+    <li><a href="/about">会社について</a></li>
+    <li><a href="/outlook/">今後の展望</a></li>
+    <li><a href="/#contact">お問い合わせ</a></li>
+  </ul>
+  <div class="nav-ctrl">
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="nav-toggle" id="nav-toggle" aria-label="メニューを開く" aria-controls="nav-links" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-scrim" id="nav-scrim" aria-hidden="true"></div>
+</nav>
+
+<main id="main">
+
+<div class="page-head">
+  <p class="crumbs"><a href="/">ホーム</a> › <a href="/business/">事業内容</a> › システム導入支援</p>
+</div>
+
+<section class="biz-body">
+  <div class="section-inner">
+  <div class="reveal">
+    <p class="section-label">Business</p>
+    <h1 class="section-title">動いている業務を、<br>止めずに移すために。</h1>
+    <div class="divider"></div>
+    <p class="biz-lead">基幹システムの刷新も、EC・OMS連携の切り替えも、いちばん難しいのは「止めずに移す」ことです。接続の設計、関係者の調整、切替の判断まで引き受けます。停止時間や切替の方式は、既存システムの構成によって変わります。</p>
+  </div>
+
+  <div class="biz-section reveal">
+    <h2>こんなときに</h2>
+    <ul class="biz-list">
+      <li>基幹システムを刷新するが、ECや周辺システムとの連携をどうするか決まっていない</li>
+      <li>移行の段取りが立たず、いつ切り替えるかを決められない</li>
+      <li>ベンダーが複数いて、あいだの調整を誰が持つのか曖昧になっている</li>
+      <li>導入したものの、現場の運用に乗っていない</li>
+    </ul>
+  </div>
+
+  <div class="biz-section reveal">
+    <h2>進め方</h2>
+    <ol class="biz-steps">
+      <li class="biz-step">
+        <h3>現行と新しい仕組みの差分を洗う</h3>
+        <p>業務の流れとデータの持ち方が、移行の前後でどう変わるかを突き合わせます。差分が見えていないまま進めると、切替の直前になって破綻しやすくなります。</p>
+      </li>
+      <li class="biz-step">
+        <h3>連携とデータ移行を設計する</h3>
+        <p>新旧システム間の接続、移行するデータの範囲と変換の規則、検証の方法を決めます。</p>
+      </li>
+      <li class="biz-step">
+        <h3>切替の段取りと、判断の基準を決める</h3>
+        <p>いつ・何をもって切り替えるか、戻す場合はどうするかを、あらかじめ決めておきます。当日に判断すると、誤りやすくなります。</p>
+      </li>
+      <li class="biz-step">
+        <h3>切替と、その後の運用設計</h3>
+        <p>切り替えて終わりではありません。現場が回せる手順に落とすところまでを含みます。</p>
+      </li>
+    </ol>
+  </div>
+
+  <div class="biz-section reveal">
+    <h2>対応できること</h2>
+    <ul class="biz-list">
+      <li>基幹システム移行に伴うEC連携の切替</li>
+      <li>受注管理システム（OMS）移行に伴うモールEC接続の運用設計・システム設計</li>
+      <li>複数の販売チャネルの連携切替</li>
+      <li>ベンダー選定の判断材料づくり、技術的な内容の翻訳</li>
+    </ul>
+  </div>
+
+  <div class="biz-section reveal">
+    <h2>この領域で持っているもの</h2>
+    <p class="biz-lead">新旧システムのあいだをつなぐ設計と、関係者の多いプロジェクトの推進に対応できます。移行のリスクを小さくする段取りの組み方を、上流から現場の運用まで通して考えられることが強みです。</p>
+  </div>
+
+  <div class="biz-section reveal">
+    <h2>ご相談の形</h2>
+    <p class="biz-lead">どの仕組みを選ぶかの検討段階からご相談いただけます。移行の途中から入ることもできます。</p>
+  </div>
+
+  <div class="biz-cta reveal">
+    <p>この領域についてのご相談は、お問い合わせからご連絡ください。まだ要件になっていない段階でも構いません。</p>
+    <a href="/#contact" class="about-brief-link">お問い合わせへ →</a>
+  </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo">株式会社ヤエノワ</a>
+  <a href="/business/" class="footer-link">事業内容</a>
+  <a href="/about" class="footer-link">会社について</a>
+  <a href="/services/nippo" class="footer-link">日報入力ツール</a>
+  <a href="/services/audio-guide" class="footer-link">歴史散歩音声ガイド</a>
+  <a href="/outlook/" class="footer-link">今後の展望</a>
+  <a href="/privacy" class="footer-link">プライバシーポリシー</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+<!-- モバイルナビ & スクロール表示演出（トップページと同じ挙動） -->
+<script>
+(function(){
+  const nav = document.querySelector('nav');
+  const toggle = document.getElementById('nav-toggle');
+  const links = document.getElementById('nav-links');
+  const scrim = document.getElementById('nav-scrim');
+  function closeMenu(){
+    nav.classList.remove('nav-open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  }
+  if (toggle) {
+    toggle.addEventListener('click', function(){
+      const open = nav.classList.toggle('nav-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+  if (scrim) scrim.addEventListener('click', closeMenu);
+  if (links) links.addEventListener('click', function(e){
+    if (e.target.tagName === 'A') closeMenu();
+  });
+
+  // スクロール表示演出（トップページと同じクラス名・しきい値）
+  const targets = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach(function(el){ el.classList.add('is-visible'); });
+    return;
+  }
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  targets.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</body>
+</html>

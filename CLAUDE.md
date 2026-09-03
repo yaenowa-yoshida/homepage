@@ -117,8 +117,9 @@
 | ファイル | 役割・注意 |
 |---|---|
 | `index.html` | トップページ。入口に徹する構成（ヒーロー／お悩み／対応領域／自社サービス／選ばれる理由／会社について要約／お問い合わせ）。外部フレームワーク不使用 |
+| `business/` | 事業ページ。`/business/` が一覧で、配下に4事業の個別ページ（requirements / introduction / ai / app）。トップの対応領域アコーディオンは要約で、詳細はこちら。**4本柱を増減したら、トップの表示・JSON-LD の `hasOfferCatalog`・`llms.txt`・sitemap と揃える**。`business/ai` に「モデルの開発・ファインチューニング・AI製品の再販は行っていない」という**対応範囲の否定表現**があるため、その方針を変えるときはこの一文を必ず見直す（放置すると事実と異なる表示になる） |
 | `about.html` | 会社案内。公開URLは拡張子なしの **`/about`**。社名の由来・代表紹介・会社概要・ビジョン。**代表の `Person` 構造化データはこのページにある**（表示と一致させるため） |
-| `site.css` | `index.html` と `about.html` が共有するスタイル（ナビ・フッター・セクション共通・演出・レスポンシブ）。**読み込み順は theme.css → site.css → ページ固有の `<style>`** |
+| `site.css` | `index.html` / `about.html` / `business/` 配下が共有するスタイル（ナビ・フッター・セクション共通・演出・レスポンシブ）。**読み込み順は theme.css → site.css → ページ固有の `<style>`** |
 | `theme.css` / `theme.js` | 全ページ共通の基盤（カラーパレット・ダークモード・リセット・テーマ切替）。**色やテーマ挙動の変更はここだけを編集**し、各ページには書かない。theme.js は描画前に実行する必要があるため `<head>` で同期読み込み（**defer/async 禁止**） |
 | `llms.txt` | AIO用の会社サマリ。**`index.html` と同期する** |
 | `privacy.html` | プライバシーポリシー。公開URLは拡張子なしの **`/privacy`**（リンク・canonical・og:url・sitemap を統一）。改定時は `dateModified` と sitemap の lastmod を更新。**実態（取得方法・利用目的・外部サービスの利用状況）と一致させる** |

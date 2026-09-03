@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<title>要件定義・ディレクション支援 | 株式会社ヤエノワ</title>
+<meta name="description" content="株式会社ヤエノワの要件定義・ディレクション支援。曖昧な要望や現場の課題を実装できる要件へ翻訳し、設計・構築のディレクションまで一貫して担います。基幹システム・WMS連携の設計を含みます。">
+<meta name="keywords" content="要件定義,システム設計,ディレクション,上流工程,基幹システム連携,WMS連携,株式会社ヤエノワ">
+<meta name="author" content="株式会社ヤエノワ">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://yaenowa.co.jp/business/requirements">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="要件定義・ディレクション支援 | 株式会社ヤエノワ">
+<meta property="og:description" content="曖昧な要望や現場の課題を、実装できる要件へ。設計・構築のディレクションまで一貫して担います。">
+<meta property="og:url" content="https://yaenowa.co.jp/business/requirements">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="株式会社ヤエノワ｜人と人の縁が重なり合い、新たな価値を。要件定義・設計から、AI活用・アプリ開発まで">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+<meta name="twitter:image:alt" content="株式会社ヤエノワ｜人と人の縁が重なり合い、新たな価値を。要件定義・設計から、AI活用・アプリ開発まで">
+
+<!-- 構造化データ（表示内容と一致させること） -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://yaenowa.co.jp/business/requirements",
+      "url": "https://yaenowa.co.jp/business/requirements",
+      "name": "要件定義・ディレクション支援 | 株式会社ヤエノワ",
+      "description": "株式会社ヤエノワの要件定義・ディレクション支援。曖昧な要望や現場の課題を実装できる要件へ翻訳し、設計・構築のディレクションまで一貫して担います。基幹システム・WMS連携の設計を含みます。",
+      "inLanguage": "ja",
+      "datePublished": "2026-09-03",
+      "dateModified": "2026-09-03",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://yaenowa.co.jp/#website",
+        "name": "株式会社ヤエノワ",
+        "url": "https://yaenowa.co.jp/"
+      },
+      "about": {
+        "@id": "https://yaenowa.co.jp/business/requirements#service"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://yaenowa.co.jp/#organization",
+        "name": "株式会社ヤエノワ",
+        "url": "https://yaenowa.co.jp/"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://yaenowa.co.jp/business/requirements#service",
+      "name": "要件定義・ディレクション支援",
+      "description": "曖昧な要望や現場の課題を実装できる要件へ翻訳し、設計・構築ディレクションまで一貫して担います。基幹システム・WMS連携の設計を含みます。",
+      "serviceType": "要件定義・ディレクション支援",
+      "provider": {
+        "@type": "Organization",
+        "@id": "https://yaenowa.co.jp/#organization",
+        "name": "株式会社ヤエノワ",
+        "url": "https://yaenowa.co.jp/"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "日本"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "ホーム",
+          "item": "https://yaenowa.co.jp/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "事業内容",
+          "item": "https://yaenowa.co.jp/business/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "要件定義・ディレクション支援",
+          "item": "https://yaenowa.co.jp/business/requirements"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+<!-- トップページ・会社案内・事業ページで共有するスタイル -->
+<link rel="stylesheet" href="/site.css">
+
+</head>
+<body>
+
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="/business/">事業内容</a></li>
+    <li><a href="/#services">自社サービス</a></li>
+    <li><a href="/about">会社について</a></li>
+    <li><a href="/outlook/">今後の展望</a></li>
+    <li><a href="/#contact">お問い合わせ</a></li>
+  </ul>
+  <div class="nav-ctrl">
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="nav-toggle" id="nav-toggle" aria-label="メニューを開く" aria-controls="nav-links" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-scrim" id="nav-scrim" aria-hidden="true"></div>
+</nav>
+
+<main id="main">
+
+<div class="page-head">
+  <p class="crumbs"><a href="/">ホーム</a> › <a href="/business/">事業内容</a> › 要件定義・ディレクション支援</p>
+</div>
+
+<section class="biz-body">
+  <div class="section-inner">
+  <div class="reveal">
+    <p class="section-label">Business</p>
+    <h1 class="section-title">「何を作るか」を<br>決めきるところまで。</h1>
+    <div class="divider"></div>
+    <p class="biz-lead">要望は挙がっているのに、まとまった要件にならない。見積もりの前提が妥当か判断できない。そこに入って、実装できる形になるまで持っていきます。設計・構築のディレクションまで引き受けます。</p>
+  </div>
+
+  <div class="biz-section reveal">
+    <h2>こんなときに</h2>
+    <ul class="biz-list">
+      <li>社内から要望は挙がるが、まとまった要件にならない</li>
+      <li>ベンダーから届いた見積もりの前提が妥当か、判断する材料がない</li>
+      <li>要件定義を任せられる人がいないまま、開発が始まりそうになっている</li>
+      <li>関係する部署ごとに「作りたいもの」が食い違っている</li>
+      <li>仕様を決めきれず、同じ論点を何度も蒸し返している</li>
+    </ul>
+  </div>
+
+  <div class="biz-section reveal">
+    <h2>進め方</h2>
+    <ol class="biz-steps">
+      <li class="biz-step">
+        <h3>現状を聞き取り、論点を並べる</h3>
+        <p>業務の流れ、いま困っていること、既存システムの制約を洗い出します。この段階では結論を出さず、決めるべきことを漏れなく並べることに集中します。</p>
+      </li>
+      <li class="biz-step">
+        <h3>決める順に並べ替える</h3>
+        <p>先に決めないと後戻りが大きいものから順に片づけます。順番を誤ると、あとから覆って設計のやり直しが生じやすくなります。</p>
+      </li>
+      <li class="biz-step">
+        <h3>実装できる粒度まで落とす</h3>
+        <p>画面・データ・連携・運用の単位で、作る人が判断に迷わない粒度まで具体化します。曖昧なまま残す箇所は、曖昧だと明示します。</p>
+      </li>
+      <li class="biz-step">
+        <h3>設計と構築のディレクション</h3>
+        <p>作り始めてからも判断は発生します。仕様の解釈、優先順位、変更の可否を引き受け、判断待ちで止まらないように進めます。</p>
+      </li>
+    </ol>
+  </div>
+
+  <div class="biz-section reveal">
+    <h2>対応できること</h2>
+    <ul class="biz-list">
+      <li>業務システム・受発注／発注サイトの要件定義</li>
+      <li>基幹システム、倉庫管理システム（WMS）との連携設計</li>
+      <li>ベンダーへの説明と、要望から仕様への翻訳</li>
+      <li>設計レビュー、構築フェーズのディレクション</li>
+    </ul>
+  </div>
+
+  <div class="biz-section reveal">
+    <h2>この領域で持っているもの</h2>
+    <p class="biz-lead">正確性を厳しく問われる基幹システムの設計・構築・実装・テストを通じて、品質基準とリスク管理を身につけています。要件の抜け漏れが後工程でどう効いてくるかを、実装する側の目線で見られることが強みです。</p>
+  </div>
+
+  <div class="biz-section reveal">
+    <h2>ご相談の形</h2>
+    <p class="biz-lead">要件の整理を単発でお手伝いする形から、チームに継続して参画する形まで対応します。関与の深さと期間は、体制に合わせてご相談ください。</p>
+  </div>
+
+  <div class="biz-cta reveal">
+    <p>この領域についてのご相談は、お問い合わせからご連絡ください。まだ要件になっていない段階でも構いません。</p>
+    <a href="/#contact" class="about-brief-link">お問い合わせへ →</a>
+  </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo">株式会社ヤエノワ</a>
+  <a href="/business/" class="footer-link">事業内容</a>
+  <a href="/about" class="footer-link">会社について</a>
+  <a href="/services/nippo" class="footer-link">日報入力ツール</a>
+  <a href="/services/audio-guide" class="footer-link">歴史散歩音声ガイド</a>
+  <a href="/outlook/" class="footer-link">今後の展望</a>
+  <a href="/privacy" class="footer-link">プライバシーポリシー</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+<!-- モバイルナビ & スクロール表示演出（トップページと同じ挙動） -->
+<script>
+(function(){
+  const nav = document.querySelector('nav');
+  const toggle = document.getElementById('nav-toggle');
+  const links = document.getElementById('nav-links');
+  const scrim = document.getElementById('nav-scrim');
+  function closeMenu(){
+    nav.classList.remove('nav-open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  }
+  if (toggle) {
+    toggle.addEventListener('click', function(){
+      const open = nav.classList.toggle('nav-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+  if (scrim) scrim.addEventListener('click', closeMenu);
+  if (links) links.addEventListener('click', function(e){
+    if (e.target.tagName === 'A') closeMenu();
+  });
+
+  // スクロール表示演出（トップページと同じクラス名・しきい値）
+  const targets = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach(function(el){ el.classList.add('is-visible'); });
+    return;
+  }
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  targets.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</body>
+</html>

@@ -757,6 +757,9 @@
     color: var(--ink-light);
   }
 
+  /* リード文の直後に置く一覧への導線は、間隔を詰める */
+  .works-lead-link { margin-top: -0.6rem; }
+
   /* ── SERVICES（自社サービス） ── */
   .services {
     background: var(--paper);
@@ -941,6 +944,144 @@
     letter-spacing: 0.08em;
     text-decoration: underline;
     padding: 0;
+  }
+
+  /* ── SUBPAGE（会社案内・事業ページ共通の器） ── */
+  .page-head {
+    padding: 9rem clamp(1.5rem, 6vw, 5rem) 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .crumbs {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    margin-bottom: 1.6rem;
+  }
+  .crumbs a { color: var(--ink-light); text-decoration: none; border-bottom: 0.5px solid var(--paper-dark); }
+  .crumbs a:hover { color: var(--accent); }
+
+  /* ── BUSINESS（事業ページ） ── */
+  /* パンくず（.page-head）が上の余白を持つので、本文側の上余白は詰める */
+  .biz-body { padding-top: 1.5rem; }
+  .biz-lead {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(1rem, 2.4vw, 1.18rem);
+    line-height: 2.1;
+    letter-spacing: 0.04em;
+    color: var(--ink-mid);
+    max-width: 42rem;
+    text-wrap: pretty;
+  }
+  .biz-section { margin-top: 4.5rem; }
+  .biz-section h2 {
+    font-family: 'Zen Old Mincho', serif;
+    font-weight: 400;
+    font-size: 1.3rem;
+    letter-spacing: 0.08em;
+    padding-bottom: 0.7rem;
+    border-bottom: 0.5px solid var(--paper-dark);
+    margin-bottom: 1.6rem;
+  }
+  .biz-list { list-style: none; display: flex; flex-direction: column; gap: 0.9rem; }
+  .biz-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 0.9rem;
+    line-height: 1.95;
+    color: var(--ink-mid);
+  }
+  .biz-list li::before {
+    content: "";
+    position: absolute;
+    left: 0.3rem;
+    top: 0.85em;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent-gold);
+  }
+  /* 進め方は順序に意味があるので番号を振る */
+  .biz-steps { list-style: none; counter-reset: step; }
+  .biz-step {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 2rem 3.2rem;
+    border-left: 0.5px solid var(--paper-dark);
+    margin-left: 0.95rem;
+  }
+  .biz-step:last-child { border-left-color: transparent; padding-bottom: 0; }
+  .biz-step::before {
+    content: counter(step);
+    position: absolute;
+    left: -0.95rem; top: 0;
+    width: 1.9rem; height: 1.9rem;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 0.5px solid var(--accent-gold);
+    color: var(--accent-gold);
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.82rem;
+    display: flex; align-items: center; justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .biz-step h3 {
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+    padding-top: 0.2rem;
+  }
+  .biz-step p { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.95; }
+  .biz-note {
+    margin-top: 1.5rem;
+    padding: 1rem 1.2rem;
+    border-left: 2px solid var(--sakura-mid);
+    background: var(--paper-mid);
+    font-size: 0.83rem;
+    color: var(--ink-mid);
+    line-height: 1.9;
+  }
+  .biz-cta {
+    margin-top: 4.5rem;
+    padding-top: 2.2rem;
+    border-top: 0.5px solid var(--paper-dark);
+  }
+  .biz-cta p { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.95; margin-bottom: 1.2rem; }
+  /* 事業一覧のカード */
+  .biz-cards { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+  .biz-card {
+    display: block;
+    padding: 1.6rem 1.7rem;
+    border: 0.5px solid var(--paper-dark);
+    background: var(--paper);
+    text-decoration: none;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .biz-card:hover { border-color: var(--accent-gold); transform: translateY(-2px); }
+  .biz-card:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+  .biz-card-cat {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+  }
+  .biz-card-title {
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 500;
+    font-size: 1.02rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    line-height: 1.7;
+    margin-bottom: 0.7rem;
+  }
+  .biz-card-desc { font-size: 0.84rem; color: var(--ink-mid); line-height: 1.9; }
+  .biz-card-more {
+    display: inline-block;
+    margin-top: 0.9rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--accent-gold);
   }
 
   /* ── FOOTER ── */
