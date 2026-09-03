@@ -946,6 +946,22 @@
     padding: 0;
   }
 
+  /* ── アイコンの配色 ──
+     SVG には元の色を直書きしたまま残し、ここで上書きしてダークモードに追随させる。
+     属性内で var() を書くと、解決できない環境で stroke が無効になり
+     線そのものが消えるため、この二段構えにしている（属性＝フォールバック）。
+     セレクタは直書きの値に結びついているので、SVG の色を変えるときはここも直すこと。
+     ヒーローの桜（.converge）と .pain-icon の外周円は、淡さを保つため対象外。 */
+  .acc-icon svg [stroke="#7a3a4a"],
+  .pain-icon svg [stroke="#7a3a4a"],
+  .strength-icon svg [stroke="#7a3a4a"] { stroke: var(--accent); }
+
+  .acc-icon svg [stroke="#c0606a"],
+  .pain-icon svg [stroke="#c0606a"],
+  .strength-icon svg [stroke="#c0606a"] { stroke: var(--sakura-deep); }
+
+  .strength-icon svg [fill="#c0606a"] { fill: var(--sakura-deep); }
+
   /* ── SUBPAGE（会社案内・事業ページ共通の器） ── */
   .page-head {
     padding: 9rem clamp(1.5rem, 6vw, 5rem) 0;
