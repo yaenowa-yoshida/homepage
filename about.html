@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
+<script src="/theme.js"></script>
+<title>会社について | 株式会社ヤエノワ</title>
+<meta name="description" content="株式会社ヤエノワの会社案内。社名の由来、代表・吉田 勝大の経歴と専門領域、会社概要、そして「人のご縁が重なり合い、新たな価値を創り出す社会へ」というビジョンをまとめています。">
+<meta name="keywords" content="株式会社ヤエノワ,会社概要,代表取締役,吉田 勝大,ビジョン,社名の由来,八重ノ環">
+<meta name="author" content="株式会社ヤエノワ">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://yaenowa.co.jp/about">
+
+<link rel="icon" href="/LOGO.png" type="image/png">
+<link rel="apple-touch-icon" href="/LOGO.png">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#7a3a4a">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="会社について | 株式会社ヤエノワ">
+<meta property="og:description" content="社名の由来、代表の経歴と専門領域、会社概要、ビジョンをまとめた会社案内です。">
+<meta property="og:url" content="https://yaenowa.co.jp/about">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="株式会社ヤエノワ｜人と人の縁が重なり合い、新たな価値を。要件定義・設計から、AI活用・アプリ開発まで">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+<meta name="twitter:image:alt" content="株式会社ヤエノワ｜人と人の縁が重なり合い、新たな価値を。要件定義・設計から、AI活用・アプリ開発まで">
+
+<!-- 構造化データ（表示内容と一致させること） -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "AboutPage",
+      "@id": "https://yaenowa.co.jp/about",
+      "url": "https://yaenowa.co.jp/about",
+      "name": "会社について | 株式会社ヤエノワ",
+      "description": "株式会社ヤエノワの会社案内。社名の由来、代表の経歴と専門領域、会社概要、ビジョンをまとめたページ。",
+      "inLanguage": "ja",
+      "datePublished": "2026-09-03",
+      "dateModified": "2026-09-03",
+      "isPartOf": { "@type": "WebSite", "@id": "https://yaenowa.co.jp/#website", "name": "株式会社ヤエノワ", "url": "https://yaenowa.co.jp/" },
+      "about": { "@type": "Organization", "@id": "https://yaenowa.co.jp/#organization", "name": "株式会社ヤエノワ", "url": "https://yaenowa.co.jp/" },
+      "mainEntity": { "@id": "https://yaenowa.co.jp/#founder" },
+      "publisher": { "@type": "Organization", "@id": "https://yaenowa.co.jp/#organization", "name": "株式会社ヤエノワ", "url": "https://yaenowa.co.jp/" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://yaenowa.co.jp/#founder",
+      "name": "吉田 勝大",
+      "alternateName": "Yoshida Katsuhiro",
+      "jobTitle": "代表取締役",
+      "worksFor": {
+        "@type": "Organization",
+        "@id": "https://yaenowa.co.jp/#organization",
+        "name": "株式会社ヤエノワ",
+        "url": "https://yaenowa.co.jp/"
+      },
+      "knowsAbout": [
+        "要件定義",
+        "システム設計",
+        "基幹システム",
+        "EC・OMS",
+        "SAP連携",
+        "プロジェクトマネジメント",
+        "生成AI活用",
+        "AI",
+        "Webサイト制作",
+        "Shopify",
+        "ECサイト構築"
+      ],
+      "hasCredential": {
+        "@type": "EducationalOccupationalCredential",
+        "name": "生成AIパスポート",
+        "credentialCategory": "certification",
+        "url": "https://wallet.openbadge.net/public/credential/82ff49a7-8a5c-8ac3-8f28-019f6dd068af",
+        "recognizedBy": {
+          "@type": "Organization",
+          "name": "一般社団法人生成AI活用普及協会",
+          "url": "https://guga.or.jp/"
+        }
+      },
+      "memberOf": {
+        "@type": "Organization",
+        "name": "CraftStage",
+        "url": "https://craftstage.connpass.com/",
+        "description": "AI・開発に関する技術コミュニティ。共同主催・登壇者として参加。"
+      },
+      "description": "正確性を厳しく問われる基幹システムの設計・構築・実装・テストを通じて専門知識を積み上げ、現在はシステム要件定義・設計を軸に活動し、生成AIの実務活用やアプリ開発にも取り組む。生成AIを実務に取り入れ、技術コミュニティCraftStageの共同主催・登壇者としても発信。"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yaenowa.co.jp/" },
+        { "@type": "ListItem", "position": 2, "name": "会社について", "item": "https://yaenowa.co.jp/about" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- 共通基盤スタイル（カラーパレット・ダークモード・リセット・テーマ切替ボタン） -->
+<link rel="stylesheet" href="/theme.css">
+<!-- トップページと会社案内で共有するスタイル -->
+<link rel="stylesheet" href="/site.css">
+
+<style>
+  /* ページ固有: 会社案内は縦に読むページなので、ヒーローの代わりに簡潔な見出しを置く */
+  .page-head {
+    padding: 9rem clamp(1.5rem, 6vw, 5rem) 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .crumbs {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    margin-bottom: 1.6rem;
+  }
+  .crumbs a { color: var(--ink-light); text-decoration: none; border-bottom: 0.5px solid var(--paper-dark); }
+  .crumbs a:hover { color: var(--accent); }
+</style>
+
+</head>
+<body>
+
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="/#works">対応領域</a></li>
+    <li><a href="/#services">自社サービス</a></li>
+    <li><a href="/about" aria-current="page">会社について</a></li>
+    <li><a href="/outlook/">今後の展望</a></li>
+    <li><a href="/#contact">お問い合わせ</a></li>
+  </ul>
+  <div class="nav-ctrl">
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="nav-toggle" id="nav-toggle" aria-label="メニューを開く" aria-controls="nav-links" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-scrim" id="nav-scrim" aria-hidden="true"></div>
+</nav>
+
+<main id="main">
+
+<div class="page-head">
+  <p class="crumbs"><a href="/">ホーム</a> › 会社について</p>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-inner reveal">
+    <div class="about-grid">
+      <div class="about-left">
+        <p class="section-label">About</p>
+        <h2 class="section-title">株式会社<br>ヤエノワ</h2>
+        <div class="divider"></div>
+        <p class="about-philosophy">
+          <span class="em">ご縁</span>と<span class="em">共創</span>を軸に、<br>
+          信頼関係の上に立ち、<br>
+          ともに価値を創っていく。
+        </p>
+        <p class="about-body">
+          株式会社ヤエノワは、代表が長年にわたり基幹システムの設計・構築・実装を通じて培った専門知識をもとに、システム要件定義・設計を中心に据えたご支援を行っています。そこを起点に、システム導入支援・生成AIの活用支援・アプリ開発まで対応します。<br><br>
+          「どんなビジネスであっても、根っこにあるのは人と人との関係性」という信念のもと、パートナーとともに事業の発展に寄与し続けます。
+        </p>
+      </div>
+
+      <div class="about-right">
+        <div class="name-origin">
+          <p class="name-origin-title">社名の由来 ── 八重ノ環</p>
+          <div class="kanji-breakdown">
+            <div class="kanji-item">
+              <span class="kanji-char">八</span>
+              <span class="kanji-reading">ya</span>
+              <p class="kanji-meaning">数多く</p>
+            </div>
+            <span class="kanji-sep">＋</span>
+            <div class="kanji-item">
+              <span class="kanji-char">重</span>
+              <span class="kanji-reading">e</span>
+              <p class="kanji-meaning">幾重にも重なる</p>
+            </div>
+            <span class="kanji-sep">＋</span>
+            <div class="kanji-item">
+              <span class="kanji-char">環</span>
+              <span class="kanji-reading">wa</span>
+              <p class="kanji-meaning">つながり・輪・循環</p>
+            </div>
+          </div>
+          <p class="origin-text">
+            人と人の縁が何重にも重なり合いながら、新たな価値を創り出していく──。その願いを、そのまま社名に込めました。
+          </p>
+        </div>
+
+        <div class="company-card">
+          <p class="company-card-label">Company Info</p>
+          <table class="company-table">
+            <tr>
+              <td>会社名</td>
+              <td class="serif">株式会社ヤエノワ</td>
+            </tr>
+            <tr>
+              <td>代表取締役</td>
+              <td class="serif">吉田 勝大</td>
+            </tr>
+            <tr>
+              <td>設立</td>
+              <td>2025年4月3日</td>
+            </tr>
+            <tr>
+              <td>所在地</td>
+              <td>〒153-0064<br>東京都目黒区下目黒1丁目1番14号<br>コノトラビル7F</td>
+            </tr>
+            <tr>
+              <td>事業内容</td>
+              <td>要件定義・ディレクション支援<br>システム導入支援<br>AIコンサルティング<br>アプリ開発</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section class="profile" id="profile">
+  <div class="section-inner reveal">
+    <p class="section-label">Representative</p>
+    <h2 class="section-title">代表紹介</h2>
+    <div class="divider"></div>
+
+    <div class="profile-grid">
+      <div>
+        <div class="profile-card">
+          <div class="avatar">吉</div>
+          <p class="profile-name-ja">吉田 勝大</p>
+          <p class="profile-name-en">Yoshida Katsuhiro</p>
+          <p class="profile-role">代表取締役</p>
+          <div class="profile-tag-list">
+            <span class="profile-tag">要件定義</span>
+            <span class="profile-tag">システム設計</span>
+            <span class="profile-tag">基幹システム</span>
+            <span class="profile-tag">EC・OMS</span>
+            <span class="profile-tag">SAP連携</span>
+            <span class="profile-tag">PM</span>
+            <span class="profile-tag">AI活用</span>
+            <span class="profile-tag">生成AI</span>
+            <span class="profile-tag">Web制作</span>
+            <span class="profile-tag">Shopify</span>
+          </div>
+          <div class="profile-cert">
+            <p class="profile-cert-label">保有資格</p>
+            <p class="profile-cert-name"><a href="https://wallet.openbadge.net/public/credential/82ff49a7-8a5c-8ac3-8f28-019f6dd068af" target="_blank" rel="noopener" title="オープンバッジ公開ページで確認">生成AIパスポート</a><span class="profile-cert-issuer">一般社団法人生成AI活用普及協会（GUGA）</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-detail">
+        <p class="profile-intro">
+          正確性を厳しく問われる基幹システムの設計・構築・実装・テストを通じて、ITの深い専門知識を積み上げてきました。現在はその経験を活かし、システム要件定義・設計を軸に活動しながら、生成AIの実務活用やアプリ開発にも取り組んでいます。
+        </p>
+        <p class="profile-body">
+          基幹システムの上流工程から、ECプラットフォームとのシステム連携設計まで、一貫して対応できます。技術的な知見はもちろん、関係者との丁寧なコミュニケーションを通じたプロジェクト推進を得意としています。
+        </p>
+        <p class="profile-body">
+          パートナー企業と協働し、システム刷新やECインフラ構築のプロジェクトで、要件定義・設計から移行までの上流工程とプロジェクトマネジメントを担えます。
+        </p>
+        <p class="profile-body">
+          上流工程の専門家でありながら、実際に手を動かして形にするところまで一貫して対応できるのも強みです。個人事業主として数多くのShopifyストア構築やコーポレートサイト制作を手がけており、構想を整理する力と、それを実装に落とす力の両方を備えています。
+        </p>
+        <p class="profile-body">
+          近年は生成AIを要件定義・設計やプロジェクト推進の実務に積極的に取り入れ、活用知見を継続的にアップデートしています。技術コミュニティ <a href="https://craftstage.connpass.com/" target="_blank" rel="noopener" class="text-link">CraftStage</a> では共同主催・登壇者として、AI・開発に関するLT（ライトニングトーク）で発信を続けています。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="vision" id="vision">
+  <svg class="vision-bg-rings" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+    <circle cx="1000" cy="300" r="450" fill="none" stroke="#f5d8dc" stroke-width="1"/>
+    <circle cx="1000" cy="300" r="330" fill="none" stroke="#f5d8dc" stroke-width="1"/>
+    <circle cx="1000" cy="300" r="210" fill="none" stroke="#f5d8dc" stroke-width="1"/>
+    <circle cx="1000" cy="300" r="90" fill="none" stroke="#f5d8dc" stroke-width="1"/>
+    <!-- 大きな桜シルエット -->
+    <g transform="translate(1000,300)" opacity="0.06">
+      <ellipse cx="0" cy="-80" rx="35" ry="58" fill="#f5d8dc" transform="rotate(0)"/>
+      <ellipse cx="0" cy="-80" rx="35" ry="58" fill="#f5d8dc" transform="rotate(72)"/>
+      <ellipse cx="0" cy="-80" rx="35" ry="58" fill="#f5d8dc" transform="rotate(144)"/>
+      <ellipse cx="0" cy="-80" rx="35" ry="58" fill="#f5d8dc" transform="rotate(216)"/>
+      <ellipse cx="0" cy="-80" rx="35" ry="58" fill="#f5d8dc" transform="rotate(288)"/>
+      <ellipse cx="0" cy="-50" rx="22" ry="40" fill="#e8a0a8" transform="rotate(36)"/>
+      <ellipse cx="0" cy="-50" rx="22" ry="40" fill="#e8a0a8" transform="rotate(108)"/>
+      <ellipse cx="0" cy="-50" rx="22" ry="40" fill="#e8a0a8" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-50" rx="22" ry="40" fill="#e8a0a8" transform="rotate(252)"/>
+      <ellipse cx="0" cy="-50" rx="22" ry="40" fill="#e8a0a8" transform="rotate(324)"/>
+      <circle cx="0" cy="0" r="28" fill="#f5d8dc"/>
+    </g>
+  </svg>
+
+  <div class="section-inner reveal">
+    <div class="vision-content">
+      <p class="section-label">Vision</p>
+      <h2 class="section-title">私たちのビジョン</h2>
+      <div class="divider"></div>
+
+      <p class="vision-quote">
+        人のご縁が重なり合い、<br>
+        <em>新たな価値を創り出す社会</em>へ。
+      </p>
+
+      <p class="vision-body">
+        どんなビジネスであっても、根っこにあるのは「人と人との関係性」。プロジェクトも、仕組みも、組織も、すべては"誰と、どう関わるか"で変わるものだと思っています。<br><br>
+        だからこそ、私は会社の軸に「ご縁」と「共創」を据えました。信頼関係の上に立ち、共に価値を創っていく。そんな会社であり続けたいと願っています。
+      </p>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo">株式会社ヤエノワ</a>
+  <a href="/#works" class="footer-link">対応領域</a>
+  <a href="/services/nippo" class="footer-link">日報入力ツール</a>
+  <a href="/services/audio-guide" class="footer-link">歴史散歩音声ガイド</a>
+  <a href="/outlook/" class="footer-link">今後の展望</a>
+  <a href="/privacy" class="footer-link">プライバシーポリシー</a>
+  <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
+</footer>
+
+<!-- モバイルナビ & スクロール表示演出（トップページと同じ挙動） -->
+<script>
+(function(){
+  const nav = document.querySelector('nav');
+  const toggle = document.getElementById('nav-toggle');
+  const links = document.getElementById('nav-links');
+  const scrim = document.getElementById('nav-scrim');
+  function closeMenu(){
+    nav.classList.remove('nav-open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  }
+  if (toggle) {
+    toggle.addEventListener('click', function(){
+      const open = nav.classList.toggle('nav-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+  if (scrim) scrim.addEventListener('click', closeMenu);
+  if (links) links.addEventListener('click', function(e){
+    if (e.target.tagName === 'A') closeMenu();
+  });
+
+  // スクロール表示演出（トップページと同じクラス名・しきい値）
+  const targets = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach(function(el){ el.classList.add('is-visible'); });
+    return;
+  }
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  targets.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</body>
+</html>

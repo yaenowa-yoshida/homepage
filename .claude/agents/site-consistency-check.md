@@ -17,7 +17,7 @@ Python の `json.loads` でパースして構文エラーがないことを確�
 python3 - <<'EOF'
 import json, re, sys
 ok = True
-for path in ['index.html', 'privacy.html']:
+for path in ['index.html', 'about.html', 'privacy.html', 'audio-guide-privacy.html']:
     html = open(path, encoding='utf-8').read()
     blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
     for i, b in enumerate(blocks):
@@ -31,12 +31,16 @@ sys.exit(0 if ok else 1)
 EOF
 ```
 
-### 2. 会社情報の同期（4箇所）
+### 2. 会社情報の同期
 以下の値が全掲載箇所で一致することを grep で確認する。
 
 - **住所** `〒153-0064 東京都目黒区下目黒1丁目1番14号 コノトラビル7F`
-  → index.html の会社概要テーブル / index.html の JSON-LD `address` / llms.txt / privacy.html
-  （⚠️ GMO 解約時は全箇所から削除される必要がある。1箇所でも残っていれば削除漏れとして報告）
+  → **最新の一覧は `CLAUDE.md`「所在地」の削除箇所を正とする**（現在7箇所）。
+    毎回 `grep -rn "コノトラ" . --exclude-dir=.git` を実行し、**一覧と実際のヒット箇所が
+    一致するか突き合わせる**。増減があれば CLAUDE.md の一覧の更新漏れとして報告する。
+  （⚠️ GMO 解約時は全箇所から削除される必要がある。1箇所でも残っていれば削除漏れとして報告。
+    ページ構成の変更で住所の掲載場所が移ることがあるため、
+    **ファイル名を決め打ちせず必ず grep で数える**こと）
 - **メールアドレス** — 表示・JSON-LD・llms.txt・copyMail() のコピー文字列がすべて一致するか。
 - **社名・代表者名** — 表記ゆれ（株式会社の位置、旧字体等）がないか。
 - **保有資格** — 本文の表示と JSON-LD の `hasCredential`、llms.txt の記載が一致するか。

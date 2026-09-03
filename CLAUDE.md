@@ -66,7 +66,7 @@
 - **解約する場合、解約日までにサイト・名刺・登記等から当該住所を全て削除する義務がある**
   （GMO利用規約 第33条。怠ると違約金・自動更新）。
   **本リポジトリは公開されているため、サイトの表示だけでなくリポジトリ内の記述も削除対象。**
-  削除箇所は **7箇所**: `index.html` の会社概要テーブルと JSON-LD の address・
+  削除箇所は **7箇所**: `about.html` の会社概要テーブル・`index.html` の JSON-LD の address・
   `llms.txt`・`privacy.html`・`audio-guide-privacy.html`・**この `CLAUDE.md` 自身**・
   `.claude/agents/site-consistency-check.md`。
   **住所を書く箇所を増やしたらこの一覧に追記すること**（`grep -rn "コノトラ" . --exclude-dir=.git` で確認できる）。
@@ -116,11 +116,13 @@
 
 | ファイル | 役割・注意 |
 |---|---|
-| `index.html` | サイト本体（HTML＋ページ固有のインラインCSS/JS。外部フレームワーク不使用） |
+| `index.html` | トップページ。入口に徹する構成（ヒーロー／お悩み／対応領域／自社サービス／選ばれる理由／会社について要約／お問い合わせ）。外部フレームワーク不使用 |
+| `about.html` | 会社案内。公開URLは拡張子なしの **`/about`**。社名の由来・代表紹介・会社概要・ビジョン。**代表の `Person` 構造化データはこのページにある**（表示と一致させるため） |
+| `site.css` | `index.html` と `about.html` が共有するスタイル（ナビ・フッター・セクション共通・演出・レスポンシブ）。**読み込み順は theme.css → site.css → ページ固有の `<style>`** |
 | `theme.css` / `theme.js` | 全ページ共通の基盤（カラーパレット・ダークモード・リセット・テーマ切替）。**色やテーマ挙動の変更はここだけを編集**し、各ページには書かない。theme.js は描画前に実行する必要があるため `<head>` で同期読み込み（**defer/async 禁止**） |
 | `llms.txt` | AIO用の会社サマリ。**`index.html` と同期する** |
 | `privacy.html` | プライバシーポリシー。公開URLは拡張子なしの **`/privacy`**（リンク・canonical・og:url・sitemap を統一）。改定時は `dateModified` と sitemap の lastmod を更新。**実態（取得方法・利用目的・外部サービスの利用状況）と一致させる** |
-| `og-image.png` | SNSシェア用OGP画像（1200×630）。index / privacy が参照。**キャッチコピーやデザインを変えたら再生成して差し替える**（JSON-LD の `logo` は実ロゴ `LOGO.png` のまま。OGPバナーとは別物） |
+| `og-image.png` | SNSシェア用OGP画像（1200×630）。index / about / privacy / services 配下が参照。**キャッチコピーやデザインを変えたら再生成して差し替える**（JSON-LD の `logo` は実ロゴ `LOGO.png` のまま。OGPバナーとは別物） |
 | `robots.txt` / `sitemap.xml` | SEO |
 | `CNAME` | `yaenowa.co.jp`（apex） |
 | `gx.html`（ルート直下） | 旧URL `/gx` からの meta refresh リダイレクトスタブ（noindex）。**編集・削除しないこと** |
