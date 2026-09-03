@@ -757,6 +757,9 @@
     color: var(--ink-light);
   }
 
+  /* リード文の直後に置く一覧への導線は、間隔を詰める */
+  .works-lead-link { margin-top: -0.6rem; }
+
   /* ── SERVICES（自社サービス） ── */
   .services {
     background: var(--paper);
