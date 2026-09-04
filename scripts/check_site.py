@@ -13,7 +13,8 @@ CI（.github/workflows/site-checks.yml）から実行する。人のレビュー
 実行時に組み立てる（CLAUDE.md「所在地」の削除箇所一覧を参照）。
 **このチェックは grep の代替ではない。** 表記ゆれは原理的に取りこぼす。
 **テキストとして読めないファイル（画像・PDF 等）は対象外**で、そこに焼き込まれた
-住所は grep でも見つからない。掲載箇所を増やしたときの最終確認は人が行う。
+住所は grep でも見つからない。**UTF-8 として読めないテキスト（Shift_JIS 等）も同様に
+対象外**になる。掲載箇所を増やしたときの最終確認は人が行う。
 """
 
 import json
@@ -35,6 +36,10 @@ ADDRESS_FILES = {
     ".claude/agents/site-consistency-check.md",
 }
 
+# 走査から外す拡張子。「見る拡張子」を並べる方式だと、新しい種類のファイルが
+# 無言で対象外になる（.webmanifest を足したときに実際に起きた）。除外側で持つ。
+BINARY_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".pdf", ".woff", ".woff2", ".ttf", ".zip", ".apk"}
+
 CANONICAL_HOST = "https://yaenowa.co.jp"
 CONTACT_MAIL = "yoshida+contact@yaenowa.co.jp"
 
@@ -47,9 +52,18 @@ HTTP_ALLOWED = (
 
 failures = []
 
+# 各チェックが「何件見たか」。0件のまま緑になると、検査していないことを
+# 「通過」と言い換えてしまう。書式が変わって正規表現が空振りしたときに
+# 気づけるよう、成功時にも件数を出す。
+coverage = {}
+
 
 def fail(check, path, message):
     failures.append((check, path, message))
+
+
+def seen(label, n):
+    coverage[label] = coverage.get(label, 0) + n
 
 
 def html_files():
@@ -75,12 +89,24 @@ def rel(p):
 
 
 def check_json_ld():
-    """構造化データが JSON として壊れていないか。"""
+    """構造化データが JSON として壊れていないか。
+
+    `<script type="application/ld+json">` の完全一致で拾うと、属性が1つ増えただけで
+    検査対象が0件になり、壊れていても緑になる。緩い条件で候補を数え、
+    中身まで取り出せた数と食い違ったら失敗にする。
+    """
     for p in html_files():
         text = p.read_text(encoding="utf-8")
-        blocks = re.findall(
-            r'<script type="application/ld\+json">(.*?)</script>', text, re.S
-        )
+        candidates = len(re.findall(r"<script[^>]*ld\+json", text, re.I))
+        blocks = re.findall(r"<script[^>]*ld\+json[^>]*>(.*?)</script>", text, re.S | re.I)
+        if len(blocks) != candidates:
+            fail(
+                "json-ld",
+                rel(p),
+                f"ld+json のブロックを取り出せない（候補 {candidates} 件に対し {len(blocks)} 件）。"
+                "閉じタグの欠落か、想定外の書き方",
+            )
+        seen("JSON-LD", len(blocks))
         for i, block in enumerate(blocks, 1):
             try:
                 json.loads(block)
@@ -93,15 +119,23 @@ def check_noopener():
     for p in html_files():
         for m in re.finditer(r"<a\s[^>]*>", p.read_text(encoding="utf-8")):
             tag = m.group(0)
-            if 'target="_blank"' in tag and "noopener" not in tag:
+            # target="_blank" / target='_blank' / target=_blank のいずれも拾う
+            if not re.search(r"target\s*=\s*[\"']?_blank", tag, re.I):
+                continue
+            seen("外部リンク", 1)
+            if "noopener" not in tag:
                 fail("noopener", rel(p), f'rel="noopener" がない: {tag[:100]}')
 
 
 def check_mixed_content():
     """http:// でリソースを読んでいないか（ブラウザが「安全ではありません」と出す）。"""
+    # ここだけは絞り込みに意味がある。混在コンテンツは「ブラウザが解釈して
+    # サブリソースを読むファイル」でしか起きない。住所・メールの検査と違って、
+    # 対象を広げると自分自身の正規表現リテラルまで拾ってしまう。
     for p, text in text_files():
-        if p.suffix not in {".html", ".css", ".js", ".txt", ".xml"}:
+        if p.suffix not in {".html", ".css", ".js", ".xml", ".txt"}:
             continue
+        seen("混在コンテンツ走査", 1)
         for m in re.finditer(r"http://[^\s\"'<>)]+", text):
             url = m.group(0)
             if not url.startswith(HTTP_ALLOWED):
@@ -192,6 +226,7 @@ def check_address_locations():
     for p, text in text_files():
         if any(k in text for k in keys):
             found.add(rel(p))
+    seen("住所", len(found))
 
     for extra in sorted(found - ADDRESS_FILES):
         fail(
@@ -216,7 +251,7 @@ def check_contact_mail():
     """問い合わせ先メールアドレスに表記ゆれがないか。"""
     pattern = re.compile(r"[\w.+-]+@yaenowa\.co\.jp")
     for p, text in text_files():
-        if p.suffix not in {".html", ".txt"}:
+        if p.suffix in BINARY_SUFFIXES:
             continue
         for addr in set(pattern.findall(text)):
             if addr != CONTACT_MAIL:
@@ -224,14 +259,27 @@ def check_contact_mail():
 
 
 def check_canonical_apex():
-    """canonical / og:url が apex ドメイン（www 無し・https）で統一されているか。"""
+    """canonical / og:url が apex ドメイン（www 無し・https）で統一されているか。
+
+    属性の順序に依存すると、並べ替えただけで検査対象が0件になり緑になる。要素を
+    先に取ってから中の href / content を読む。canonical は全ページに1つある前提なので、
+    無い・複数あるのも失敗にする（消して緑にできないようにするため）。
+    """
     for p in html_files():
         text = p.read_text(encoding="utf-8")
-        urls = re.findall(r'<link rel="canonical" href="([^"]+)"', text)
-        urls += re.findall(r'<meta property="og:url" content="([^"]+)"', text)
-        for url in urls:
-            if not url.startswith(CANONICAL_HOST):
-                fail("apex", rel(p), f"apex ドメインになっていない: {url}")
+        links = re.findall(r"<link[^>]*rel=[\"']canonical[\"'][^>]*>", text, re.I)
+        if len(links) != 1:
+            fail("apex", rel(p), f"canonical が {len(links)} 個ある（1個であること）")
+        metas = re.findall(r"<meta[^>]*property=[\"']og:url[\"'][^>]*>", text, re.I)
+        seen("canonical", len(links))
+        seen("og:url", len(metas))
+        for tag in links + metas:
+            m = re.search(r"(?:href|content)\s*=\s*[\"']([^\"']+)[\"']", tag, re.I)
+            if not m:
+                fail("apex", rel(p), f"URL を取り出せない: {tag[:100]}")
+                continue
+            if not m.group(1).startswith(CANONICAL_HOST):
+                fail("apex", rel(p), f"apex ドメインになっていない: {m.group(1)}")
 
 
 def resolve_link(page, href):
@@ -259,6 +307,7 @@ def check_internal_links():
                 continue
             if re.search(r"\.html(#|\?|$)", href):
                 fail("url", rel(p), f"拡張子なしURL運用に反する: {href}")
+            seen("内部リンク", 1)
             if resolve_link(p, href) is None:
                 fail("url", rel(p), f"リンク先が見つからない: {href}")
 
@@ -267,6 +316,7 @@ def check_sitemap():
     """sitemap の URL が実ファイルに対応しているか。outlook 配下を載せていないか。"""
     sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
     locs = re.findall(r"<loc>([^<]+)</loc>", sitemap)
+    seen("sitemap", len(locs))
     if not locs:
         fail("sitemap", "sitemap.xml", "<loc> が1件も無い")
     for loc in locs:
@@ -283,9 +333,15 @@ def check_sitemap():
 
 def check_outlook_noindex():
     """outlook 配下が noindex のままか。"""
-    for p in sorted((ROOT / "outlook").rglob("*.html")):
+    pages = sorted((ROOT / "outlook").rglob("*.html"))
+    if not pages:
+        # 0件のまま緑にすると「検査していないこと」を通過と言い換えてしまう
+        fail("noindex", "outlook/", "outlook 配下の HTML が1件も見つからない（検査が空振りしている）")
+        return
+    seen("outlook", len(pages))
+    for p in pages:
         text = p.read_text(encoding="utf-8")
-        if not re.search(r'<meta name="robots"[^>]*noindex', text):
+        if not re.search(r"<meta[^>]*name=[\"']robots[\"'][^>]*noindex", text, re.I):
             fail("noindex", rel(p), "outlook 配下は noindex 運用（robots メタが無い）")
 
 
@@ -319,7 +375,8 @@ def main():
         check()
 
     if not failures:
-        print(f"✓ {len(CHECKS)} 種類のチェックをすべて通過しました")
+        detail = " / ".join(f"{k} {v}" for k, v in coverage.items())
+        print(f"✓ {len(CHECKS)} 種類のチェックをすべて通過しました（{detail}）")
         return 0
 
     print(f"✗ {len(failures)} 件の問題が見つかりました\n")
