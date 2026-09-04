@@ -1131,6 +1131,7 @@
   .biz-symptom-link:hover { border-bottom-color: var(--accent-gold); }
   .biz-symptom-link:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 3px; }
   /* 4事業の関係（「決める」を土台に3つが乗る） */
+  .biz-map { margin-top: 1.6rem; }
   .biz-map-card {
     padding: 1.3rem 1.4rem;
     border: 0.5px solid var(--paper-dark);
