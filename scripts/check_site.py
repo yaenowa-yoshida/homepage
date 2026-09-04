@@ -9,8 +9,10 @@ CI（.github/workflows/site-checks.yml）から実行する。人のレビュー
     python3 scripts/check_site.py
 
 住所そのものは **このファイルに書かない**。GMOのバーチャルオフィスを解約したとき、
-削除箇所が1つ増えていると漏れるため。郵便番号は llms.txt から実行時に読み出す
-（CLAUDE.md「所在地」の削除箇所一覧を参照）。
+削除箇所が1つ増えていると漏れるため。検索語は `ADDRESS_FILES` に残っている記述から
+実行時に組み立てる（CLAUDE.md「所在地」の削除箇所一覧を参照）。
+**このチェックは grep の代替ではない。** 表記ゆれは原理的に取りこぼすので、
+掲載箇所を増やしたときの最終確認は人が grep で行う。
 """
 
 import json
@@ -106,6 +108,46 @@ def check_mixed_content():
                 fail("mixed-content", rel(p), f"http:// を参照している: {url}")
 
 
+def address_tokens(text):
+    """住所らしき文字列を、検索に使える単語に割る（4文字未満は一般語と紛れるので捨てる）。"""
+    out = set()
+    for token in re.split(r"[\s　,、。／/]+", text.strip()):
+        token = token.strip("。、）（」「\"'<>")
+        if len(token) >= 4:
+            out.add(token)
+    return out
+
+
+def collect_address_keys():
+    """住所の検索語を、ADDRESS_FILES に残っている記述から組み立てる。
+
+    郵便番号だけを頼りにすると、表記を変えて 〒 を落としただけで検索語が消え、
+    「全部消えた」と誤判定する。街区表記・建物名まで語に割って持つことで、
+    どれか1つの書き方が変わっても検出が続く。
+    """
+    postals = {}
+    keys = set()
+    # 電話番号（03-1234-5678）の一部を郵便番号と誤認しないよう前後の境界を見る
+    postal_re = r"(?<![\d-])(\d{3}-\d{4})(?![\d-])"
+    for name in sorted(ADDRESS_FILES):
+        p = ROOT / name
+        if not p.exists():
+            continue
+        try:
+            text = p.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        for m in re.finditer(postal_re, text):
+            postals.setdefault(m.group(1), set()).add(name)
+        # 郵便番号に続く住所表記
+        for m in re.finditer(postal_re + r"[\s　]*([^<\n\"]{4,60})", text):
+            keys |= address_tokens(m.group(2))
+        # 構造化データ側（郵便番号と別フィールドなので個別に拾う）
+        for m in re.finditer(r'"streetAddress"\s*:\s*"([^"]+)"', text):
+            keys |= address_tokens(m.group(1))
+    return postals, keys
+
+
 def check_address_locations():
     """住所の記載箇所が、想定している一覧と一致しているか。
 
@@ -116,36 +158,34 @@ def check_address_locations():
     そこで検査が止まると「残り6箇所が見えないまま緑」になり、安全網として最も必要な
     場面で外れる。全箇所から消えたときだけ、検査ごと畳むよう促す。
     """
-    postals = {}
-    streets = set()
-    for name in sorted(ADDRESS_FILES):
-        p = ROOT / name
-        if not p.exists():
-            continue
-        try:
-            text = p.read_text(encoding="utf-8")
-        except (UnicodeDecodeError, OSError):
-            continue
-        for m in re.finditer(r"(\d{3}-\d{4})[\s　]*([^\s　<。、\n]{6,40})?", text):
-            postals.setdefault(m.group(1), set()).add(name)
-            if m.group(2):
-                streets.add(m.group(2))
+    postals, keys = collect_address_keys()
 
-    if not postals:
+    if len(postals) > 1:
+        # 電話番号などの誤検出も含みうる。値は CI のログに残るので出さず、
+        # ファイル名だけ知らせる。ここで打ち切ると位置チェックが丸ごと止まるので続行する。
+        noisy = sorted({f for files in postals.values() for f in files})
         fail(
             "address",
             "-",
-            "住所がどこにも見つからない。解約手続きで全削除したのなら、"
-            "CLAUDE.md「所在地」の一覧・ADDRESS_FILES・この住所チェックごと削除し、"
-            "最後に人が grep で0件を確認すること（この検査は住所を持たないため、"
-            "全削除後は成立しない）",
+            "郵便番号らしき文字列が複数見つかった（電話番号の誤検出かもしれない）: "
+            + ", ".join(noisy),
+        )
+    if postals:
+        # 多数派を住所の郵便番号とみなして検査を続ける
+        keys.add(max(postals, key=lambda k: len(postals[k])))
+
+    if not keys:
+        fail(
+            "address",
+            "-",
+            "住所の検索語を組み立てられなかった。**表記を変えてキーを失っただけの可能性がある**。"
+            "まず人が CLAUDE.md「所在地」に載っている住所の語で "
+            "`grep -rn <その語> . --exclude-dir=.git` を実行すること。"
+            "**0件だったときに限り**、CLAUDE.md の一覧・ADDRESS_FILES・"
+            "check_address_locations・CHECKS への登録をまとめて削除してよい。"
+            "0件でなければ表記変更なので、検出キーの取り方を直す",
         )
         return
-    if len(postals) > 1:
-        fail("address", "-", f"郵便番号が一致しない: { {k: sorted(v) for k, v in postals.items()} }")
-        return
-
-    keys = {next(iter(postals))} | streets
     found = set()
     for p, text in text_files():
         if any(k in text for k in keys):

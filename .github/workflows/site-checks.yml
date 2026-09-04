@@ -7,6 +7,10 @@ on:
     branches: [main]
   pull_request:
 
+# 読み取りだけで足りる。job を足したときに既定の広い権限を引き継がないよう明示しておく。
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest

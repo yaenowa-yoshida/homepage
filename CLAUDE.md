@@ -77,9 +77,18 @@
 - **解約するときの手順**（CI は住所を持たないため、全削除後は検査自体が成立しない）:
   1. 上記7箇所から住所を削除する。**1箇所ずつ消す途中で CI は赤くなるが、赤を消すために
      チェックを外さないこと**（残っている箇所を名指しで教えてくれる。そこが安全網の本体）。
-  2. 全部消えたら CI が「チェックごと削除せよ」と促すので、`ADDRESS_FILES`・
-     `check_address_locations` と本節の一覧を削除する。
-  3. 最後に **人が `grep -rn "コノトラ" . --exclude-dir=.git` で0件を確認**する。
+  2. 次を**まとめて削除**する。ここを削らないと 4 の grep は 0 件にならない
+     （**この手順書自身が住所の語を含んでいる**ため）:
+     - `scripts/check_site.py` の `ADDRESS_FILES`・`address_tokens`・`collect_address_keys`・
+       `check_address_locations`・**`CHECKS` への登録**（外し忘れると CI が NameError で落ちる）・
+       冒頭 docstring の住所への言及
+     - `.claude/agents/site-consistency-check.md` の住所の値と住所チェックの節
+     - CLAUDE.md のファイル表にある `scripts/check_site.py` の行の住所への言及
+     - **本節（所在地）を丸ごと**（この手順・grep コマンドの行を含む）
+  3. 開発フローの「CI の9種」の列挙から住所の項目を外す。
+  4. 最後に **人が住所の語で `grep -rn <その語> . --exclude-dir=.git` を実行し、0件を確認**する。
+     **CI の「削除してよい」という出力を根拠にしないこと。** 表記を変えて検索語を失っただけでも
+     同じ出力になる（CI 側もこの grep を先に求める文面にしてある）。
 
 ## 開発フロー
 
@@ -149,7 +158,7 @@
 | `privacy.html` | プライバシーポリシー。公開URLは拡張子なしの **`/privacy`**（リンク・canonical・og:url・sitemap を統一）。改定時は `dateModified` と sitemap の lastmod を更新。**実態（取得方法・利用目的・外部サービスの利用状況）と一致させる** |
 | `og-image.png` | SNSシェア用OGP画像（1200×630）。index / about / privacy / services 配下が参照。**キャッチコピーやデザインを変えたら再生成して差し替える**（JSON-LD の `logo` は実ロゴ `LOGO.png` のまま。OGPバナーとは別物） |
 | `robots.txt` / `sitemap.xml` | SEO |
-| `scripts/check_site.py` | 機械的な整合性チェック（9種）。CI から実行するが、手元でも `python3 scripts/check_site.py` で動く。**依存を増やさない**（標準ライブラリのみ）。住所そのものは書かない方針（郵便番号は `llms.txt` から実行時に読む） |
+| `scripts/check_site.py` | 機械的な整合性チェック（9種）。CI から実行するが、手元でも `python3 scripts/check_site.py` で動く。**依存を増やさない**（標準ライブラリのみ）。住所そのものは書かない方針（検索語は住所が残っているファイルから実行時に組み立てる）。**grep の代替ではない** |
 | `.github/workflows/site-checks.yml` | 上記を push・PR ごとに走らせる |
 | `CNAME` | `yaenowa.co.jp`（apex） |
 | `gx.html`（ルート直下） | 旧URL `/gx` からの meta refresh リダイレクトスタブ（noindex）。**編集・削除しないこと** |
