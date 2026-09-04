@@ -1064,8 +1064,9 @@
     border-top: 0.5px solid var(--paper-dark);
   }
   .biz-cta p { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.95; margin-bottom: 1.2rem; }
-  /* 事業一覧のカード */
-  .biz-cards { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+  /* 事業一覧のカード。4枚なので 2×2 に固定する（auto-fit だと画面幅により
+     3枚＋1枚に割れて、4枚目が取り残されて見える） */
+  .biz-cards { display: grid; gap: 1.2rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .biz-card {
     display: block;
     padding: 1.6rem 1.7rem;
@@ -1098,6 +1099,71 @@
     font-size: 0.8rem;
     letter-spacing: 0.06em;
     color: var(--accent-gold);
+  }
+  /* 症状から入口を選ぶ導線（事業一覧ページ）。
+     検索から着地した人が、事業名を知らないまま自分の状態で選べるようにするための表 */
+  .biz-symptoms { list-style: none; }
+  .biz-symptoms li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.3rem 1.5rem;
+    padding: 1rem 0.2rem;
+    border-bottom: 0.5px solid var(--paper-dark);
+  }
+  .biz-symptoms li:first-child { border-top: 0.5px solid var(--paper-dark); }
+  .biz-symptom-text {
+    flex: 1 1 20rem;
+    font-size: 0.9rem;
+    line-height: 1.9;
+    color: var(--ink);
+  }
+  .biz-symptom-link {
+    flex: 0 0 auto;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--accent-gold);
+    text-decoration: none;
+    border-bottom: 0.5px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .biz-symptom-link:hover { border-bottom-color: var(--accent-gold); }
+  .biz-symptom-link:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 3px; }
+  /* 4事業の関係（「決める」を土台に3つが乗る） */
+  .biz-map { margin-top: 1.6rem; }
+  .biz-map-card {
+    padding: 1.3rem 1.4rem;
+    border: 0.5px solid var(--paper-dark);
+    background: var(--paper);
+  }
+  .biz-map-base { border-color: var(--sakura-mid); }
+  .biz-map-role {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.16em;
+    color: var(--sakura-deep);
+    margin-bottom: 0.35rem;
+  }
+  .biz-map-name {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    margin-bottom: 0.55rem;
+  }
+  .biz-map-desc { font-size: 0.83rem; color: var(--ink-mid); line-height: 1.9; }
+  /* 土台と3領域をつなぐ縦線（装飾） */
+  .biz-map-conn {
+    width: 0.5px;
+    height: 2.2rem;
+    margin: 0 auto;
+    background: var(--accent-gold);
+  }
+  .biz-map-row {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
   }
 
   /* ── FOOTER ── */
@@ -1674,6 +1740,8 @@
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
     section { padding: 5rem 1.5rem; }
+    /* 事業一覧のカードは2列固定なので、狭い画面では1列に落とす */
+    .biz-cards { grid-template-columns: 1fr; }
     .hero-stage { padding: 7rem 1.5rem 4rem; }
     /* スマホでは中央ロゴ（不透明）を隠し、環・花びら・輝きを背景に文字を前面へ */
     .hero-logo { display: none; }
