@@ -36,10 +36,6 @@ ADDRESS_FILES = {
     ".claude/agents/site-consistency-check.md",
 }
 
-# 走査から外す拡張子。「見る拡張子」を並べる方式だと、新しい種類のファイルが
-# 無言で対象外になる（.webmanifest を足したときに実際に起きた）。除外側で持つ。
-BINARY_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".pdf", ".woff", ".woff2", ".ttf", ".zip", ".apk"}
-
 CANONICAL_HOST = "https://yaenowa.co.jp"
 CONTACT_MAIL = "yoshida+contact@yaenowa.co.jp"
 
@@ -133,7 +129,7 @@ def check_mixed_content():
     # サブリソースを読むファイル」でしか起きない。住所・メールの検査と違って、
     # 対象を広げると自分自身の正規表現リテラルまで拾ってしまう。
     for p, text in text_files():
-        if p.suffix not in {".html", ".css", ".js", ".xml", ".txt"}:
+        if p.suffix not in {".html", ".css", ".js", ".xml", ".txt", ".svg", ".webmanifest", ".json"}:
             continue
         seen("混在コンテンツ走査", 1)
         for m in re.finditer(r"http://[^\s\"'<>)]+", text):
@@ -251,9 +247,11 @@ def check_contact_mail():
     """問い合わせ先メールアドレスに表記ゆれがないか。"""
     pattern = re.compile(r"[\w.+-]+@yaenowa\.co\.jp")
     for p, text in text_files():
-        if p.suffix in BINARY_SUFFIXES:
-            continue
-        for addr in set(pattern.findall(text)):
+        # ファイル数ではなく「見つけたアドレス数」を数える。ファイル数だと、
+        # ドメイン表記が変わって1件も当たらなくなっても件数が減らない。
+        hits = pattern.findall(text)
+        seen("メール", len(hits))
+        for addr in set(hits):
             if addr != CONTACT_MAIL:
                 fail("mail", rel(p), f"想定と違うアドレス: {addr}")
 
@@ -350,6 +348,22 @@ def check_outlook_noindex():
 # （赤くて困ったときに、いちばん通りやすい抜け道がここだった）。
 EXPECTED_CHECKS = 9
 
+# 被覆の下限。件数を出すだけでは「空振りしている」ことを機械が判定できない
+# （書式を少し変えるだけで対象が0件になり、ラベルごと消えて緑になっていた）。
+# 実際の件数より少し低く置く。下げるのは安全網を弱める変更にあたる。
+MIN_COVERAGE = {
+    "JSON-LD": 30,
+    "外部リンク": 25,
+    "混在コンテンツ走査": 30,
+    "メール": 8,
+    "住所": 1,
+    "canonical": 20,
+    "og:url": 18,
+    "内部リンク": 350,
+    "sitemap": 10,
+    "outlook": 10,
+}
+
 CHECKS = [
     check_json_ld,
     check_noopener,
@@ -374,12 +388,23 @@ def main():
     for check in CHECKS:
         check()
 
+    for label, low in MIN_COVERAGE.items():
+        got = coverage.get(label, 0)
+        if got < low:
+            fail(
+                "coverage",
+                "-",
+                f"{label} の被覆が {got} 件（下限 {low}）。検査が空振りしている。"
+                "書式が変わって正規表現が当たらなくなっていないか確認すること",
+            )
+
     if not failures:
         detail = " / ".join(f"{k} {v}" for k, v in coverage.items())
         print(f"✓ {len(CHECKS)} 種類のチェックをすべて通過しました（{detail}）")
         return 0
 
-    print(f"✗ {len(failures)} 件の問題が見つかりました\n")
+    detail = " / ".join(f"{k} {v}" for k, v in coverage.items())
+    print(f"✗ {len(failures)} 件の問題が見つかりました（被覆: {detail}）\n")
     current = None
     for name, path, message in failures:
         if name != current:
