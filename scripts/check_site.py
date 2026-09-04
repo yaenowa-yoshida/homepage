@@ -11,12 +11,12 @@ CI（.github/workflows/site-checks.yml）から実行する。人のレビュー
 住所そのものは **このファイルに書かない**。GMOのバーチャルオフィスを解約したとき、
 削除箇所が1つ増えていると漏れるため。検索語は `ADDRESS_FILES` に残っている記述から
 実行時に組み立てる（CLAUDE.md「所在地」の削除箇所一覧を参照）。
-**このチェックは grep の代替ではない。** 表記ゆれは原理的に取りこぼすので、
-掲載箇所を増やしたときの最終確認は人が grep で行う。
+**このチェックは grep の代替ではない。** 表記ゆれは原理的に取りこぼす。
+**テキストとして読めないファイル（画像・PDF 等）は対象外**で、そこに焼き込まれた
+住所は grep でも見つからない。掲載箇所を増やしたときの最終確認は人が行う。
 """
 
 import json
-import os
 import re
 import sys
 from pathlib import Path
@@ -163,7 +163,8 @@ def check_address_locations():
     if len(postals) > 1:
         # 電話番号などの誤検出も含みうる。値は CI のログに残るので出さず、
         # ファイル名だけ知らせる。ここで打ち切ると位置チェックが丸ごと止まるので続行する。
-        noisy = sorted({f for files in postals.values() for f in files})
+        major = max(postals, key=lambda k: len(postals[k]))
+        noisy = sorted({f for v, files in postals.items() if v != major for f in files})
         fail(
             "address",
             "-",
@@ -179,8 +180,9 @@ def check_address_locations():
             "address",
             "-",
             "住所の検索語を組み立てられなかった。**表記を変えてキーを失っただけの可能性がある**。"
-            "まず人が CLAUDE.md「所在地」に載っている住所の語で "
-            "`grep -rn <その語> . --exclude-dir=.git` を実行すること。"
+            "まず人が、**手元に控えてある住所の語**（リポジトリ内には既に残っていない"
+            "可能性がある）で `grep -rn <その語> . --exclude-dir=.git` と "
+            "`git log -S <その語> --all` を実行すること。"
             "**0件だったときに限り**、CLAUDE.md の一覧・ADDRESS_FILES・"
             "check_address_locations・CHECKS への登録をまとめて削除してよい。"
             "0件でなければ表記変更なので、検出キーの取り方を直す",
@@ -287,6 +289,11 @@ def check_outlook_noindex():
             fail("noindex", rel(p), "outlook 配下は noindex 運用（robots メタが無い）")
 
 
+# チェックを増減させたら、この数と CLAUDE.md の「9種」の記述も直すこと。
+# CHECKS から1行消すだけで無言でチェックが消えるのを防ぐための歯止め
+# （赤くて困ったときに、いちばん通りやすい抜け道がここだった）。
+EXPECTED_CHECKS = 9
+
 CHECKS = [
     check_json_ld,
     check_noopener,
@@ -301,6 +308,13 @@ CHECKS = [
 
 
 def main():
+    if len(CHECKS) != EXPECTED_CHECKS:
+        print(
+            f"✗ チェックの数が想定と違う: {len(CHECKS)} 種（想定 {EXPECTED_CHECKS} 種）。"
+            "意図した増減なら EXPECTED_CHECKS と CLAUDE.md の件数も直すこと"
+        )
+        return 1
+
     for check in CHECKS:
         check()
 
