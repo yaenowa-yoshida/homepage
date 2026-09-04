@@ -70,6 +70,9 @@
   `llms.txt`・`privacy.html`・`audio-guide-privacy.html`・**この `CLAUDE.md` 自身**・
   `.claude/agents/site-consistency-check.md`。
   **住所を書く箇所を増やしたらこの一覧に追記すること**（`grep -rn "コノトラ" . --exclude-dir=.git` で確認できる）。
+  同じ一覧を `scripts/check_site.py` の `ADDRESS_FILES` が持っており、**CI が増減を検出する**
+  （こちらには住所そのものを書いていない。郵便番号は `llms.txt` から実行時に読み出す）。
+  **一覧を直すときは CLAUDE.md と `ADDRESS_FILES` の両方**を直す。
 
 ## 開発フロー
 
@@ -85,6 +88,12 @@
   判断を仰ぐまでマージしない。「目視確認推奨」に格下げして公開しないこと
   （2026-08-01 に発生: 参照先ドメインの誤りの指摘を報告扱いにしてマージし、誤った出典が公開された）。
 - コンテンツ変更時は実機（ブラウザ）で表示確認し、JSON-LD の構文を検証する。
+- 機械的な整合性は CI（`.github/workflows/site-checks.yml`）が push・PR ごとに検査する。
+  手元では `python3 scripts/check_site.py` で同じものを走らせられる（依存なし）。
+  **CI が赤いままマージしない。** 検査内容は JSON-LD 構文・`noopener`・混在コンテンツ・
+  住所の記載箇所・メールの表記ゆれ・apex 統一・内部リンクの実在と拡張子なしURL・
+  sitemap の対応・`outlook/` の noindex の9種。文言の良し悪しは見ないので、
+  レビュー用サブエージェントの代わりにはならない。
 - 🔴 **書くべきでない語を含むコミットは、push する前にメッセージを書き直す。**
   push 後に force-push で履歴から外しても、**GitHub は到達不能になったコミットを
   SHA 指定で参照できる状態に残す**（消すには GitHub Support への依頼が要る）。
@@ -129,6 +138,8 @@
 | `privacy.html` | プライバシーポリシー。公開URLは拡張子なしの **`/privacy`**（リンク・canonical・og:url・sitemap を統一）。改定時は `dateModified` と sitemap の lastmod を更新。**実態（取得方法・利用目的・外部サービスの利用状況）と一致させる** |
 | `og-image.png` | SNSシェア用OGP画像（1200×630）。index / about / privacy / services 配下が参照。**キャッチコピーやデザインを変えたら再生成して差し替える**（JSON-LD の `logo` は実ロゴ `LOGO.png` のまま。OGPバナーとは別物） |
 | `robots.txt` / `sitemap.xml` | SEO |
+| `scripts/check_site.py` | 機械的な整合性チェック（9種）。CI から実行するが、手元でも `python3 scripts/check_site.py` で動く。**依存を増やさない**（標準ライブラリのみ）。住所そのものは書かない方針（郵便番号は `llms.txt` から実行時に読む） |
+| `.github/workflows/site-checks.yml` | 上記を push・PR ごとに走らせる |
 | `CNAME` | `yaenowa.co.jp`（apex） |
 | `gx.html`（ルート直下） | 旧URL `/gx` からの meta refresh リダイレクトスタブ（noindex）。**編集・削除しないこと** |
 | `outlook/` | 「今後の展望」セクション。→ **`outlook/CLAUDE.md`** |

@@ -1,0 +1,18 @@
+name: site checks
+
+# 公開前に機械的に気づける壊れ方だけを見る。文言の良し悪しはレビュー用の
+# サブエージェント（.claude/agents/）の担当で、ここでは扱わない。
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # 依存は Python 標準ライブラリのみ。ランナー同梱の python3 で動くので
+      # setup-python も pip install も挟まない。
+      - name: 整合性チェック
+        run: python3 scripts/check_site.py
