@@ -1,0 +1,26 @@
+name: site checks
+
+# 公開前に機械的に気づける壊れ方だけを見る。文言の良し悪しはレビュー用の
+# サブエージェント（.claude/agents/）の担当で、ここでは扱わない。
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# 読み取りだけで足りる。job を足したときに既定の広い権限を引き継がないよう明示しておく。
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      # 可変タグ参照。SHA ピン留めのほうが安全側だが、この実行環境からは
+      # 正しい SHA を取得して検証できないため、確認できない値を書かない方針で v4 のまま。
+      # 公式アクション・secrets なし・pull_request（pull_request_target ではない）で
+      # 影響範囲は小さい。ピン留めするなら SHA を確認できる環境で行う。
+      - uses: actions/checkout@v4
+      # 依存は Python 標準ライブラリのみ。ランナー同梱の python3 で動くので
+      # setup-python も pip install も挟まない。
+      - name: 整合性チェック
+        run: python3 scripts/check_site.py
