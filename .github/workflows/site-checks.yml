@@ -11,6 +11,10 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
+      # 可変タグ参照。SHA ピン留めのほうが安全側だが、この実行環境からは
+      # 正しい SHA を取得して検証できないため、確認できない値を書かない方針で v4 のまま。
+      # 公式アクション・secrets なし・pull_request（pull_request_target ではない）で
+      # 影響範囲は小さい。ピン留めするなら SHA を確認できる環境で行う。
       - uses: actions/checkout@v4
       # 依存は Python 標準ライブラリのみ。ランナー同梱の python3 で動くので
       # setup-python も pip install も挟まない。

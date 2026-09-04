@@ -57,6 +57,17 @@ def html_files():
         yield p
 
 
+def text_files():
+    """テキストとして読める全ファイル。拡張子で絞ると新しい種類のファイルを取りこぼす。"""
+    for p in sorted(ROOT.rglob("*")):
+        if ".git" in p.parts or not p.is_file():
+            continue
+        try:
+            yield p, p.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+
+
 def rel(p):
     return str(p.relative_to(ROOT))
 
@@ -86,14 +97,8 @@ def check_noopener():
 
 def check_mixed_content():
     """http:// でリソースを読んでいないか（ブラウザが「安全ではありません」と出す）。"""
-    for p in sorted(ROOT.rglob("*")):
-        if ".git" in p.parts or not p.is_file():
-            continue
+    for p, text in text_files():
         if p.suffix not in {".html", ".css", ".js", ".txt", ".xml"}:
-            continue
-        try:
-            text = p.read_text(encoding="utf-8")
-        except UnicodeDecodeError:
             continue
         for m in re.finditer(r"http://[^\s\"'<>)]+", text):
             url = m.group(0)
@@ -102,25 +107,49 @@ def check_mixed_content():
 
 
 def check_address_locations():
-    """住所の記載箇所が、想定している一覧と一致しているか。"""
-    llms = (ROOT / "llms.txt").read_text(encoding="utf-8")
-    m = re.search(r"所在地:\s*〒(\d{3}-\d{4})", llms)
-    if not m:
-        fail("address", "llms.txt", "所在地の郵便番号を読み取れなかった")
-        return
-    postal = m.group(1)
+    """住所の記載箇所が、想定している一覧と一致しているか。
 
-    found = set()
-    for p in sorted(ROOT.rglob("*")):
-        if ".git" in p.parts or not p.is_file():
-            continue
-        if p.suffix not in {".html", ".txt", ".md", ".xml"}:
+    住所そのものはこのファイルに書かない（解約時の削除箇所を増やさないため）。
+    検索語は ADDRESS_FILES に残っているファイルから実行時に組み立てる。
+
+    **1ファイルだけ消した状態で打ち切らないこと。** 解約作業は1ファイルずつ進むので、
+    そこで検査が止まると「残り6箇所が見えないまま緑」になり、安全網として最も必要な
+    場面で外れる。全箇所から消えたときだけ、検査ごと畳むよう促す。
+    """
+    postals = {}
+    streets = set()
+    for name in sorted(ADDRESS_FILES):
+        p = ROOT / name
+        if not p.exists():
             continue
         try:
-            if postal in p.read_text(encoding="utf-8"):
-                found.add(rel(p))
-        except UnicodeDecodeError:
+            text = p.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
             continue
+        for m in re.finditer(r"(\d{3}-\d{4})[\s　]*([^\s　<。、\n]{6,40})?", text):
+            postals.setdefault(m.group(1), set()).add(name)
+            if m.group(2):
+                streets.add(m.group(2))
+
+    if not postals:
+        fail(
+            "address",
+            "-",
+            "住所がどこにも見つからない。解約手続きで全削除したのなら、"
+            "CLAUDE.md「所在地」の一覧・ADDRESS_FILES・この住所チェックごと削除し、"
+            "最後に人が grep で0件を確認すること（この検査は住所を持たないため、"
+            "全削除後は成立しない）",
+        )
+        return
+    if len(postals) > 1:
+        fail("address", "-", f"郵便番号が一致しない: { {k: sorted(v) for k, v in postals.items()} }")
+        return
+
+    keys = {next(iter(postals))} | streets
+    found = set()
+    for p, text in text_files():
+        if any(k in text for k in keys):
+            found.add(rel(p))
 
     for extra in sorted(found - ADDRESS_FILES):
         fail(
@@ -129,26 +158,23 @@ def check_address_locations():
             "住所の記載箇所が増えている。CLAUDE.md「所在地」の一覧と "
             "scripts/check_site.py の ADDRESS_FILES に追記すること",
         )
+    remaining = sorted(ADDRESS_FILES & found)
     for missing in sorted(ADDRESS_FILES - found):
         fail(
             "address",
             missing,
-            "住所があるはずのファイルに見つからない。意図した削除なら "
-            "CLAUDE.md の一覧と ADDRESS_FILES からも外すこと",
+            "住所があるはずのファイルに見つからない。解約作業の途中なら、"
+            f"**まだ残っている {len(remaining)} 箇所を先に消しきる**こと（{', '.join(remaining)}）。"
+            "このチェックを消して赤を解消しないこと。"
+            "意図した掲載場所の移動なら CLAUDE.md の一覧と ADDRESS_FILES を直す",
         )
 
 
 def check_contact_mail():
     """問い合わせ先メールアドレスに表記ゆれがないか。"""
     pattern = re.compile(r"[\w.+-]+@yaenowa\.co\.jp")
-    for p in sorted(ROOT.rglob("*")):
-        if ".git" in p.parts or not p.is_file():
-            continue
+    for p, text in text_files():
         if p.suffix not in {".html", ".txt"}:
-            continue
-        try:
-            text = p.read_text(encoding="utf-8")
-        except UnicodeDecodeError:
             continue
         for addr in set(pattern.findall(text)):
             if addr != CONTACT_MAIL:

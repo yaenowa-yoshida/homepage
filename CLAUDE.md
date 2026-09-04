@@ -70,9 +70,16 @@
   `llms.txt`・`privacy.html`・`audio-guide-privacy.html`・**この `CLAUDE.md` 自身**・
   `.claude/agents/site-consistency-check.md`。
   **住所を書く箇所を増やしたらこの一覧に追記すること**（`grep -rn "コノトラ" . --exclude-dir=.git` で確認できる）。
-  同じ一覧を `scripts/check_site.py` の `ADDRESS_FILES` が持っており、**CI が増減を検出する**
-  （こちらには住所そのものを書いていない。郵便番号は `llms.txt` から実行時に読み出す）。
+  同じ一覧を `scripts/check_site.py` の `ADDRESS_FILES` が写しとして持ち、**CI が増減を検出する**
+  （スクリプトに住所そのものは書いていない。検索語は残っているファイルから実行時に組み立てる）。
+  **正は本節の一覧**で、CI は一覧と実ファイルの食い違いを知らせるだけ。
   **一覧を直すときは CLAUDE.md と `ADDRESS_FILES` の両方**を直す。
+- **解約するときの手順**（CI は住所を持たないため、全削除後は検査自体が成立しない）:
+  1. 上記7箇所から住所を削除する。**1箇所ずつ消す途中で CI は赤くなるが、赤を消すために
+     チェックを外さないこと**（残っている箇所を名指しで教えてくれる。そこが安全網の本体）。
+  2. 全部消えたら CI が「チェックごと削除せよ」と促すので、`ADDRESS_FILES`・
+     `check_address_locations` と本節の一覧を削除する。
+  3. 最後に **人が `grep -rn "コノトラ" . --exclude-dir=.git` で0件を確認**する。
 
 ## 開発フロー
 
@@ -92,8 +99,12 @@
   手元では `python3 scripts/check_site.py` で同じものを走らせられる（依存なし）。
   **CI が赤いままマージしない。** 検査内容は JSON-LD 構文・`noopener`・混在コンテンツ・
   住所の記載箇所・メールの表記ゆれ・apex 統一・内部リンクの実在と拡張子なしURL・
-  sitemap の対応・`outlook/` の noindex の9種。文言の良し悪しは見ないので、
-  レビュー用サブエージェントの代わりにはならない。
+  sitemap の対応・`outlook/` の noindex の9種。
+- **CI の通過はレビューの通過ではない。** 文言を見ないので `content-legal-review` の
+  代わりにならず、**項目が重なる `site-consistency-check` の代わりにもならない**。
+  次は CI に入っていない: 会社情報の**値の一致**（住所は「どのファイルにあるか」だけを見る）・
+  資格と `hasCredential` の同期・FAQ 構造化データと表示内容の一致・
+  sitemap に**載っていない**公開ページの検出。
 - 🔴 **書くべきでない語を含むコミットは、push する前にメッセージを書き直す。**
   push 後に force-push で履歴から外しても、**GitHub は到達不能になったコミットを
   SHA 指定で参照できる状態に残す**（消すには GitHub Support への依頼が要る）。
