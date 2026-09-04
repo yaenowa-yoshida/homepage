@@ -52,8 +52,8 @@
    - ただし当該ページは theme.css を読まないスライド専用デザインのため、
      単に削除すると色が失われる。theme.css を読ませるかどうかから判断する。
 10. **アクセス解析の導入**（🔒 ユーザー判断待ち・着手しない）
-   - GA4 / Cloudflare Web Analytics 等。ユーザーのアカウント作業が必要。
-   - 導入時は privacy.html 第8条・第9条の改定が必須（CLAUDE.md 法務メモ参照）
+    - GA4 / Cloudflare Web Analytics 等。ユーザーのアカウント作業が必要。
+    - 導入時は privacy.html 第8条・第9条の改定が必須（CLAUDE.md 法務メモ参照）
 
 ## 完了ログ
 
