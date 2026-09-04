@@ -193,7 +193,7 @@
 | `theme.css` / `theme.js` | 全ページ共通の基盤（カラーパレット・ダークモード・リセット・テーマ切替）。**色やテーマ挙動の変更はここだけを編集**し、各ページには書かない。theme.js は描画前に実行する必要があるため `<head>` で同期読み込み（**defer/async 禁止**） |
 | `llms.txt` | AIO用の会社サマリ。**`index.html` と同期する** |
 | `privacy.html` | プライバシーポリシー。公開URLは拡張子なしの **`/privacy`**（リンク・canonical・og:url・sitemap を統一）。改定時は `dateModified` と sitemap の lastmod を更新。**実態（取得方法・利用目的・外部サービスの利用状況）と一致させる** |
-| `og-image.png` | SNSシェア用OGP画像。**24ページの `og:image` / `twitter:image` が参照する**（index / about / privacy / business / services / outlook 配下）。**キャッチコピーやデザインを変えたら再生成して差し替える**（JSON-LD の `logo` は実ロゴ `LOGO.png` のまま。OGPバナーとは別物）。**書き出しは 1200×630・パレット256色の PNG**（各ページが `og:image:width` に 1200 を宣言しているため、2倍サイズで書き出すと宣言と実物がずれる。フルカラーのままだと 200KB を超える） |
+| `og-image.png` | SNSシェア用OGP画像。**24ページの `og:image` / `twitter:image` が参照する**（index / about / privacy / audio-guide-privacy / business / services / outlook 配下）。**キャッチコピーやデザインを変えたら再生成して差し替える**（JSON-LD の `logo` は実ロゴ `LOGO.png` のまま。OGPバナーとは別物）。**書き出しは 1200×630・パレット256色の PNG**（各ページが `og:image:width` に 1200 を宣言しているため、2倍サイズで書き出すと宣言と実物がずれる。フルカラーのままだと 200KB を超える） |
 | `robots.txt` / `sitemap.xml` | SEO |
 | `scripts/check_site.py` | 機械的な整合性チェック（9種）。CI から実行するが、手元でも `python3 scripts/check_site.py` で動く。**依存を増やさない**（標準ライブラリのみ）。住所そのものは書かない方針（検索語は住所が残っているファイルから実行時に組み立てる）。**grep の代替ではない** |
 | `.github/workflows/site-checks.yml` | 上記を push・PR ごとに走らせる |
