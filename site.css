@@ -1725,6 +1725,17 @@
     .nav-links a { font-size: 0.95rem; }
     .nav-links { z-index: 108; }
 
+    /* ハンバーガー内は2群に分かれる。上3つは別ページへ、下2つはトップ内の節へ飛ぶ。
+       4つ目（自社サービス）の手前に間を取って、挙動の違いを見た目に出す。
+       並び順を変えるときはこの nth-child も見直すこと */
+    .nav-links li:nth-child(4) {
+      /* 上は .nav-links の gap 2rem に足されるので、線が群の中央に来るよう
+         上 0.2rem（合計 2.2rem）と下 2.2rem で釣り合わせる */
+      margin-top: 0.2rem;
+      padding-top: 2.2rem;
+      border-top: 0.5px solid var(--paper-dark);
+    }
+
     /* メニュー展開時に背景を暗くするスクリム */
     .nav-scrim {
       display: block;
