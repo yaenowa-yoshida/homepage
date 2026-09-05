@@ -467,6 +467,16 @@
     text-wrap: pretty;
   }
   .about-brief-lead .em { color: var(--accent); font-weight: 500; }
+  /* 理念の下に置く事実の行。リード（明朝）と区別するためゴシックで一段小さく */
+  .about-brief-facts {
+    margin-top: 1.4rem;
+    font-size: 0.95rem;
+    line-height: 2;
+    letter-spacing: 0.03em;
+    color: var(--ink-light);
+    max-width: 40rem;
+    text-wrap: pretty;
+  }
   .about-brief-link {
     display: inline-block;
     margin-top: 1.8rem;
@@ -891,7 +901,8 @@
 
   /* ── CONTACT ── */
   .contact {
-    background: var(--paper-mid);
+    /* About を上へ移した分、段の色の交互を保つためこの段は --paper 側 */
+    background: var(--paper);
     text-align: center;
   }
 
