@@ -133,8 +133,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    /* WCAG 2.2 SC 2.5.8（24×24 以上）。隣のリンクとの間隔が 0.35rem しかなく
+       「間隔」の例外は使えないので、当たり判定そのものを確保する */
+    width: 28px;
+    height: 28px;
     padding: 0;
     background: none;
     border: none;
@@ -143,6 +145,8 @@
     transition: color 0.3s, transform 0.3s;
   }
   .nav-sub-toggle:hover { color: var(--accent); }
+  /* JS 無効時は開けないため、押せないボタンを残さない（theme.js が html.js を付ける） */
+  html:not(.js) .nav-sub-toggle { display: none; }
   .nav-has-sub.is-open > .nav-sub-toggle { transform: rotate(180deg); }
 
   .nav-sub {
@@ -1780,7 +1784,11 @@
       height: 100vh;
       width: min(75vw, 280px);
       flex-direction: column;
-      justify-content: center;
+      /* 子項目を2つ開くと 100vh を超える端末がある。center のままだと、
+         あふれた上側（先頭の「事業内容」）がスクロールしても出てこない */
+      justify-content: safe center;
+      overflow-y: auto;
+      overscroll-behavior: contain;
       gap: 2rem;
       padding: 2rem 2.5rem;
       background: var(--nav-menu-bg);

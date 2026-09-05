@@ -76,6 +76,9 @@
       });
       li.addEventListener('mouseleave', function () {
         if (!isDesktop()) { return; }
+        // 子にフォーカスがあるまま閉じると、visibility:hidden でフォーカスが
+        // body へ飛んでしまう。キーボード操作中は閉じない
+        if (li.contains(document.activeElement)) { return; }
         setSub(li, false);
       });
 
