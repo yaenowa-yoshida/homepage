@@ -120,6 +120,75 @@
   .nav-links a.active::after { transform: scaleX(1); }
   .nav-links a.active { color: var(--accent); }
 
+  /* ── 子項目を持つナビ（デスクトップはドロップダウン、1200px 以下はアコーディオン） ──
+     親はリンクのまま残し、開閉はボタンが担う（そうしないと親ページへ行けなくなる）。
+     開閉状態は site-nav.js が .is-open と aria-expanded を同時に付け外しする */
+  .nav-has-sub {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .nav-sub-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ink-light);
+    transition: color 0.3s, transform 0.3s;
+  }
+  .nav-sub-toggle:hover { color: var(--accent); }
+  .nav-has-sub.is-open > .nav-sub-toggle { transform: rotate(180deg); }
+
+  .nav-sub {
+    position: absolute;
+    top: calc(100% + 0.9rem);
+    left: -1rem;
+    z-index: 120;
+    min-width: 15rem;
+    margin: 0;
+    padding: 0.9rem 1rem;
+    list-style: none;
+    background: var(--nav-menu-bg);
+    backdrop-filter: blur(10px);
+    border: 0.5px solid var(--paper-dark);
+    box-shadow: 0 12px 28px var(--ring);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  }
+  .nav-has-sub.is-open > .nav-sub {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  /* ホバーで開くとき、親と panel のあいだの隙間でメニューが消えないようにする */
+  .nav-sub::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    top: -0.9rem;
+    height: 0.9rem;
+  }
+  .nav-sub li + li { margin-top: 0.75rem; }
+  .nav-sub a {
+    display: block;
+    white-space: nowrap;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+  }
+  .nav-sub a::after { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-sub, .nav-sub-toggle { transition: none; }
+  }
+
   .nav-ctrl {
     display: flex;
     align-items: center;
@@ -1728,12 +1797,44 @@
     /* ハンバーガー内は2群に分かれる。上3つは別ページへ、下2つはトップ内の節へ飛ぶ。
        4つ目（自社サービス）の手前に間を取って、挙動の違いを見た目に出す。
        並び順を変えるときはこの nth-child も見直すこと */
-    .nav-links li:nth-child(4) {
+    /* 直接の子に限定する。> を外すと .nav-sub の4番目にも当たる */
+    .nav-links > li:nth-child(4) {
       /* 上は .nav-links の gap 2rem に足されるので、線が群の中央に来るよう
          上 0.2rem（合計 2.2rem）と下 2.2rem で釣り合わせる */
       margin-top: 0.2rem;
       padding-top: 2.2rem;
       border-top: 0.5px solid var(--paper-dark);
+    }
+
+    /* ── 子項目（1200px 以下＝アコーディオン） ──
+       デスクトップのドロップダウン（絶対配置のパネル）を打ち消して、
+       下の項目を押し下げる普通のリストに戻す */
+    .nav-has-sub { flex-wrap: wrap; }
+    .nav-sub {
+      position: static;
+      flex-basis: 100%;
+      min-width: 0;
+      background: none;
+      backdrop-filter: none;
+      border: none;
+      border-left: 0.5px solid var(--paper-dark);
+      box-shadow: none;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      transition: none;
+      margin: 0.9rem 0 0;
+      padding: 0 0 0 0.9rem;
+      /* 高さは JS ではなく display の切り替えで出す（内容量が可変のため） */
+      display: none;
+    }
+    .nav-has-sub.is-open > .nav-sub { display: block; }
+    .nav-sub::before { content: none; }
+    .nav-sub li + li { margin-top: 0.9rem; }
+    .nav-sub a {
+      white-space: normal;
+      font-size: 0.85rem;
+      color: var(--ink-light);
     }
 
     /* メニュー展開時に背景を暗くするスクリム */

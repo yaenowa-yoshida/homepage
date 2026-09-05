@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- 共通テーマ処理（JS有効フラグ・テーマ初期化・切替ボタン）。描画前に実行するため同期読み込み -->
 <script src="/theme.js"></script>
+<!-- グローバルナビ（ハンバーガー・子項目の展開）。描画後でよいので defer -->
+<script src="/site-nav.js" defer></script>
 <title>会社について | 株式会社ヤエノワ</title>
 <meta name="description" content="株式会社ヤエノワの会社案内。社名の由来、代表・吉田 勝大の経歴と専門領域、会社概要、そして「人のご縁が重なり合い、新たな価値を創り出す社会へ」というビジョンをまとめています。">
 <meta name="keywords" content="株式会社ヤエノワ,会社概要,代表取締役,吉田 勝大,ビジョン,社名の由来,八重ノ環">
@@ -127,9 +129,30 @@
     ヤエノワ
   </a>
   <ul class="nav-links" id="nav-links">
-    <li><a href="/business/">事業内容</a></li>
+    <li class="nav-has-sub">
+      <a href="/business/">事業内容</a>
+      <button class="nav-sub-toggle" type="button" aria-expanded="false"
+              aria-controls="nav-sub-business" data-label="事業内容" aria-label="事業内容の下層を開く"><svg width="12" height="12" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 6.5 L9 11.5 L14 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <ul class="nav-sub" id="nav-sub-business">
+        <li><a href="/business/requirements">要件定義・ディレクション支援</a></li>
+        <li><a href="/business/introduction">システム導入支援</a></li>
+        <li><a href="/business/ai">AIコンサルティング</a></li>
+        <li><a href="/business/app">アプリ開発</a></li>
+      </ul>
+    </li>
     <li><a href="/about" aria-current="page">会社について</a></li>
-    <li><a href="/outlook/">今後の展望</a></li>
+    <li class="nav-has-sub">
+      <a href="/outlook/">今後の展望</a>
+      <button class="nav-sub-toggle" type="button" aria-expanded="false"
+              aria-controls="nav-sub-outlook" data-label="今後の展望" aria-label="今後の展望の下層を開く"><svg width="12" height="12" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 6.5 L9 11.5 L14 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <ul class="nav-sub" id="nav-sub-outlook">
+        <li><a href="/outlook/">ジャーナル</a></li>
+        <li><a href="/outlook/gx">GX</a></li>
+        <li><a href="/outlook/local">地域</a></li>
+        <li><a href="/outlook/academics">学び</a></li>
+        <li><a href="/outlook/sports">スポーツ</a></li>
+      </ul>
+    </li>
     <li><a href="/#services">自社サービス</a></li>
     <li><a href="/#contact">お問い合わせ</a></li>
   </ul>
@@ -340,28 +363,9 @@
   <span class="footer-copy">© 2025 Yaenowa Co., Ltd. All rights reserved.</span>
 </footer>
 
-<!-- モバイルナビ & スクロール表示演出（トップページと同じ挙動） -->
+<!-- スクロール表示演出（トップページと同じ挙動。ナビは site-nav.js 側） -->
 <script>
 (function(){
-  const nav = document.querySelector('nav');
-  const toggle = document.getElementById('nav-toggle');
-  const links = document.getElementById('nav-links');
-  const scrim = document.getElementById('nav-scrim');
-  function closeMenu(){
-    nav.classList.remove('nav-open');
-    if (toggle) toggle.setAttribute('aria-expanded', 'false');
-  }
-  if (toggle) {
-    toggle.addEventListener('click', function(){
-      const open = nav.classList.toggle('nav-open');
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-  }
-  if (scrim) scrim.addEventListener('click', closeMenu);
-  if (links) links.addEventListener('click', function(e){
-    if (e.target.tagName === 'A') closeMenu();
-  });
-
   // スクロール表示演出（トップページと同じクラス名・しきい値）
   const targets = document.querySelectorAll('.reveal');
   if (!('IntersectionObserver' in window)) {
