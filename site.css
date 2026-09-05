@@ -1782,6 +1782,9 @@
       top: 0;
       right: 0;
       height: 100vh;
+      /* iOS Safari 等は 100vh が可視領域より大きい。中身が 100vh に収まると
+         スクロールバーが出ないため、末尾がツールバーの裏に隠れて到達できなくなる */
+      height: 100dvh;
       width: min(75vw, 280px);
       flex-direction: column;
       /* 子項目を2つ開くと 100vh を超える端末がある。center のままだと、
