@@ -215,7 +215,7 @@ nav {
 
 footer {
     background: var(--surface-inverse);
-    color: rgba(247,244,238,0.5);
+    color: var(--inverse-ink-faint);
     padding: 3rem 4rem;
     display: flex;
     justify-content: space-between;
@@ -234,7 +234,7 @@ footer {
 .footer-link {
     font-size: 0.72rem;
     letter-spacing: 0.1em;
-    color: rgba(247,244,238,0.7);
+    color: var(--inverse-ink-mute);
     text-decoration: none;
     transition: color 0.3s;
   }

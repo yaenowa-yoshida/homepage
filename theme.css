@@ -25,6 +25,12 @@
   --nav-menu-bg: rgba(247,244,238,0.98);
   --surface-inverse: #1a1a18;
   --inverse-ink: #fdf8f6;
+  /* 反転面（--surface-inverse）の上に置く弱いテキスト。
+     面はライト・ダークとも暗いので、モードで振り分けず単一値にしている。
+     フッターの地の文・フッターリンク・about のビジョン本文が使う。 */
+  --inverse-ink-soft: rgba(247,244,238,0.75);
+  --inverse-ink-mute: rgba(247,244,238,0.7);
+  --inverse-ink-faint: rgba(247,244,238,0.5);
   --spot: rgba(192,96,106,0.10);
   /* 差し色（藍）。紅系のベースに対する寒色。
      「今後の展望」セクションでは outlook.css がこれらを使って
