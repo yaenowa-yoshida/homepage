@@ -25,6 +25,9 @@
   --nav-menu-bg: rgba(247,244,238,0.98);
   --surface-inverse: #1a1a18;
   --inverse-ink: #fdf8f6;
+  /* 紙面より一段持ち上げた面と、その影の色（カード・表・コード枠）。 */
+  --surface-raised: #ffffff;
+  --shadow-raised: rgba(122,58,74,0.09);
   /* 反転面（--surface-inverse）の上に置く弱いテキスト。
      面はライト・ダークとも暗いので、モードで振り分けず単一値にしている。
      フッターの地の文・フッターリンク・about のビジョン本文が使う。 */
@@ -68,6 +71,8 @@
     --nav-menu-bg: light-dark(rgba(247,244,238,0.98), rgba(22,19,22,0.98));
     --surface-inverse: light-dark(#1a1a18, #100e11);
     --inverse-ink: light-dark(#fdf8f6, #ede6e4);
+    --surface-raised: light-dark(#ffffff, #24231f);
+    --shadow-raised: light-dark(rgba(122,58,74,0.09), rgba(0,0,0,0.5));
     --spot: light-dark(rgba(192,96,106,0.10), rgba(231,154,164,0.12));
     --accent-cool: light-dark(#3a6470, #8ab4bf);
     --accent-cool-deep: light-dark(#2b4f5b, #a5cdd7);

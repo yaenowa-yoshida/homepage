@@ -66,133 +66,29 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Shippori+Mincho:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/theme.css">
 <style>
-  /* 配色・書体は和文サイトの落ち着いたトンマナに合わせている。
-     紅（臙脂・桜）を基調に、生成りの紙色、明朝の見出し、角丸を使わない細い罫線が特徴。
+  /* 紅（臙脂・桜）を基調に、生成りの紙色、明朝の見出し、角丸を使わない細い罫線が特徴。
+     配色は theme.css のパレットだけを使う（色の定義を1箇所に集約する方針）。
+     ダークモードの振り分けも theme.css の light-dark() が担うので、
+     このページにテーマ別のブロックは置かない。
+     書体はこのページ専用（明朝の見出し・等幅のコード）なのでここで定義する。
      オフラインではGoogle Fontsが読めないため、明朝・ゴシックとも日本語の代替書体を必ず指定する。 */
   :root {
-    --bg: #fdf8f6;          /* paper */
-    --surface: #ffffff;
-    --surface-mid: #f5ede8; /* paper-mid */
-    --ink: #1a1a18;
-    --muted: #6b6b64;       /* ink-light */
-    --line: #ddc8be;        /* paper-dark */
-    --brand: #7a3a4a;       /* accent（臙脂） */
-    --brand-strong: #7a3a4a;
-    --brand-soft: #fdf0f2;  /* sakura-pale */
-    --brand-ink: #fdf8f6;
-    --accent: #c0606a;      /* sakura-deep */
-    --accent-soft: #f5d8dc; /* sakura-light */
-    --accent-ink: #7a3a4a;
-    --good: #3a6470;        /* accent-cool（藍の差し色） */
-    --mock-bg: #f5ede8;
-    --mock-bar: #f0d8d8;
-    --mock-line: #ddc8be;
-    --code-bg: #1a1a18;
-    --code-ink: #f5ede8;
-    --shadow: 0 10px 28px rgba(122, 58, 74, 0.09);
     --font-body: "Noto Sans JP", "Yu Gothic UI", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
     --font-head: "Zen Old Mincho", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "MS PMincho", serif;
     --font-sub: "Shippori Mincho", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
     --font-mono: "Consolas", "SF Mono", "Courier New", monospace;
   }
-  /* ダークは OS 設定に追従しつつ、サイト共通のテーマ切替（data-theme）を優先する */
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #1a1a18;          /* surface-inverse */
-      --surface: #24231f;
-      --surface-mid: #2e2c28;
-      --ink: #fdf8f6;         /* inverse-ink */
-      --muted: #b3ada3;
-      --line: #453f39;
-      --brand: #e8a0a8;       /* sakura-mid */
-      --brand-strong: #f0d8d8;
-      --brand-soft: #3a2a2d;
-      --brand-ink: #1a1a18;
-      --accent: #e8a0a8;
-      --accent-soft: #3a2a2d;
-      --accent-ink: #f5d8dc;
-      --good: #8fb6c0;
-      --mock-bg: #2e2c28;
-      --mock-bar: #3a3531;
-      --mock-line: #554e47;
-      --code-bg: #100f0e;
-      --code-ink: #e6ddd6;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #1a1a18;        /* surface-inverse */
-    --surface: #24231f;
-    --surface-mid: #2e2c28;
-    --ink: #fdf8f6;       /* inverse-ink */
-    --muted: #b3ada3;
-    --line: #453f39;
-    --brand: #e8a0a8;     /* sakura-mid */
-    --brand-strong: #f0d8d8;
-    --brand-soft: #3a2a2d;
-    --brand-ink: #1a1a18;
-    --accent: #e8a0a8;
-    --accent-soft: #3a2a2d;
-    --accent-ink: #f5d8dc;
-    --good: #8fb6c0;
-    --mock-bg: #2e2c28;
-    --mock-bar: #3a3531;
-    --mock-line: #554e47;
-    --code-bg: #100f0e;
-    --code-ink: #e6ddd6;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  }
-  :root[data-theme="light"] {
-    --bg: #fdf8f6;
-    --surface: #ffffff;
-    --surface-mid: #f5ede8;
-    --ink: #1a1a18;
-    --muted: #6b6b64;
-    --line: #ddc8be;
-    --brand: #7a3a4a;
-    --brand-strong: #7a3a4a;
-    --brand-soft: #fdf0f2;
-    --brand-ink: #fdf8f6;
-    --accent: #c0606a;
-    --accent-soft: #f5d8dc;
-    --accent-ink: #7a3a4a;
-    --good: #3a6470;
-    --mock-bg: #f5ede8;
-    --mock-bar: #f0d8d8;
-    --mock-line: #ddc8be;
-    --code-bg: #1a1a18;
-    --code-ink: #f5ede8;
-    --shadow: 0 10px 28px rgba(122, 58, 74, 0.09);
-  }
-  :root[data-theme="dark"] {
-    --bg: #1a1a18;
-    --surface: #24231f;
-    --surface-mid: #2e2c28;
-    --ink: #fdf8f6;
-    --muted: #b3ada3;
-    --line: #453f39;
-    --brand: #e8a0a8;
-    --brand-strong: #f0d8d8;
-    --brand-soft: #3a2a2d;
-    --brand-ink: #1a1a18;
-    --accent: #e8a0a8;
-    --accent-soft: #3a2a2d;
-    --accent-ink: #f5d8dc;
-    --good: #8fb6c0;
-    --mock-bg: #2e2c28;
-    --mock-bar: #3a3531;
-    --mock-line: #554e47;
-    --code-bg: #100f0e;
-    --code-ink: #e6ddd6;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  }
-
   * { box-sizing: border-box; }
+  /* theme.css のリセットが * { margin: 0 } を掛けるので、
+     ブラウザ既定の段落下マージン（1em）に頼っていた段落だけ明示して戻す。
+     自前で margin を持つ段落（.lead / .card p など）はクラス側が優先される。 */
+  p { margin-bottom: 1em; }
   html, body { height: 100%; }
   body {
     margin: 0;
-    background: var(--bg);
+    background: var(--paper);
     color: var(--ink);
     font-family: var(--font-body);
     font-weight: 300;
@@ -227,7 +123,7 @@
     font-size: 0.8rem;
     font-weight: 500;
     letter-spacing: 0.18em;
-    color: var(--accent);
+    color: var(--sakura-deep);
     margin: 0 0 0.9rem;
   }
   /* 見出しは明朝＋字間広め。コーポレートサイトの .section-title に合わせている */
@@ -247,11 +143,11 @@
      日本語は単語の途中でも折り返されるので、句読点・かっこで区切れるようにしておく */
   .lead {
     font-family: var(--font-sub);
-    color: var(--muted); margin: 0 0 1.6rem;
+    color: var(--ink-light); margin: 0 0 1.6rem;
     line-break: strict; word-break: normal; overflow-wrap: normal; text-wrap: pretty;
   }
-  .accent-text { color: var(--accent); }
-  strong { color: var(--brand-strong); font-weight: 500; }
+  .accent-text { color: var(--sakura-deep); }
+  strong { color: var(--accent); font-weight: 500; }
 
   .time { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 
@@ -259,22 +155,22 @@
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin: 1.4rem 0; }
   /* カードは角丸なし・細罫＋左の桜色の縦線。サイトの .pain-item / .acc-item と同じ作法 */
   .card {
-    background: var(--surface);
-    border: 0.5px solid var(--line);
-    border-left: 2px solid var(--accent-soft);
+    background: var(--surface-raised);
+    border: 0.5px solid var(--paper-dark);
+    border-left: 2px solid var(--sakura-light);
     padding: 1.2rem 1.3rem;
-    box-shadow: var(--shadow);
+    box-shadow: 0 10px 28px var(--shadow-raised);
   }
-  .card h3 { margin: 0 0 0.5rem; font-family: var(--font-sub); font-size: 1.05rem; font-weight: 600; color: var(--brand-strong); font-feature-settings: "palt"; }
-  .card p { margin: 0; font-size: 0.92rem; color: var(--muted); }
-  .card .big { font-family: var(--font-head); font-size: 1.7rem; font-weight: 700; color: var(--brand); display: block; margin-bottom: 0.2rem; }
+  .card h3 { margin: 0 0 0.5rem; font-family: var(--font-sub); font-size: 1.05rem; font-weight: 600; color: var(--accent); font-feature-settings: "palt"; }
+  .card p { margin: 0; font-size: 0.92rem; color: var(--ink-light); }
+  .card .big { font-family: var(--font-head); font-size: 1.7rem; font-weight: 700; color: var(--accent); display: block; margin-bottom: 0.2rem; }
 
   .punch {
     margin-top: 1.6rem;
     padding: 0.9rem 1.2rem;
-    border-left: 2px solid var(--accent);
-    background: var(--brand-soft);
-    color: var(--accent-ink);
+    border-left: 2px solid var(--sakura-deep);
+    background: var(--sakura-pale);
+    color: var(--accent);
     font-family: var(--font-sub);
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -292,10 +188,10 @@
     content: "";
     position: absolute; left: 0; top: 0.55em;
     width: 0.85em; height: 0.28em;
-    background: var(--accent);
+    background: var(--sakura-deep);
     border-radius: 2px;
   }
-  ul.points li small { display: block; color: var(--muted); font-size: 0.86rem; }
+  ul.points li small { display: block; color: var(--ink-light); font-size: 0.86rem; }
 
   /* ---- slot strip (hero) ---- */
   .slotstrip { margin: 2.2rem 0 0; }
@@ -304,19 +200,19 @@
     height: 3.2rem;
     display: flex; align-items: center; justify-content: center;
     font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em;
-    color: var(--brand-ink);
-    background: var(--brand);
+    color: var(--paper);
+    background: var(--accent);
     overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
     padding: 0 0.5rem;
   }
-  .block.alt { background: var(--brand); opacity: 0.72; }
-  .block.mtg { background: var(--accent); color: var(--brand-ink); opacity: 1; }
-  .block.empty { background: var(--surface); border: 1px dashed var(--mock-line); }
+  .block.alt { background: var(--accent); opacity: 0.72; }
+  .block.mtg { background: var(--sakura-deep); color: var(--paper); opacity: 1; }
+  .block.empty { background: var(--surface-raised); border: 1px dashed var(--paper-dark); }
   .strip-ticks { display: grid; grid-template-columns: repeat(12, 1fr); margin-top: 0.35rem; }
   .strip-ticks span {
     font-family: var(--font-mono); font-variant-numeric: tabular-nums;
-    font-size: 0.72rem; color: var(--muted);
-    border-left: 1px solid var(--line); padding-left: 0.3rem;
+    font-size: 0.72rem; color: var(--ink-light);
+    border-left: 1px solid var(--paper-dark); padding-left: 0.3rem;
   }
 
   /* ---- day flow ---- */
@@ -324,33 +220,33 @@
   .step { display: grid; grid-template-columns: 4.6rem 1.4rem 1fr; gap: 0 1rem; }
   .step .t {
     font-family: var(--font-mono); font-variant-numeric: tabular-nums;
-    color: var(--brand); font-weight: 700; font-size: 0.95rem; text-align: right; padding-top: 0.15rem;
+    color: var(--accent); font-weight: 700; font-size: 0.95rem; text-align: right; padding-top: 0.15rem;
   }
   .step .rail { position: relative; }
   .step .rail::before {
     content: ""; position: absolute; left: 50%; top: 0.55rem; bottom: -0.55rem;
-    width: 2px; margin-left: -1px; background: var(--line);
+    width: 2px; margin-left: -1px; background: var(--paper-dark);
   }
   .step:last-child .rail::before { display: none; }
   .step .rail::after {
     content: ""; position: absolute; left: 50%; top: 0.35rem;
     width: 12px; height: 12px; margin-left: -6px;
     border-radius: 50%;
-    background: var(--brand);
-    border: 2px solid var(--bg);
+    background: var(--accent);
+    border: 2px solid var(--paper);
   }
-  .step.hl .rail::after { background: var(--accent); }
+  .step.hl .rail::after { background: var(--sakura-deep); }
   .step .body { padding-bottom: 1.5rem; }
   .step .body h3 { margin: 0 0 0.25rem; font-family: var(--font-sub); font-size: 1.08rem; font-weight: 600; font-feature-settings: "palt"; }
-  .step .body p { margin: 0; color: var(--muted); font-size: 0.92rem; max-width: 42em; }
+  .step .body p { margin: 0; color: var(--ink-light); font-size: 0.92rem; max-width: 42em; }
 
   /* ---- 実画面のスクリーンショット（画像\ 配下。-Capture で撮り直せる） ---- */
   .shot {
     display: block; max-width: 100%; height: auto;
-    border: 0.5px solid var(--line); box-shadow: var(--shadow);
-    background: var(--surface);
+    border: 0.5px solid var(--paper-dark); box-shadow: 0 10px 28px var(--shadow-raised);
+    background: var(--surface-raised);
   }
-  .shot + .cap, .shotrow + .cap { margin: 0.5rem 0 0; font-size: 0.8rem; color: var(--muted); }
+  .shot + .cap, .shotrow + .cap { margin: 0.5rem 0 0; font-size: 0.8rem; color: var(--ink-light); }
   .shotrow { display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap; }
   .shotrow .shot { flex: 1 1 240px; min-width: 0; }
 
@@ -359,87 +255,87 @@
   .rsv > div {
     padding: 0.7rem 0.8rem; font-size: 0.84rem; text-align: center; font-weight: 500;
   }
-  .rsv .on { background: var(--brand-soft); color: var(--brand-strong); border: 0.5px solid var(--line); }
-  .rsv .booked { background: var(--accent); color: var(--brand-ink); }
-  .rsv-caps { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 4px; font-size: 0.76rem; color: var(--muted); text-align: center; }
+  .rsv .on { background: var(--sakura-pale); color: var(--accent); border: 0.5px solid var(--paper-dark); }
+  .rsv .booked { background: var(--sakura-deep); color: var(--paper); }
+  .rsv-caps { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 4px; font-size: 0.76rem; color: var(--ink-light); text-align: center; }
 
   /* ---- table ---- */
-  .tablewrap { overflow-x: auto; border: 0.5px solid var(--line); background: var(--surface); box-shadow: var(--shadow); }
+  .tablewrap { overflow-x: auto; border: 0.5px solid var(--paper-dark); background: var(--surface-raised); box-shadow: 0 10px 28px var(--shadow-raised); }
   table.csv { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
   table.csv th, table.csv td { padding: 0.5rem 0.9rem; text-align: left; white-space: nowrap; }
   /* 付録の説明用の表は文章が入るので折り返す（CSVサンプルの表は1行で見せたいので nowrap のまま） */
   table.csv.wrap th, table.csv.wrap td { white-space: normal; padding: 0.45rem 0.9rem; line-height: 1.65; }
-  table.csv.wrap td small { display: block; color: var(--muted); font-size: 0.8rem; line-height: 1.6; margin-top: 0.15rem; }
+  table.csv.wrap td small { display: block; color: var(--ink-light); font-size: 0.8rem; line-height: 1.6; margin-top: 0.15rem; }
   table.csv th {
-    background: var(--brand); color: var(--brand-ink);
+    background: var(--accent); color: var(--paper);
     font-size: 0.78rem; letter-spacing: 0.08em;
   }
-  table.csv td { border-top: 1px solid var(--line); }
-  table.csv td.time { color: var(--brand); font-weight: 700; }
+  table.csv td { border-top: 1px solid var(--paper-dark); }
+  table.csv td.time { color: var(--accent); font-weight: 700; }
 
   /* ---- code / text file ---- */
   pre.filetxt {
-    background: var(--code-bg); color: var(--code-ink);
+    background: var(--surface-inverse); color: var(--inverse-ink);
     font-family: var(--font-mono);
     font-size: 0.82rem; line-height: 1.7;
     padding: 1rem 1.2rem;
     overflow-x: auto;
     margin: 0;
-    box-shadow: var(--shadow);
+    box-shadow: 0 10px 28px var(--shadow-raised);
   }
   pre.filetxt .cm { opacity: 0.55; }
-  pre.filetxt .hd { color: var(--accent); font-weight: 700; }
+  pre.filetxt .hd { color: var(--sakura-deep); font-weight: 700; }
   /* フォルダ構成。スペースで桁を揃えると和欧混在で崩れるので、2列のグリッドで揃える */
   .tree {
     display: grid; grid-template-columns: max-content 1fr; gap: 0.2rem 2rem;
-    background: var(--code-bg); color: var(--code-ink);
+    background: var(--surface-inverse); color: var(--inverse-ink);
     padding: 1.2rem 1.4rem; font-size: 0.86rem; line-height: 1.9;
   }
   .tree .f { font-family: var(--font-mono); white-space: nowrap; }
-  .tree .d { color: var(--mock-line); }
+  .tree .d { color: var(--paper-dark); }
 
   .fname {
     display: inline-block;
     font-family: var(--font-mono); font-size: 0.78rem;
-    background: var(--brand-soft); color: var(--brand-strong);
+    background: var(--sakura-pale); color: var(--accent);
     padding: 0.1rem 0.55rem; margin-bottom: 0.5rem;
   }
 
   /* ---- stats ---- */
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1.6rem 0; }
   .stat {
-    background: var(--surface); border: 0.5px solid var(--line); border-left: 2px solid var(--accent-soft);
-    padding: 1.1rem 1.2rem; box-shadow: var(--shadow);
+    background: var(--surface-raised); border: 0.5px solid var(--paper-dark); border-left: 2px solid var(--sakura-light);
+    padding: 1.1rem 1.2rem; box-shadow: 0 10px 28px var(--shadow-raised);
   }
   .stat .n {
     font-family: var(--font-head); font-variant-numeric: tabular-nums;
-    font-size: 2.1rem; font-weight: 700; color: var(--brand); line-height: 1.2;
+    font-size: 2.1rem; font-weight: 700; color: var(--accent); line-height: 1.2;
     letter-spacing: 0.02em;
   }
-  .stat .l { font-size: 0.82rem; color: var(--muted); }
+  .stat .l { font-size: 0.82rem; color: var(--ink-light); }
 
   /* ---- 資料へのリンク（同じフォルダのマニュアルを開く） ---- */
   .doclink {
     display: inline-flex; align-items: baseline; gap: 0.6rem;
     margin-top: 1.6rem; padding: 0.8rem 1.3rem;
-    background: var(--surface);
-    border: 0.5px solid var(--line); border-left: 2px solid var(--accent);
-    box-shadow: var(--shadow);
-    color: var(--brand-strong); text-decoration: none;
+    background: var(--surface-raised);
+    border: 0.5px solid var(--paper-dark); border-left: 2px solid var(--sakura-deep);
+    box-shadow: 0 10px 28px var(--shadow-raised);
+    color: var(--accent); text-decoration: none;
     font-family: var(--font-sub); font-weight: 600; letter-spacing: 0.04em;
   }
-  .doclink::before { content: "▸"; color: var(--accent); }
-  .doclink small { font-family: var(--font-body); font-weight: 300; color: var(--muted); letter-spacing: 0; }
-  .doclink:hover, .doclink:focus-visible { background: var(--brand-soft); border-left-color: var(--brand); }
+  .doclink::before { content: "▸"; color: var(--sakura-deep); }
+  .doclink small { font-family: var(--font-body); font-weight: 300; color: var(--ink-light); letter-spacing: 0; }
+  .doclink:hover, .doclink:focus-visible { background: var(--sakura-pale); border-left-color: var(--accent); }
 
   /* ---- summary ---- */
   .checks { list-style: none; padding: 0; margin: 1.4rem 0; display: grid; gap: 0.9rem; }
   .checks li { padding-left: 2rem; position: relative; font-size: 1.05rem; }
-  .checks li small { display: block; color: var(--muted); font-size: 0.82rem; line-height: 1.7; margin-top: 0.1rem; }
+  .checks li small { display: block; color: var(--ink-light); font-size: 0.82rem; line-height: 1.7; margin-top: 0.1rem; }
   .checks li::before {
     content: "✓";
     position: absolute; left: 0; top: 0;
-    color: var(--accent); font-weight: 700;
+    color: var(--sakura-deep); font-weight: 700;
   }
   .closing {
     margin-top: 2.2rem;
@@ -448,15 +344,15 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     font-feature-settings: "palt";
-    color: var(--brand-strong);
+    color: var(--accent);
     text-wrap: balance;
   }
 
-  .titlemeta { display: flex; gap: 1.5rem; flex-wrap: wrap; color: var(--muted); font-size: 0.9rem; margin-top: 1.8rem; }
+  .titlemeta { display: flex; gap: 1.5rem; flex-wrap: wrap; color: var(--ink-light); font-size: 0.9rem; margin-top: 1.8rem; }
   .titlemeta span { display: inline-flex; align-items: center; gap: 0.4rem; }
-  .titlemeta .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
-  .metalink { color: var(--brand-strong); text-decoration: underline; text-underline-offset: 0.25em; text-decoration-color: var(--line); }
-  .metalink:hover, .metalink:focus-visible { color: var(--accent); text-decoration-color: var(--accent); }
+  .titlemeta .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sakura-deep); display: inline-block; }
+  .metalink { color: var(--accent); text-decoration: underline; text-underline-offset: 0.25em; text-decoration-color: var(--paper-dark); }
+  .metalink:hover, .metalink:focus-visible { color: var(--sakura-deep); text-decoration-color: var(--sakura-deep); }
 
   /* ---- footer nav ---- */
   .navbar {
@@ -464,46 +360,46 @@
     height: 4.4rem;
     display: flex; align-items: center; gap: 1rem;
     padding: 0 clamp(1rem, 3vw, 2.2rem);
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
     backdrop-filter: blur(8px);
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--paper-dark);
     z-index: 10;
   }
   .navbtn {
     width: 2.4rem; height: 2.4rem;
     border-radius: 50%;
-    border: 0.5px solid var(--line);
-    background: var(--surface);
+    border: 0.5px solid var(--paper-dark);
+    background: var(--surface-raised);
     color: var(--ink);
     font-size: 1rem;
     cursor: pointer;
     display: inline-flex; align-items: center; justify-content: center;
     flex: 0 0 auto;
   }
-  .navbtn:hover { border-color: var(--brand); color: var(--brand); }
-  .navbtn:focus-visible, .tick:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .navbtn:hover { border-color: var(--accent); color: var(--accent); }
+  .navbtn:focus-visible, .tick:focus-visible { outline: 2px solid var(--sakura-deep); outline-offset: 2px; }
   .clock {
     font-family: var(--font-mono); font-variant-numeric: tabular-nums;
-    font-weight: 700; font-size: 1.05rem; color: var(--brand);
+    font-weight: 700; font-size: 1.05rem; color: var(--accent);
     min-width: 4.2em;
   }
-  .clock small { display: block; font-weight: 400; font-size: 0.68rem; color: var(--muted); }
+  .clock small { display: block; font-weight: 400; font-size: 0.68rem; color: var(--ink-light); }
   .ruler { flex: 1; display: flex; align-items: flex-end; gap: 6px; height: 2rem; }
   .tick {
     flex: 1; height: 0.7rem; min-width: 8px;
     border: none;
-    background: var(--line);
+    background: var(--paper-dark);
     cursor: pointer; padding: 0;
   }
   .tick.hour { height: 1.05rem; }
-  .tick[aria-current="true"] { background: var(--accent); height: 1.5rem; }
-  .keyhint { font-size: 0.72rem; color: var(--muted); flex: 0 0 auto; }
+  .tick[aria-current="true"] { background: var(--sakura-deep); height: 1.5rem; }
+  .keyhint { font-size: 0.72rem; color: var(--ink-light); flex: 0 0 auto; }
   .backlink {
-    font-size: 0.74rem; color: var(--brand); text-decoration: none;
-    border-bottom: 0.5px solid var(--line); flex: 0 0 auto; padding-bottom: 1px;
+    font-size: 0.74rem; color: var(--accent); text-decoration: none;
+    border-bottom: 0.5px solid var(--paper-dark); flex: 0 0 auto; padding-bottom: 1px;
   }
-  .backlink:hover { color: var(--accent); border-color: var(--accent); }
-  .text-link { color: var(--accent); text-decoration: underline; }
+  .backlink:hover { color: var(--sakura-deep); border-color: var(--sakura-deep); }
+  .text-link { color: var(--sakura-deep); text-decoration: underline; }
   @media (max-width: 700px) { .keyhint { display: none; } }
 
   /* ---- print ---- */
@@ -586,8 +482,8 @@
             <p style="font-size: 1rem; color: var(--ink);">作業する → 記憶をたどる → 日報を書く</p>
             <p style="margin-top: 0.5rem;">記録の品質が「記憶力」と「終業時の余力」に依存する。</p>
           </div>
-          <div class="card" style="border-color: var(--accent);">
-            <h3 style="color: var(--accent);">この仕組み</h3>
+          <div class="card" style="border-color: var(--sakura-deep);">
+            <h3 style="color: var(--sakura-deep);">この仕組み</h3>
             <p style="font-size: 1rem; color: var(--ink);">次の作業を宣言する → 作業する（記録は済んでいる）</p>
             <p style="margin-top: 0.5rem;">15分区切りごとに「これからやること」を選ぶだけ。記憶に頼らずに済む。</p>
           </div>
