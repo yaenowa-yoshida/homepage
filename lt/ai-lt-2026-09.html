@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#161316">
+<meta name="author" content="株式会社ヤエノワ">
+<meta name="description" content="人を笑顔にして、悲しむ人を生まないシステム設計 ― 宮本佳林のCloudflare登壇の話。AILT会 LT資料。">
+<title>人を笑顔にして、悲しむ人を生まないシステム設計｜株式会社ヤエノワ</title>
+<link rel="canonical" href="https://yaenowa.co.jp/lt/ai-lt-2026-09">
+<!-- 掲載方針が固まるまでの暫定。index にするかは所有者判断待ち -->
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="株式会社ヤエノワ">
+<meta property="og:title" content="人を笑顔にして、悲しむ人を生まないシステム設計">
+<meta property="og:description" content="AI に実装を任せるなら、人間が先に決めるべきは「何をして、何をしないか」。LT の発表資料。">
+<meta property="og:url" content="https://yaenowa.co.jp/lt/ai-lt-2026-09">
+<meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="株式会社ヤエノワ｜人と人の縁が重なり合い、新たな価値を。要件定義・設計から、AI活用・アプリ開発まで">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="人を笑顔にして、悲しむ人を生まないシステム設計">
+<meta name="twitter:description" content="AI に実装を任せるなら、人間が先に決めるべきは「何をして、何をしないか」。LT の発表資料。">
+<meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
+<meta name="twitter:image:alt" content="株式会社ヤエノワ｜人と人の縁が重なり合い、新たな価値を。要件定義・設計から、AI活用・アプリ開発まで">
+<style>
+  :root{
+    --ink:#161316;
+    --ink-2:#2B2427;
+    --paper:#FFFFFF;
+    --paper-2:#FBF6F8;
+    --sakura:#E9A3BC;
+    --sakura-deep:#B8456E;
+    --sakura-pale:#F7E1E9;
+    --mute:#7E6F75;
+    --line:#E8DCE1;
+    --maxw:1040px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    margin:0;
+    font-family:"Noto Sans JP","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+  .skip{position:absolute;left:-999px}
+  .skip:focus{left:16px;top:16px;background:#fff;padding:8px 12px;z-index:99}
+
+  /* header (site format) */
+  .site-header{
+    position:relative;z-index:50;height:56px;
+    background:rgba(22,19,22,.92);backdrop-filter:blur(6px);
+    color:#fff;
+  }
+  .site-header .in{max-width:var(--maxw);margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;letter-spacing:.06em}
+  .brand .mark{width:28px;height:28px;display:block}
+  .site-header nav{display:flex;gap:18px;font-size:13px}
+  .site-header nav a{text-decoration:none;opacity:.85}
+  .site-header nav a:hover,.site-header nav a:focus-visible{opacity:1;text-decoration:underline;text-underline-offset:4px}
+  @media (max-width:720px){.site-header nav{display:none}}
+
+  /* deck sections */
+  html,body{height:100%;overflow:hidden}
+  main{display:flex;flex-direction:row;width:100vw;height:calc(100svh - 56px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+  main::-webkit-scrollbar{display:none}
+  main{scrollbar-width:none}
+  .slide{flex:0 0 100vw;width:100vw;height:100%;scroll-snap-align:start;display:flex;align-items:center;padding:24px 24px 44px;position:relative;overflow:hidden}
+  .slide>.in{max-height:100%;overflow-y:auto;overflow-x:hidden;padding-right:4px}
+  .slide.alt{background:var(--paper-2)}
+  .slide.dark{background:var(--ink);color:#fff}
+  .slide>.in{max-width:var(--maxw);margin:0 auto;width:100%;position:relative}
+  .eyebrow{font-size:12px;letter-spacing:.18em;color:var(--sakura-deep);font-weight:600;margin:0 0 6px}
+  .dark .eyebrow{color:var(--sakura)}
+  h1,h2{font-weight:700;letter-spacing:.02em;line-height:1.35;margin:0 0 20px}
+  h1{font-size:clamp(30px,4.8vw,52px)}
+  h2{font-size:clamp(24px,3.1vw,34px);margin-bottom:12px}
+  .lead{font-size:clamp(16px,1.7vw,19px);max-width:40em}
+  .mute{color:var(--mute);font-size:15px}
+  .dark .mute{color:#F2E6EB}
+  .dark a{color:#FFFFFF}
+
+  /* yaezakura petal motif (site's cherry-blossom theme) */
+  .petal{position:absolute;pointer-events:none;width:280px;height:280px;opacity:.9}
+  .petal.tr{right:-70px;top:-60px}
+  .petal.bl{left:-90px;bottom:-90px;transform:rotate(160deg)}
+  .petal.br{right:-60px;bottom:-80px;transform:rotate(-30deg)}
+
+  /* content blocks */
+  .grid{display:grid;gap:14px;margin-top:18px}
+  .grid.c3{grid-template-columns:repeat(3,1fr)}
+  .grid.c2{grid-template-columns:repeat(2,1fr)}
+  @media (max-width:800px){.grid.c3,.grid.c2{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .alt .card{background:#fff}
+  .dark .card{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14)}
+  .card h3{margin:0 0 8px;font-size:17.5px;color:var(--sakura-deep)}
+  .dark .card h3{color:var(--sakura)}
+  .card p{margin:0;font-size:15px;line-height:1.7}
+
+  .callout{background:var(--ink);color:#fff;border-radius:14px;padding:18px 22px;font-size:clamp(16px,1.7vw,19px);font-weight:700;line-height:1.6;margin-top:16px}
+  .callout.pink{background:var(--sakura-pale);color:var(--ink);border:1px solid var(--line)}
+
+  ol.steps{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:6px}
+  ol.steps li{display:grid;grid-template-columns:56px 170px 1fr;gap:18px;align-items:start;padding:9px 0;border-top:1px solid var(--line)}
+  ol.steps li:last-child{border-bottom:1px solid var(--line)}
+  ol.steps .no{font-size:26px;font-weight:700;color:var(--sakura-deep);line-height:1.2}
+  ol.steps .who{font-weight:700;padding-top:4px;font-size:16px}
+  ol.steps .what{font-size:15.5px;padding-top:4px}
+  @media (max-width:680px){ol.steps li{grid-template-columns:44px 1fr}ol.steps .what{grid-column:2}}
+
+  ul.plain{padding-left:1.2em;margin:12px 0 0;max-width:40em}
+  ul.plain li{margin-bottom:6px;font-size:16px;line-height:1.7}
+
+  .pairs{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px;align-items:stretch}
+  @media (max-width:800px){.pairs{grid-template-columns:1fr}}
+  .pair-list{display:grid;gap:10px}
+  .pair{display:flex;align-items:center;gap:14px}
+  .pair .from{background:var(--sakura-pale);border-radius:10px;padding:10px 16px;min-width:190px;text-align:center;font-weight:700;color:var(--sakura-deep)}
+  .pair .to{font-size:16px}
+  pre{margin:0;font:13px/1.6 ui-monospace,"SFMono-Regular",Consolas,"Courier New",monospace;white-space:pre}
+  .ng h3{color:#B3261E}.ok h3{color:#2E7D32}
+  .ng{background:#FDF0F2}.ok{background:#EEF6F0}
+
+  .stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 20px;text-align:center}
+  .alt .stat{background:#fff}
+  .stat .n{font-size:clamp(48px,7vw,80px);font-weight:700;color:var(--sakura-deep);line-height:1.1;font-family:Arial,sans-serif}
+  .stat .l{font-size:14px;margin-top:6px}
+  .plan{border-radius:14px;padding:22px 24px;border:1px solid var(--line);background:#fff}
+  .plan.hot{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .plan .name{font-weight:700;color:var(--sakura-deep)}
+  .plan.hot .name{color:var(--sakura)}
+  .plan .price{font-size:34px;font-weight:700;font-family:Arial,sans-serif;line-height:1.2;margin:6px 0}
+  .plan .sub{font-size:13px}
+  .calc{display:grid;grid-template-columns:200px 120px 1fr;gap:16px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+  .calc:last-of-type{border-bottom:1px solid var(--line)}
+  .calc .a{background:var(--sakura-pale);border-radius:10px;padding:10px 14px;text-align:center;font-weight:700;color:var(--sakura-deep)}
+  .calc .b{color:var(--mute);font-family:Arial,sans-serif;font-size:18px}
+  .calc .c{font-size:15px}
+  .calc.hit .c{font-weight:700;color:var(--sakura-deep)}
+  @media (max-width:680px){.calc{grid-template-columns:1fr 1fr}.calc .c{grid-column:1/3}}
+  .todo{background:#FFF7EA;border-color:#F3DDB5}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0 18px}
+  .flow span{background:var(--sakura-pale);color:var(--sakura-deep);font-weight:700;font-size:13px;padding:8px 12px;border-radius:10px;white-space:nowrap}
+  .flow i{color:var(--mute);font-style:normal}
+  .flow-l{font-size:12px;color:var(--mute);margin:0}
+  .tl{list-style:none;padding:0;margin:24px 0 0;border-left:2px solid var(--sakura);}
+  .tl li{position:relative;padding:6px 0 6px 28px;display:grid;grid-template-columns:70px 1fr;gap:14px;align-items:baseline}
+  .tl li::before{content:"";position:absolute;left:-7px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--sakura-deep);border:2px solid #fff}
+  .tl .d{font-family:Arial,sans-serif;font-weight:700;color:var(--sakura-deep)}
+  .tl .hot{font-weight:700}
+  .fl7{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin:14px 0 6px}
+  .fl7 div{border-radius:10px;padding:14px 6px;text-align:center;font-weight:700;font-size:14px;background:var(--sakura-pale);color:var(--sakura-deep)}
+  .fl7 div.pc{background:var(--ink);color:#fff}
+  .fl7 small{display:block;font-weight:400;font-size:11px;margin-top:4px;opacity:.8}
+  @media (max-width:680px){.fl7{grid-template-columns:repeat(4,1fr)}}
+  .map{display:grid;grid-template-columns:150px 30px 190px 1fr;gap:12px;align-items:center;padding:4px 0;border-top:1px solid var(--line)}
+  .map:last-of-type{border-bottom:1px solid var(--line)}
+  .map .a{background:var(--sakura-pale);border-radius:10px;padding:8px;text-align:center;font-weight:700;color:var(--sakura-deep)}
+  .map .b{color:var(--mute);text-align:center}
+  .map .c{font-weight:700;font-size:16px}
+  .map .d{font-size:15px}
+  @media (max-width:680px){.map{grid-template-columns:1fr 1fr}.map .b{display:none}.map .d{grid-column:1/3}}
+  .who-grid{display:grid;grid-template-columns:1fr 260px;gap:20px;margin-top:14px;align-items:start}
+  .who-grid ul{margin-top:0}
+  @media (max-width:900px){.who-grid{grid-template-columns:1fr}}
+  .tech{font-size:13px;color:var(--mute);font-family:Arial,sans-serif}
+  .panel{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:28px 32px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  @media (max-width:680px){.panel{padding:18px 18px}}
+  .card.news{background:#F1EEF0;border-color:#E3DDE0}
+  .card.news h3{color:var(--mute)}
+  #summary ul.plain li{font-size:15px;margin-bottom:5px}
+  #summary .panel{padding:22px 28px}
+  .src{font-size:12px;color:var(--mute);margin-top:12px}
+
+  /* footer (site format) */
+  .site-footer{display:none}
+  .site-footer .in{max-width:var(--maxw);margin:0 auto;padding:36px 24px;display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;justify-content:space-between}
+  .site-footer a{color:#fff;text-decoration:none}
+  .site-footer a:hover{text-decoration:underline}
+
+  /* progress + keyboard nav */
+  .progress{position:fixed;left:0;top:0;height:3px;background:var(--sakura);width:0;z-index:60;transition:width .15s}
+  .hint{position:fixed;right:16px;bottom:14px;font-size:11px;color:var(--mute);background:rgba(255,255,255,.85);padding:6px 10px;border-radius:8px;border:1px solid var(--line);z-index:60}
+  @media (max-width:720px){.hint{right:auto;left:50%;transform:translateX(-50%);font-size:11px}}
+  .pager{position:fixed;right:18px;bottom:12px;z-index:60;font-family:Arial,sans-serif;font-size:12px;color:var(--mute);letter-spacing:.04em;pointer-events:none}
+  .pager b{color:var(--sakura-deep);font-weight:700}
+  .dark-active .pager{color:#BDAFB6}.dark-active .pager b{color:var(--sakura)}
+  @media print{.pager{display:none}}
+  @media print{
+    html,body{overflow:visible;height:auto}
+    main{display:block;height:auto;overflow:visible}
+    .site-header,.hint,.progress{display:none}
+    .slide{width:auto;height:auto;min-height:auto;page-break-after:always;padding:48px 24px}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">本文へスキップ</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="pager" id="pager" aria-live="polite"></div>
+
+<header class="site-header">
+  <div class="in">
+    <a class="brand" href="https://yaenowa.co.jp/"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><g fill="#E9A3BC"><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(72 50 50)"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(144 50 50)"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(216 50 50)"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(288 50 50)"/></g><g fill="#F7E1E9"><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(72 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(144 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(216 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(288 50 50)"/></g><circle cx="50" cy="50" r="5" fill="#B8456E"/></svg>ヤエノワ</a>
+    <nav aria-label="スライド">
+      <a href="#who">宮本佳林とは</a>
+      <a href="#systems">4つのシステム</a>
+      <a href="#flow">フロー</a>
+      <a href="#mamori">4つの守り</a>
+      <a href="#mine">要件に分ける</a>
+      <a href="#summary">まとめ</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="slide dark" id="top">
+  <svg class="petal tr" viewBox="0 0 100 100" aria-hidden="true"><g fill="#E9A3BC" opacity=".55"><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(72 50 50)"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(144 50 50)"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(216 50 50)"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(288 50 50)"/></g><g fill="#F7E1E9" opacity=".6"><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(72 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(144 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(216 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(288 50 50)"/></g></svg>
+  <div class="in">
+    <p class="eyebrow">AILT会 LT　2026.09</p>
+    <h1>人を笑顔にして、<br>悲しむ人を生まないシステム設計</h1>
+    <p class="lead">宮本佳林（元Juice=Juice）のCloudflare登壇の話</p>
+    <p class="mute">株式会社ヤエノワ　代表取締役　吉田勝大</p>
+  </div>
+</section>
+
+<section class="slide" id="profile">
+  <div class="in">
+    <p class="eyebrow">About</p>
+    <h2>自己紹介：要件定義・設計を軸に、AI活用まで</h2>
+    <ul class="plain" style="max-width:none">
+      <li>正確性を厳しく問われる金融・EC領域の業務システムを、設計・開発から運用保守まで。基幹システムとの連携設計も</li>
+      <li>2025年4月に独立。いまはシステム要件定義・設計を軸に、生成AIの実務活用やアプリ開発にも</li>
+      <li>Claude Code は毎日触ってる</li>
+      <li>推し：宮本佳林。ハロプロ現場に通ってます</li>
+    </ul>
+    <div class="card" style="margin-top:22px"><h3>先に結論</h3><p>AIに実装を任せるなら、人間が先に決めるべきは「何をして、何をしないか」。文脈（コンテキスト）を緻密に設計すること。<br><br>彼女はそれを着想の直後に決めて、10時間配信を一度も止めなかった。今日はその話。</p></div>
+  </div>
+</section>
+
+<section class="slide alt" id="who">
+  <div class="in">
+    <p class="eyebrow">Who</p>
+    <h2>宮本佳林とは、そして今どこで話しているか</h2>
+    <div class="who-grid">
+      <ul class="plain">
+        <li>1998年生まれ。9歳でハロプロエッグ、2013年 Juice=Juice 結成メンバー、2020年卒業、2021年ソロデビュー</li>
+        <li>プログラミング経験ゼロ。「コードも一切読めません」。ChatGPTで音楽アプリを作ろうとして失敗したのがきっかけでITを学び始め、AWSなどを独学</li>
+        <li>いまは Cursor と Claude Code でバイブコーディング。公式プロフィールの趣味欄に「バイブコーディング」</li>
+        <li>7/31 10時間配信のシステムを自作。8/1 ブログ2本「<a target="_blank" rel="noopener" href="https://ameblo.jp/miyamotokarin-official/entry-12974432505.html">アイドルがAIと配信のシステムを全部作った話</a>」「<a target="_blank" rel="noopener" href="https://ameblo.jp/miyamotokarin-official/entry-12974440752.html">HANAKIN配信システムの技術構成</a>」</li>
+      </ul>
+      <div>
+        <div class="card" style="margin-bottom:16px"><h3>8/27 Cloudflare Workers Tech Talks in Tokyo #8</h3><p>開発者向けイベントに初登壇、20分。題：「アイドルから見たものづくりの本質」。YouTubeアーカイブあり</p></div>
+        <div class="card"><h3>10/27 Qiita Conference 2026 Autumn</h3><p>19:35〜19:55 登壇予定。題：「AI時代だからこそ大事にするべき、開発という名の愛情」</p></div>
+      </div>
+    </div>
+    <p class="src">出典：ITmedia NEWS 2026/8/7・8/28、Qiita公式 2026/9/8</p>
+  </div>
+</section>
+
+<section class="slide" id="systems">
+  <div class="in">
+    <p class="eyebrow">Built</p>
+    <h2>4つのシステム：ファンとの関係ごとに1つ</h2>
+    <p class="mute">目的は「自分を知ってる人にも、知らない人にも、新曲と活動をリーチする」</p>
+    <div style="margin-top:20px">
+      <div class="map"><div class="a">新規層</div><div class="b">→</div><div class="c">休日生態系診断</div><div class="d">興味を持ってもらう入口<br><span class="tech">Workers（完全静的）</span></div></div>
+      <div class="map"><div class="a">購入を迷ってる層</div><div class="b">→</div><div class="c">10時間配信システム</div><div class="d">購入の後押し、拡散のきっかけ<br><span class="tech">Workers・KV＋ローカルNode.js</span></div></div>
+      <div class="map"><div class="a">イベント参加者</div><div class="b">→</div><div class="c">アンケート＆ボイス配布</div><div class="d">満足度向上、品質改善<br><span class="tech">Workers・D1・R2・KV・Turnstile</span></div></div>
+      <div class="map"><div class="a">既存ファン</div><div class="b">→</div><div class="c">全イベント参加特典の動画配信</div><div class="d">継続参加への感謝<br><span class="tech">Workers・R2</span></div></div>
+    </div>
+    <div class="callout pink">4つは別々のアプリ。診断サイトは静的ファイルだけ、アンケートは回答を保存するのでDBとボット対策を足し、特典動画は大きなファイルを配るのでストレージだけ。<br>用途ごとに独立したシステムに分け、それぞれに必要な構成だけを選んでいる。</div>
+    <p class="src">出典：Cloudflare登壇、Qiita「現役アイドルに学ぶ、AI駆動開発のはじめ方」（tomy0610）</p>
+  </div>
+</section>
+
+<section class="slide alt" id="flow">
+  <div class="in">
+    <p class="eyebrow">Flow</p>
+    <h2>ものづくりフロー7段階：PCは2回だけ</h2>
+    <p class="mute">登壇で示された流れ。設計は「1日以内に終える」のが目標（実際は3日）</p>
+    <div class="fl7">
+      <div>1 着想<small>スマホ</small></div><div>2 安全確認<small>スマホ</small></div><div>3 仕様書化<small>スマホ</small></div><div class="pc">4 試作<small>PC</small></div><div>5 テスト<small>スマホ</small></div><div class="pc">6 修正<small>PC</small></div><div>7 公開・運用<small>スマホ</small></div>
+    </div>
+    <ul class="plain" style="max-width:48em">
+      <li>着想：スマホでAIに相談。「最小限に絞るなら何を残すか」「個人開発の規模で実現できるか」</li>
+      <li>安全確認：「この仕組みで悲しむ人はいないか」を洗い出す。開発者側（コスト・復旧・両立）とユーザー側（環境・分かりやすさ・期待）</li>
+      <li>仕様書化：「どう動けば成功か」を書く。当日の運用と、問題が起きた時の対応までMarkdownに</li>
+      <li>スキマ時間の積み上げで、全体3〜4時間ほど（登壇での整理）</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide" id="mamori">
+  <div class="in">
+    <p class="eyebrow">The four</p>
+    <h2>「悲しむ人を生まない」ための4つの守り</h2>
+    <p class="mute">登壇で本人が挙げた4つ</p>
+    <div class="grid c2">
+      <div class="card"><h3>① 時短</h3><p>スマホで完結。移動中でも対応できる状態を作る。Markdownのフォーマットに落として再利用する</p></div>
+      <div class="card"><h3>② セキュリティ</h3><p>個人情報を預からない。複数のAIにレビューさせる。壊れても笑って済ませられるものしか作らない。本番運用まで想像して設計する</p></div>
+      <div class="card"><h3>③ 無料枠を最大活用</h3><p>コストも機能要件。無料枠か低コスト枠で成立するか。クレカ登録なしで試せるか。上限に近づいたらアラート</p></div>
+      <div class="card"><h3>④ サービスへの想い</h3><p>既存の競合施策を下調べする。絶対に損ないたくない体験を明確にする。ファンへのメッセージはAIに書かせず自分の言葉で</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="m1">
+  <div class="in">
+    <p class="eyebrow">守り ①</p>
+    <h2>「時短」＋「誰かの悲しみを想像する」</h2>
+    <p class="mute">多忙な本業と両立するための設計。これも要件</p>
+    <div class="grid c2">
+      <div class="card"><h3>時短＝運用できる範囲に絞る</h3><p>・着想〜仕様書はスマホ。PCは試作と修正だけ<br>・設計は1日以内が目標。時間をかけると「何がしたかったか」がぼやける<br>・配信中はスマホの管理画面から数字もテロップも直せる。アンケートは当日スマホで声を録音してアップ、QRをその場で発行、イベント日を過ぎたら締切<br>・ツアーで移動しながら回せる範囲でしか作らない</p></div>
+      <div class="card"><h3>安全確認＝2つの悲しみ</h3><p>開発者側：高コストになってないか、トラブル時に自分で復旧できるか、本業と両立できるか<br>ユーザー側：特定の端末でしか見られなくないか、受け取り方が分かりにくくないか、期待させた体験を本当に届けられるか</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="m2">
+  <div class="in">
+    <p class="eyebrow">守り ②</p>
+    <h2>「壊れても笑えるものだけ作る」</h2>
+    <p class="mute">セキュリティを「作らない判断」から始めてる</p>
+    <div class="grid c2">
+      <div class="card"><h3>本人が決めたこと</h3><p>・個人情報はなるべく預からない（診断サイトは個別診断するが個人情報を持たない）<br>・アンケートのデータは一定期間で削除か匿名化<br>・Turnstileでボット対策、書き込みAPIは全部トークン保護<br>・複数のAIに製品をレビューさせる</p></div>
+      <div class="card news"><h3>同じ週のニュース</h3><p>RIZAP、社員が個人利用の生成AIに氏名・疾患情報を誤アップロード。IHI健保分は210人（Ledge.ai 2026/9/8）<br><br>企業の側が「預かった情報を守れなかった」話をしてる横で、本人は「預からない」から始めてる。</p></div>
+    </div>
+    <div class="callout">預からなければ漏れない。壊れても笑えるものなら止まっても困らない。守りの一番上流は「何を持たないか」。</div>
+  </div>
+</section>
+
+<section class="slide alt" id="m3">
+  <div class="in">
+    <p class="eyebrow">守り ③</p>
+    <h2>「コストも機能要件」</h2>
+    <p class="mute">無料枠で成立するかを、設計の条件に入れてる</p>
+    <div class="grid c3">
+      <div class="card"><h3>無料枠で組んだ構成</h3><p>診断サイトは .workers.dev のまま完全静的で無料。特典動画は R2 の月10GB無料枠とエグレス無料。X検索は RapidAPI 月1ドル・1,000リクエスト上限で超過課金なし</p></div>
+      <div class="card"><h3>制約は設計を変える理由</h3><p>Cron が Workers 無料プランで使えない → 自動ポーリングを捨てて手動ボタンに。「盛り上がりに合わせて取得間隔を制御できて、運用はむしろ良くなった」</p></div>
+      <div class="card"><h3>本人の言葉</h3><p>従量課金に不安があった。Cloudflareはクレカ登録なしで試せるサービスがあり、心理的ハードルが低かった。「AI開発を応援してもらえているような気がした」</p></div>
+    </div>
+    <div class="callout pink">AIのAPIはモデルごとにトークン単価が決まっていて、従量課金で使うほど請求が伸びる。新しいモデルが出るたびに単価も変わる夏に、「上限のある枠で成立させる」を先に決めてる。</div>
+  </div>
+</section>
+
+<section class="slide" id="m4">
+  <svg class="petal br" viewBox="0 0 100 100" aria-hidden="true"><g fill="#E9A3BC" opacity=".55"><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(72 50 50)"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(144 50 50)"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(216 50 50)"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(288 50 50)"/></g><g fill="#F7E1E9" opacity=".6"><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(72 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(144 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(216 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(288 50 50)"/></g></svg>
+  <div class="in">
+    <p class="eyebrow">守り ④</p>
+    <h2>「メッセージは、AIに書かせない」</h2>
+    <p class="mute">何をAIに任せて、何を任せないかを先に決めてる</p>
+    <div class="grid c2">
+      <div class="card"><h3>本人が線を引いたところ</h3><p>・実装：全部AI。コードは1行も読まない<br>・仕様書：AIと壁打ちしながら自分で書く<br>・ファンへのメッセージ、ボイス、企画：自分の言葉、自分の声<br>・既存の競合施策を下調べしてから作る（ファンの気持ちで）</p></div>
+      <div class="card news"><h3>同じ週のニュース</h3><p>Microsoft Office責任者が、AI生成文書をAIで要約する職場の流れを「doom loop」と指摘（Ledge.ai 2026/9/8）<br><br>AIスロップ＝AIで量産された中身の薄いコンテンツ（slopは残飯の意）。職場では、AIで書いた文書を相手がAIで要約し、誰も読まない文書が増え続ける状態。<br><br>出るのは、任せる範囲を決めずに全部投げるから。</p></div>
+    </div>
+    <div class="callout">「絶対に損ないたくない体験」を先に決めると、AIに投げていい範囲が決まる。順番が逆だとスロップになる。</div>
+  </div>
+</section>
+
+<section class="slide alt" id="mine">
+  <div class="in">
+    <p class="eyebrow">Requirements</p>
+    <h2>機能要件と非機能要件に分けると</h2>
+    <p class="mute">彼女の言葉を、僕の仕事の言葉に置き換える</p>
+    <div class="grid c2">
+      <div class="card"><h3>笑顔にする ＝ 機能要件</h3><p>・CD購入と応援投稿でゲージが伸びる<br>・閾値を超えたら「衣装 解禁！」の演出<br>・AIがMVの再現度を採点して画面に出す<br>・アンケートに答えたらその日だけのボイスが届く<br>・全イベント参加でコンプリート動画</p></div>
+      <div class="callout pink" style="margin-top:0;font-size:16px;font-weight:400;background:var(--sakura-pale)"><strong style="color:var(--sakura-deep)">悲しむ人を生まない ＝ 非機能要件</strong><br><br>① 時短 → 運用性：誰が・どの端末で・何分で対応するか<br>② セキュリティ → 情報の保持方針：何を持たないか。持つなら期限と削除<br>③ 無料枠 → コスト上限：予算を要件に入れる。超えたら検知して止める<br>④ 想い → 体験の品質：損なってはいけないものを先に固定する</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide dark" id="summary">
+  <svg class="petal bl" viewBox="0 0 100 100" aria-hidden="true"><g fill="#E9A3BC" opacity=".55"><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(72 50 50)"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(144 50 50)"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(216 50 50)"/><path d="M50 8 C62 20 62 42 50 52 C38 42 38 20 50 8Z" transform="rotate(288 50 50)"/></g><g fill="#F7E1E9" opacity=".6"><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(72 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(144 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(216 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(288 50 50)"/></g></svg>
+  <div class="in">
+   <div class="panel">
+    <p class="eyebrow">Summary</p>
+    <h2 style="font-size:clamp(26px,4vw,42px)">笑顔にする仕組みは、<br>悲しむ人を生まない判断の上に載ってた。</h2>
+    <ul class="plain">
+      <li>ファンとの関係ごとに4つのシステム。<br>診断は静的ファイルだけ、アンケートはDBとボット対策、特典動画はストレージだけ。<br>用途ごとに独立させ、必要な構成だけ選んだ</li>
+      <li>着想→安全確認→仕様書化をスマホで。<br>「この仕組みで悲しむ人はいないか」を、仕様書より前に確認した</li>
+      <li>4つの守り：個人情報を預からない／無料枠で成立させる／ファンへのメッセージはAIに書かせない／スマホで回せる範囲で作る</li>
+      <li>笑顔にする側（ゲージ・解禁演出・AI採点・ボイス）が機能要件、悲しむ人を生まない側が非機能要件。<br>どちらも先に決めてから、AIに実装を投げた</li>
+    </ul>
+    <p style="margin-top:18px;font-size:16px;color:#fff">追う順番：① Cloudflare Workers Tech Talks #8 アーカイブ（YouTube、20分）→ ② ブログ本編と技術構成（<a target="_blank" rel="noopener" href="https://ameblo.jp/miyamotokarin-official/">ameblo</a>）→ ③ 10/27 Qiita Conference 19:35〜 → ④「HANAKIN／シャニカマー」→ ⑤ 5周年記念LIVE TOUR 2026</p>
+     </div>
+  </div>
+</section>
+
+<section class="slide" id="contact">
+  <div class="in">
+    <p class="eyebrow">Contact</p>
+    <h2>ご清聴ありがとうございました</h2>
+    <p class="lead">登壇アーカイブ：YouTube「Cloudflare Workers Tech Talks in Tokyo #8」<br>ブログ：<a target="_blank" rel="noopener" href="https://ameblo.jp/miyamotokarin-official/">ameblo.jp/miyamotokarin-official/</a>　X：@karin__miyamoto<br><br>質問は、非機能要件の話でも推しの話でもどっちでも受けます。</p>
+    <p style="margin-top:20px"><strong>株式会社ヤエノワ　吉田勝大</strong><br>HP：<a href="https://yaenowa.co.jp">https://yaenowa.co.jp</a><br>問い合わせ：<a href="mailto:yoshida+contact@yaenowa.co.jp">yoshida+contact@yaenowa.co.jp</a></p>
+    <p class="mute" style="margin-top:40px;font-size:12px"><a href="https://yaenowa.co.jp/business/">事業内容</a>　<a href="https://yaenowa.co.jp/about">会社について</a>　<a href="https://yaenowa.co.jp/outlook/">今後の展望</a>　<a href="https://yaenowa.co.jp/privacy">プライバシーポリシー</a><br>© 2025 Yaenowa Co., Ltd. All rights reserved.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="in">
+    <div>株式会社ヤエノワ</div>
+    <div><a href="https://yaenowa.co.jp/business/">事業内容</a>　<a href="https://yaenowa.co.jp/about">会社について</a>　<a href="https://yaenowa.co.jp/outlook/">今後の展望</a>　<a href="https://yaenowa.co.jp/privacy">プライバシーポリシー</a></div>
+    <div>© 2025 Yaenowa Co., Ltd. All rights reserved.</div>
+  </div>
+</footer>
+
+
+
+<script>
+(function(){
+  var main = document.getElementById('main');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var bar = document.getElementById('progress'), pager = document.getElementById('pager');
+  function current(){ return Math.round(main.scrollLeft / main.clientWidth); }
+  function go(i){
+    i = Math.max(0, Math.min(slides.length-1, i));
+    main.scrollTo({left: i * main.clientWidth, behavior: 'smooth'});
+  }
+  function update(){
+    var c = current();
+    bar.style.width = ((c+1)/slides.length*100) + '%';
+    pager.innerHTML = '<b>' + (c+1) + '</b> / ' + slides.length + '&nbsp;&nbsp;' + Math.round((c+1)/slides.length*100) + '%';
+    document.body.classList.toggle('dark-active', slides[c].classList.contains('dark'));
+    
+  }
+  main.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('resize', function(){ go(current()); update(); });
+  document.addEventListener('keydown', function(e){
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(current()+1); }
+    if (e.key === 'ArrowLeft'  || e.key === 'PageUp')  { e.preventDefault(); go(current()-1); }
+    if (e.key === 'Home') { go(0); }
+    if (e.key === 'End')  { go(slides.length-1); }
+  });
+  // header nav links -> horizontal jump
+  document.querySelectorAll('.site-header nav a, a.skip').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href'); if (!id || id.charAt(0) !== '#') return;
+      var t = document.querySelector(id); if (!t) return;
+      var i = slides.indexOf(t); if (i < 0) return;
+      e.preventDefault(); go(i);
+    });
+  });
+  // wheel: never changes slides; only scrolls inside the current slide (and blocks horizontal wheel/trackpad)
+  main.addEventListener('wheel', function(e){
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); return; }
+    var s = slides[current()].querySelector('.in');
+    if (s && s.scrollHeight > s.clientHeight + 4) { s.scrollTop += e.deltaY; }
+    e.preventDefault();
+  }, {passive:false});
+  if (location.hash) { var t0 = document.querySelector(location.hash); if (t0) { var i0 = slides.indexOf(t0); if (i0 >= 0) setTimeout(function(){ main.scrollLeft = i0 * main.clientWidth; update(); }, 0); } }
+  update();
+})();
+</script>
+</body>
+</html>
