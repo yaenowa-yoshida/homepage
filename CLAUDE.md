@@ -7,6 +7,7 @@
 
 - コンテンツを編集する前に **「必須ルール」** を読む。
 - **`outlook/` 配下を編集するときは `outlook/CLAUDE.md` も読む**（あちらに固有ルールがある）。
+- **`lt/` 配下を編集するときは `lt/CLAUDE.md` も読む**（掲載前の棚卸しの手順がある）。
 
 ## 必須ルール（契約・法務）— コンテンツ編集時に厳守
 
@@ -170,6 +171,8 @@
 - **FAQ 等の構造化データは、表示されている内容と一致させる**（Googleポリシー）。
 - **`outlook/` 配下は noindex 運用で sitemap に載せない。** sitemap や `llms.txt` を
   横断的に見直すときも、この例外を崩さないこと（段階解除の方針は `outlook/CLAUDE.md`）。
+- **`lt/` 配下は逆に `index, follow` で sitemap に載せる**（登壇の裏づけを公開するため。
+  方針は `lt/CLAUDE.md`）。noindex なのは `outlook/` だけなので、混同しないこと。
 
 **セキュリティ**
 
@@ -203,6 +206,7 @@
 | `CNAME` | `yaenowa.co.jp`（apex） |
 | `gx.html`（ルート直下） | 旧URL `/gx` からの meta refresh リダイレクトスタブ（noindex）。**編集・削除しないこと** |
 | `outlook/` | 「今後の展望」セクション。→ **`outlook/CLAUDE.md`** |
+| `lt/` | 登壇（LT）の発表資料。→ **`lt/CLAUDE.md`**。`outlook/` とは逆に **`index, follow` で sitemap に載せる**（公開の裏づけを積むため）。**配下は資料ごとの独自配色を許す**（`theme.css` 集約ルールの例外。所有者判断 2026-09-12） |
 | `IMPROVEMENTS.md` | 改善バックログ |
 
 ### `index.html` の構成
@@ -285,15 +289,15 @@ SEO を理由にこの4件を減らす提案は、この行を根拠に据え置
 … Pillow の `Image.info` では**解釈できたチャンクしか出ない**ので、私的チャンクや
 `IEND` 以降の付加データを見落とす。
 
-**`og-image.png`** — SNSシェア用OGP画像。**24ページの `og:image` / `twitter:image` が参照する**
-（index / about / privacy / audio-guide-privacy / business / services / outlook 配下）。
+**`og-image.png`** — SNSシェア用OGP画像。**25ページの `og:image` / `twitter:image` が参照する**
+（index / about / privacy / audio-guide-privacy / business / services / outlook / lt 配下）。
 **キャッチコピーやデザインを変えたら再生成して差し替える**
 （JSON-LD の `logo` は実ロゴ `LOGO.png` のまま。OGPバナーとは別物）。
 **書き出しは 1200×630・パレット256色の PNG**（各ページが `og:image:width` に 1200 を
 宣言しているため、2倍サイズで書き出すと宣言と実物がずれる。フルカラーのままだと 200KB を超える）。
 
 **`favicon.ico` / `favicon-32.png` / `apple-touch-icon.png`** — ファビコン一式。
-**24ページが3行セットで参照する**（`icon`（ico・any）／`icon`（png・32x32）／`apple-touch-icon`）。
+**25ページが3行セットで参照する**（`icon`（ico・any）／`icon`（png・32x32）／`apple-touch-icon`）。
 素材は `LOGO.png` の**左上の花びら（「八」）だけを切り出したもの**
 （ロゴ全体を縮めると16pxで判読できないため）。
 **`favicon.ico` と `favicon-32.png` は背景を透過**（不透明にするとダークなタブバーで白い四角に見える）。
@@ -336,6 +340,8 @@ SEO を理由にこの4件を減らす提案は、この行を根拠に据え置
   サイト本文の7箇所が主催団体名の「CraftStage」で書かれているのは、関与の主体を示すため。
   レビューで「AILT会 と CraftStage が食い違っている」という指摘が出たら、この行を根拠に
   据え置いてよい。
+  **`lt/` 配下の発表資料は、当日の記録であって関与の書き方ではないため、下記7箇所の
+  同期対象には含めない。**
   記載箇所は5つ（`business/ai.html` 本文・`about.html` 本文・`about.html` の Person の
   `memberOf.description` と `description`・`llms.txt`）と、`outlook/` の2箇所
   （`outlook/index.html`・`outlook/academics.html`）。**関与の書き方を変えるときは7箇所すべて揃える**。

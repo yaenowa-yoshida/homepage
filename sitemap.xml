@@ -72,4 +72,10 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://yaenowa.co.jp/lt/ai-lt-2026-09</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>
