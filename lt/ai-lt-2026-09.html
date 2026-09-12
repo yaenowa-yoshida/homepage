@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#161316">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161316">
 <meta name="author" content="株式会社ヤエノワ">
 <meta name="description" content="人を笑顔にして、悲しむ人を生まないシステム設計 ― 宮本佳林のCloudflare登壇の話。AILT会 LT資料。">
-<title>人を笑顔にして、悲しむ人を生まないシステム設計｜株式会社ヤエノワ</title>
+<title>人を笑顔にして、悲しむ人を生まないシステム設計 | 株式会社ヤエノワ</title>
 <link rel="canonical" href="https://yaenowa.co.jp/lt/ai-lt-2026-09">
 <meta name="robots" content="index, follow">
 
@@ -15,8 +16,9 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
 <meta property="og:type" content="article">
+<meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="株式会社ヤエノワ">
-<meta property="og:title" content="人を笑顔にして、悲しむ人を生まないシステム設計">
+<meta property="og:title" content="人を笑顔にして、悲しむ人を生まないシステム設計 | 株式会社ヤエノワ">
 <meta property="og:description" content="AI に実装を任せるなら、人間が先に決めるべきは「何をして、何をしないか」。LT の発表資料。">
 <meta property="og:url" content="https://yaenowa.co.jp/lt/ai-lt-2026-09">
 <meta property="og:image" content="https://yaenowa.co.jp/og-image.png">
@@ -24,7 +26,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="株式会社ヤエノワ｜人と人の縁が重なり合い、新たな価値を。要件定義・設計から、AI活用・アプリ開発まで">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="人を笑顔にして、悲しむ人を生まないシステム設計">
+<meta name="twitter:title" content="人を笑顔にして、悲しむ人を生まないシステム設計 | 株式会社ヤエノワ">
 <meta name="twitter:description" content="AI に実装を任せるなら、人間が先に決めるべきは「何をして、何をしないか」。LT の発表資料。">
 <meta name="twitter:image" content="https://yaenowa.co.jp/og-image.png">
 <meta name="twitter:image:alt" content="株式会社ヤエノワ｜人と人の縁が重なり合い、新たな価値を。要件定義・設計から、AI活用・アプリ開発まで">
@@ -38,12 +40,9 @@
   "description": "AI に実装を任せるなら、人間が先に決めるべきは「何をして、何をしないか」。AILT会で発表した LT 資料。",
   "inLanguage": "ja",
   "datePublished": "2026-09-12",
-  "author": { "@type": "Person", "name": "吉田 勝大" },
-  "publisher": {
-    "@type": "Organization",
-    "name": "株式会社ヤエノワ",
-    "url": "https://yaenowa.co.jp/"
-  }
+  "author": { "@type": "Person", "@id": "https://yaenowa.co.jp/#founder" },
+  "publisher": { "@type": "Organization", "@id": "https://yaenowa.co.jp/#organization" },
+  "isPartOf": { "@type": "WebSite", "@id": "https://yaenowa.co.jp/#website" }
 }
 </script>
 <script type="application/ld+json">
@@ -212,10 +211,6 @@
   .src{font-size:12px;color:var(--mute);margin-top:12px}
 
   /* footer (site format) */
-  .site-footer{display:none}
-  .site-footer .in{max-width:var(--maxw);margin:0 auto;padding:36px 24px;display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;justify-content:space-between}
-  .site-footer a{color:#fff;text-decoration:none}
-  .site-footer a:hover{text-decoration:underline}
 
   /* progress + keyboard nav */
   .progress{position:fixed;left:0;top:0;height:3px;background:var(--sakura);width:0;z-index:60;transition:width .15s}
@@ -240,7 +235,7 @@
 
 <header class="site-header">
   <div class="in">
-    <a class="brand" href="https://yaenowa.co.jp/"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><g fill="#E9A3BC"><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(72 50 50)"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(144 50 50)"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(216 50 50)"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(288 50 50)"/></g><g fill="#F7E1E9"><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(72 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(144 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(216 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(288 50 50)"/></g><circle cx="50" cy="50" r="5" fill="#B8456E"/></svg>ヤエノワ</a>
+    <a class="brand" href="/"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><g fill="#E9A3BC"><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(72 50 50)"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(144 50 50)"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(216 50 50)"/><path d="M50 6 C63 19 63 41 50 52 C37 41 37 19 50 6Z" transform="rotate(288 50 50)"/></g><g fill="#F7E1E9"><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(72 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(144 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(216 50 50)"/><path d="M50 22 C57 30 57 44 50 50 C43 44 43 30 50 22Z" transform="rotate(288 50 50)"/></g><circle cx="50" cy="50" r="5" fill="#B8456E"/></svg>ヤエノワ</a>
     <nav aria-label="スライド">
       <a href="#who">宮本佳林とは</a>
       <a href="#systems">4つのシステム</a>
@@ -260,7 +255,7 @@
     <p class="eyebrow">AILT会 LT　2026.09</p>
     <h1>人を笑顔にして、<br>悲しむ人を生まないシステム設計</h1>
     <p class="lead">宮本佳林（元Juice=Juice）のCloudflare登壇の話</p>
-    <p class="mute">株式会社ヤエノワ　代表取締役　吉田勝大</p>
+    <p class="mute">株式会社ヤエノワ　代表取締役　吉田 勝大</p>
   </div>
 </section>
 
@@ -427,21 +422,14 @@
   <div class="in">
     <p class="eyebrow">Contact</p>
     <h2>ご清聴ありがとうございました</h2>
-    <p class="lead">登壇アーカイブ：YouTube「Cloudflare Workers Tech Talks in Tokyo #8」<br>ブログ：<a target="_blank" rel="noopener" href="https://ameblo.jp/miyamotokarin-official/">ameblo.jp/miyamotokarin-official/</a>　X：@karin__miyamoto<br><br>質問は、非機能要件の話でも推しの話でもどっちでも受けます。</p>
-    <p style="margin-top:20px"><strong>株式会社ヤエノワ　吉田勝大</strong><br>HP：<a href="https://yaenowa.co.jp">https://yaenowa.co.jp</a><br>問い合わせ：<a href="mailto:yoshida+contact@yaenowa.co.jp">yoshida+contact@yaenowa.co.jp</a></p>
-    <p class="mute" style="margin-top:40px;font-size:12px"><a href="https://yaenowa.co.jp/business/">事業内容</a>　<a href="https://yaenowa.co.jp/about">会社について</a>　<a href="https://yaenowa.co.jp/outlook/">今後の展望</a>　<a href="https://yaenowa.co.jp/privacy">プライバシーポリシー</a><br>© 2025 Yaenowa Co., Ltd. All rights reserved.</p>
+    <p class="lead">登壇アーカイブ：YouTube「Cloudflare Workers Tech Talks in Tokyo #8」<br>ブログ：<a target="_blank" rel="noopener" href="https://ameblo.jp/miyamotokarin-official/">ameblo.jp/miyamotokarin-official/</a><br><br>質問は、非機能要件の話でも技術構成の話でもどちらでも受けます。</p>
+    <p style="margin-top:20px"><strong>株式会社ヤエノワ　吉田 勝大</strong><br>HP：<a href="/">yaenowa.co.jp</a><br>問い合わせ：<a href="mailto:yoshida+contact@yaenowa.co.jp">yoshida+contact@yaenowa.co.jp</a></p>
+    <p class="mute" style="margin-top:40px;font-size:12px"><a href="/business/">事業内容</a>　<a href="/about">会社について</a>　<a href="/outlook/">今後の展望</a>　<a href="/privacy">プライバシーポリシー</a><br>© 2025 Yaenowa Co., Ltd. All rights reserved.</p>
   </div>
 </section>
 
 </main>
 
-<footer class="site-footer">
-  <div class="in">
-    <div>株式会社ヤエノワ</div>
-    <div><a href="https://yaenowa.co.jp/business/">事業内容</a>　<a href="https://yaenowa.co.jp/about">会社について</a>　<a href="https://yaenowa.co.jp/outlook/">今後の展望</a>　<a href="https://yaenowa.co.jp/privacy">プライバシーポリシー</a></div>
-    <div>© 2025 Yaenowa Co., Ltd. All rights reserved.</div>
-  </div>
-</footer>
 
 
 
@@ -453,7 +441,9 @@
   function current(){ return Math.round(main.scrollLeft / main.clientWidth); }
   function go(i){
     i = Math.max(0, Math.min(slides.length-1, i));
-    main.scrollTo({left: i * main.clientWidth, behavior: 'smooth'});
+    // CSS の scroll-behavior は scrollTo の behavior 指定に上書きされるため、ここでも分岐する
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    main.scrollTo({left: i * main.clientWidth, behavior: reduce ? 'auto' : 'smooth'});
   }
   function update(){
     var c = current();

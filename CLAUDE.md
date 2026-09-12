@@ -196,7 +196,7 @@
 | `about.html` | 会社案内。公開URLは拡張子なしの **`/about`**。社名の由来・代表紹介・会社概要・ビジョン。**代表の `Person` 構造化データはこのページにある**（表示と一致させるため） |
 | `site.css` | `index.html` / `about.html` / `business/` 配下が共有するスタイル（ナビ・フッター・セクション共通・演出・レスポンシブ）。**読み込み順は theme.css → site.css → ページ固有の `<style>`**。ナビ部分 → **下記「グローバルナビ」** |
 | `site-nav.js` | グローバルナビの共通処理（ハンバーガーの開閉＋子項目の展開）。`site.css` を使う7ファイルが `defer` で読む → **下記「グローバルナビ」** |
-| `theme.css` / `theme.js` | 全ページ共通の基盤（カラーパレット・ダークモード・リセット・テーマ切替）。**色やテーマ挙動の変更はここだけを編集**し、各ページには書かない。theme.js は描画前に実行する必要があるため `<head>` で同期読み込み（**defer/async 禁止**） |
+| `theme.css` / `theme.js` | 全ページ共通の基盤（カラーパレット・ダークモード・リセット・テーマ切替）。**色やテーマ挙動の変更はここだけを編集**し、各ページには書かない（**例外は `lt/` 配下のみ。→ `lt/CLAUDE.md`**）。theme.js は描画前に実行する必要があるため `<head>` で同期読み込み（**defer/async 禁止**） |
 | `llms.txt` | AIO用の会社サマリ。**`index.html` と同期する** |
 | `privacy.html` | プライバシーポリシー。公開URLは拡張子なしの **`/privacy`**（リンク・canonical・og:url・sitemap を統一）。改定時は `dateModified` と sitemap の lastmod を更新。**実態（取得方法・利用目的・外部サービスの利用状況）と一致させる** |
 | `LOGO.png` / `og-image.png` / `favicon.ico` / `favicon-32.png` / `apple-touch-icon.png` | 画像アセット → **下記「ロゴ・ファビコン・OGP画像」** |
@@ -242,6 +242,7 @@
 **同じ `<ul class="nav-links">` を7ファイルが持つ**（`index.html`・`about.html`・`business/` 配下5）。
 `outlook/` `services/` `privacy.html` `audio-guide-privacy.html` は別のナビ構造
 （`.nav-right` ＋ `.nav-home`）で、この7ファイルには含まれない。
+`lt/` 配下はさらに別で、資料ごとに独自のデッキナビを持つ。
 
 **並び順**は「別ページへ行くもの → トップ内の節へ行くもの」の2群:
 事業内容 `/business/` ／ 会社について `/about` ／ 今後の展望 `/outlook/` ／
@@ -275,7 +276,8 @@ SEO を理由にこの4件を減らす提案は、この行を根拠に据え置
 ### ロゴ・ファビコン・OGP画像
 
 **`LOGO.png`** — 実ロゴ（500×500）。**ナビの `<img>`（23ページ。ナビを持たない
-`services/nippo-slides.html` とリダイレクトスタブ2ページを除く全ページ）・トップのヒーローロゴ
+`services/nippo-slides.html`・独自のSVGロゴを使う `lt/` 配下・リダイレクトスタブ2ページを
+除く全ページ）・トップのヒーローロゴ
 （`index.html` のみ）・`index.html` の JSON-LD の `logo` と `image`** が参照する。
 **ファビコンには使わない**（下記）。
 
@@ -342,8 +344,12 @@ SEO を理由にこの4件を減らす提案は、この行を根拠に据え置
   据え置いてよい。
   **`lt/` 配下の発表資料は、当日の記録であって関与の書き方ではないため、下記7箇所の
   同期対象には含めない。**
+  「AILT会」という語の記載箇所は6つ（`lt/ai-lt-2026-09.html` の本文・`meta description`・
+  JSON-LD の `description`・`llms.txt`・本ファイル・`lt/CLAUDE.md`）。
+  **会の名前が変わったらこの6箇所を揃える。** 撤回するときはこの段落を消す。
   記載箇所は5つ（`business/ai.html` 本文・`about.html` 本文・`about.html` の Person の
-  `memberOf.description` と `description`・`llms.txt`）と、`outlook/` の2箇所
+  `memberOf.description` と `description`・`llms.txt`〈**活動・発信の節。2026-09-12 に
+  発表資料の行が増えて2行になった**〉）と、`outlook/` の2箇所
   （`outlook/index.html`・`outlook/academics.html`）。**関与の書き方を変えるときは7箇所すべて揃える**。
   あわせて `index.html` の「選ばれる理由」と `llms.txt` の強み節にも、コミュニティ名を出さない
   「登壇・発信」への言及がある。**書き換えるときはこの2箇所も見直す**（一覧の7箇所には含めない）。
