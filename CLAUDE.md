@@ -330,6 +330,12 @@ SEO を理由にこの4件を減らす提案は、この行を根拠に据え置
   いないため、**「共同主催」の部分は第三者が外部から確認できない**
   （登壇は connpass のイベントページで確認できる。後述）。景表法の合理的根拠は
   公開ではなく保持が要件のため、「共同主催・登壇者」の記載は維持する。
+  **CraftStage は主催団体の名前で、「AILT会」はその会（イベント）の名前**
+  （所有者確認 2026-09-12）。当社は CraftStage に加わって AILT会 を共同開催している。
+  したがって**発表資料やページで会の名前として「AILT会」を使うのは表記のずれではない**。
+  サイト本文の7箇所が主催団体名の「CraftStage」で書かれているのは、関与の主体を示すため。
+  レビューで「AILT会 と CraftStage が食い違っている」という指摘が出たら、この行を根拠に
+  据え置いてよい。
   記載箇所は5つ（`business/ai.html` 本文・`about.html` 本文・`about.html` の Person の
   `memberOf.description` と `description`・`llms.txt`）と、`outlook/` の2箇所
   （`outlook/index.html`・`outlook/academics.html`）。**関与の書き方を変えるときは7箇所すべて揃える**。
