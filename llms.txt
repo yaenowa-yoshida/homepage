@@ -54,7 +54,6 @@
 
 - 生成AIを要件定義・設計やプロジェクト推進の実務に取り入れ、活用知見をアップデート
 - 技術コミュニティ「CraftStage」（https://craftstage.connpass.com/ ）の共同主催・登壇者として、AI・開発に関するLT（ライトニングトーク）で発信
-  - 発表資料: 「人を笑顔にして、悲しむ人を生まないシステム設計」（AILT会 2026年9月。AILT会 は CraftStage が主催する会）: https://yaenowa.co.jp/lt/ai-lt-2026-09
 - 保有資格: 生成AIパスポート（一般社団法人生成AI活用普及協会）
   - オープンバッジ公開ページ: https://wallet.openbadge.net/public/credential/82ff49a7-8a5c-8ac3-8f28-019f6dd068af
 

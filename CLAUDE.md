@@ -7,7 +7,6 @@
 
 - コンテンツを編集する前に **「必須ルール」** を読む。
 - **`outlook/` 配下を編集するときは `outlook/CLAUDE.md` も読む**（あちらに固有ルールがある）。
-- **`lt/` 配下を編集するときは `lt/CLAUDE.md` も読む**（掲載前の棚卸しの手順がある）。
 
 ## 必須ルール（契約・法務）— コンテンツ編集時に厳守
 
@@ -171,8 +170,6 @@
 - **FAQ 等の構造化データは、表示されている内容と一致させる**（Googleポリシー）。
 - **`outlook/` 配下は noindex 運用で sitemap に載せない。** sitemap や `llms.txt` を
   横断的に見直すときも、この例外を崩さないこと（段階解除の方針は `outlook/CLAUDE.md`）。
-- **`lt/` 配下は逆に `index, follow` で sitemap に載せる**（登壇の裏づけを公開するため。
-  方針は `lt/CLAUDE.md`）。noindex なのは `outlook/` だけなので、混同しないこと。
 
 **セキュリティ**
 
@@ -196,7 +193,7 @@
 | `about.html` | 会社案内。公開URLは拡張子なしの **`/about`**。社名の由来・代表紹介・会社概要・ビジョン。**代表の `Person` 構造化データはこのページにある**（表示と一致させるため） |
 | `site.css` | `index.html` / `about.html` / `business/` 配下が共有するスタイル（ナビ・フッター・セクション共通・演出・レスポンシブ）。**読み込み順は theme.css → site.css → ページ固有の `<style>`**。ナビ部分 → **下記「グローバルナビ」** |
 | `site-nav.js` | グローバルナビの共通処理（ハンバーガーの開閉＋子項目の展開）。`site.css` を使う7ファイルが `defer` で読む → **下記「グローバルナビ」** |
-| `theme.css` / `theme.js` | 全ページ共通の基盤（カラーパレット・ダークモード・リセット・テーマ切替）。**色やテーマ挙動の変更はここだけを編集**し、各ページには書かない（**例外は `lt/` 配下のみ。→ `lt/CLAUDE.md`**）。theme.js は描画前に実行する必要があるため `<head>` で同期読み込み（**defer/async 禁止**） |
+| `theme.css` / `theme.js` | 全ページ共通の基盤（カラーパレット・ダークモード・リセット・テーマ切替）。**色やテーマ挙動の変更はここだけを編集**し、各ページには書かない。theme.js は描画前に実行する必要があるため `<head>` で同期読み込み（**defer/async 禁止**） |
 | `llms.txt` | AIO用の会社サマリ。**`index.html` と同期する** |
 | `privacy.html` | プライバシーポリシー。公開URLは拡張子なしの **`/privacy`**（リンク・canonical・og:url・sitemap を統一）。改定時は `dateModified` と sitemap の lastmod を更新。**実態（取得方法・利用目的・外部サービスの利用状況）と一致させる** |
 | `LOGO.png` / `og-image.png` / `favicon.ico` / `favicon-32.png` / `apple-touch-icon.png` | 画像アセット → **下記「ロゴ・ファビコン・OGP画像」** |
@@ -206,7 +203,6 @@
 | `CNAME` | `yaenowa.co.jp`（apex） |
 | `gx.html`（ルート直下） | 旧URL `/gx` からの meta refresh リダイレクトスタブ（noindex）。**編集・削除しないこと** |
 | `outlook/` | 「今後の展望」セクション。→ **`outlook/CLAUDE.md`** |
-| `lt/` | 登壇（LT）の発表資料。→ **`lt/CLAUDE.md`**。`outlook/` とは逆に **`index, follow` で sitemap に載せる**（公開の裏づけを積むため）。**配下は資料ごとの独自配色を許す**（`theme.css` 集約ルールの例外。所有者判断 2026-09-12） |
 | `IMPROVEMENTS.md` | 改善バックログ |
 
 ### `index.html` の構成
@@ -242,7 +238,6 @@
 **同じ `<ul class="nav-links">` を7ファイルが持つ**（`index.html`・`about.html`・`business/` 配下5）。
 `outlook/` `services/` `privacy.html` `audio-guide-privacy.html` は別のナビ構造
 （`.nav-right` ＋ `.nav-home`）で、この7ファイルには含まれない。
-`lt/` 配下はさらに別で、資料ごとに独自のデッキナビを持つ。
 
 **並び順**は「別ページへ行くもの → トップ内の節へ行くもの」の2群:
 事業内容 `/business/` ／ 会社について `/about` ／ 今後の展望 `/outlook/` ／
@@ -276,8 +271,7 @@ SEO を理由にこの4件を減らす提案は、この行を根拠に据え置
 ### ロゴ・ファビコン・OGP画像
 
 **`LOGO.png`** — 実ロゴ（500×500）。**ナビの `<img>`（23ページ。ナビを持たない
-`services/nippo-slides.html`・独自のSVGロゴを使う `lt/` 配下・リダイレクトスタブ2ページを
-除く全ページ）・トップのヒーローロゴ
+`services/nippo-slides.html` とリダイレクトスタブ2ページを除く全ページ）・トップのヒーローロゴ
 （`index.html` のみ）・`index.html` の JSON-LD の `logo` と `image`** が参照する。
 **ファビコンには使わない**（下記）。
 
@@ -291,15 +285,15 @@ SEO を理由にこの4件を減らす提案は、この行を根拠に据え置
 … Pillow の `Image.info` では**解釈できたチャンクしか出ない**ので、私的チャンクや
 `IEND` 以降の付加データを見落とす。
 
-**`og-image.png`** — SNSシェア用OGP画像。**25ページの `og:image` / `twitter:image` が参照する**
-（index / about / privacy / audio-guide-privacy / business / services / outlook / lt 配下）。
+**`og-image.png`** — SNSシェア用OGP画像。**24ページの `og:image` / `twitter:image` が参照する**
+（index / about / privacy / audio-guide-privacy / business / services / outlook 配下）。
 **キャッチコピーやデザインを変えたら再生成して差し替える**
 （JSON-LD の `logo` は実ロゴ `LOGO.png` のまま。OGPバナーとは別物）。
 **書き出しは 1200×630・パレット256色の PNG**（各ページが `og:image:width` に 1200 を
 宣言しているため、2倍サイズで書き出すと宣言と実物がずれる。フルカラーのままだと 200KB を超える）。
 
 **`favicon.ico` / `favicon-32.png` / `apple-touch-icon.png`** — ファビコン一式。
-**25ページが3行セットで参照する**（`icon`（ico・any）／`icon`（png・32x32）／`apple-touch-icon`）。
+**24ページが3行セットで参照する**（`icon`（ico・any）／`icon`（png・32x32）／`apple-touch-icon`）。
 素材は `LOGO.png` の**左上の花びら（「八」）だけを切り出したもの**
 （ロゴ全体を縮めると16pxで判読できないため）。
 **`favicon.ico` と `favicon-32.png` は背景を透過**（不透明にするとダークなタブバーで白い四角に見える）。
@@ -342,14 +336,9 @@ SEO を理由にこの4件を減らす提案は、この行を根拠に据え置
   サイト本文の7箇所が主催団体名の「CraftStage」で書かれているのは、関与の主体を示すため。
   レビューで「AILT会 と CraftStage が食い違っている」という指摘が出たら、この行を根拠に
   据え置いてよい。
-  **`lt/` 配下の発表資料は、当日の記録であって関与の書き方ではないため、下記7箇所の
-  同期対象には含めない。**
-  「AILT会」という語の記載箇所は6つ（`lt/ai-lt-2026-09.html` の本文・`meta description`・
-  JSON-LD の `description`・`llms.txt`・本ファイル・`lt/CLAUDE.md`）。
-  **会の名前が変わったらこの6箇所を揃える。** 撤回するときはこの段落を消す。
+  撤回するときはこの段落を消す。
   記載箇所は5つ（`business/ai.html` 本文・`about.html` 本文・`about.html` の Person の
-  `memberOf.description` と `description`・`llms.txt`〈**活動・発信の節。2026-09-12 に
-  発表資料の行が増えて2行になった**〉）と、`outlook/` の2箇所
+  `memberOf.description` と `description`・`llms.txt`）と、`outlook/` の2箇所
   （`outlook/index.html`・`outlook/academics.html`）。**関与の書き方を変えるときは7箇所すべて揃える**。
   あわせて `index.html` の「選ばれる理由」と `llms.txt` の強み節にも、コミュニティ名を出さない
   「登壇・発信」への言及がある。**書き換えるときはこの2箇所も見直す**（一覧の7箇所には含めない）。
