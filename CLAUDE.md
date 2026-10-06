@@ -166,7 +166,10 @@
   canonical・OGP・sitemap・構造化データを統一する。
 - コンテンツを変更したら **`llms.txt` と JSON-LD を同期**する（`llms.txt` 冒頭の「最終更新」も）。
 - URLを増やしたら `sitemap.xml` と、必要に応じてナビ・FAQ構造化データを更新する
-  （本文を変えたら lastmod も）。
+  （本文を変えたら lastmod も）。**lastmod は「本文（表示テキスト・title・description）を
+  変えた日」**で、ナビ・ファビコン・配色など全ページ共通の変更では動かさない。
+  JSON-LD に `dateModified` を持つページは lastmod と同じ日に揃える。
+  sitemap は節ごとにまとめて並べ、`changefreq` / `priority` は書かない（主要検索エンジンが参照しない）。
 - **FAQ 等の構造化データは、表示されている内容と一致させる**（Googleポリシー）。
 - **`outlook/` 配下は noindex 運用で sitemap に載せない。** sitemap や `llms.txt` を
   横断的に見直すときも、この例外を崩さないこと（段階解除の方針は `outlook/CLAUDE.md`）。

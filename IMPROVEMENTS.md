@@ -26,26 +26,22 @@
      ソース順で後になるページ内 `<style>` が常に勝ち、**狭コンテナ時の縮小が効いていない**。
      集約すればこのコンテナクエリも復旧する。
    - 見た目が変わる（狭幅で縮むようになる）ため、Playwright でのピクセル比較を必ず行う。
-5. **`theme-color` の同期をテーマ切替ボタンの有無から切り離す**（技術系・自動マージ可）
-   - `theme.js` の `setupToggle()` は `#theme-toggle` が無いと早期 return するため、
-     ボタンを持たない `services/nippo-slides.html` では theme-color が更新されない。
-     他ページでダークを選んだ状態で開くと本文はダーク・アドレスバーはライトになる。
-   - 同期処理を `setupToggle()` の外へ出すか、当該ページにもトグルを置く。
-6. **`services/` 配下のページ固有CSSの整理**（🔒 慎重に扱う・優先度低）
+5. **`services/` 配下のページ固有CSSの整理**（🔒 慎重に扱う・優先度低）
    - `services/` 3ページは `.crumbs` などを各自の `<style>` に持っており、
      `site.css` の SUBPAGE ブロックと重複している。
    - ただし `site.css` は `body` / `nav` / `section` / `p` / `footer` の
      **要素セレクタ**を持つため、`services/` に読み込ませると
      `section { padding: 7rem 4rem }` 等が波及して見た目が変わる。
-     とくに `nippo-slides.html` は theme.css すら読まないスライド専用デザイン。
+     とくに `nippo-slides.html` はスライド専用デザイン（theme.css は 2026-09-06 から読み込むが、site.css は読まない）。
    - 重複しているのは数行のため、**共有化の利は小さくリスクが大きい**。
      やるなら `.crumbs` だけを切り出した小さなファイルにする。
-7. **`services/nippo-slides.html` の `.text-link` 再定義を解消**（技術系・自動マージ可）
-   - ページ固有 `<style>` で `.text-link { color: var(--accent); … }` を再定義しており、
-     `theme.css` の共通定義と二重管理になっている（「色の変更は theme.css だけ」の規約からの逸脱）。
-   - ただし当該ページは theme.css を読まないスライド専用デザインのため、
-     単に削除すると色が失われる。theme.css を読ませるかどうかから判断する。
-8. **アクセス解析の導入**（🔒 ユーザー判断待ち・着手しない）
+6. **`services/nippo-slides.html` の `.text-link` 再定義を解消**（技術系・自動マージ可）
+   - ページ固有 `<style>` で `.text-link { color: var(--sakura-deep); … }` を再定義しており、
+     `theme.css` の共通定義（`--accent-gold`）と二重管理になっている。
+   - 2026-09-06 から当該ページも theme.css を読むので、削除すれば共通定義が効く。
+     ただし色が `--sakura-deep` → `--accent-gold` に変わるため、スライドの配色として
+     意図した差かどうかを確かめてから寄せる（見た目が変わる変更）。
+7. **アクセス解析の導入**（🔒 ユーザー判断待ち・着手しない）
    - GA4 / Cloudflare Web Analytics 等。ユーザーのアカウント作業が必要。
    - 導入時は privacy.html 第8条・第9条の改定が必須（CLAUDE.md 法務メモ参照）
 
@@ -80,3 +76,11 @@
   リポジトリ外の記録に置く）。ピクセルは不変（sha256 一致）で、副次的に
   66,237 → 55,866 バイトに縮んだ。ファビコンの作業中に法務レビューが見つけたもの。
   ⚠️ git 履歴には残る（所在地の手順6と同じ論点）
+- 2026-10-06: `theme.js` のアドレスバー色（theme-color）同期をテーマ切替ボタンから切り離した。
+  ボタンを持たない `services/nippo-slides.html` で、保存済みテーマが OS 設定と食い違うと
+  本文はダーク・アドレスバーはライトになっていた。ボタンのあるページの挙動は不変（Playwright で確認）
+- 2026-10-06: `sitemap.xml` を整理。節ごとにまとめ、主要検索エンジンが参照しない
+  `changefreq` / `priority` を削除し、運用ルールを冒頭コメントに置いた。各ページの lastmod 以降の
+  変更を表示テキストの差分で洗い直し、`services/audio-guide` だけ本文変更（9/1 の広告記載の取り下げ）
+  が lastmod に反映されていなかったので 2026-09-01 に直した（JSON-LD の `dateModified` も同日に揃えた）。
+  掲載対象は過不足なし（インデックス対象12ページ、noindex の outlook とリダイレクトスタブは除外）
