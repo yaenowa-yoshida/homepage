@@ -9,14 +9,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- トップ -->
-  <url><loc>https://yaenowa.co.jp/</loc><lastmod>2026-09-05</lastmod></url>
+  <url><loc>https://yaenowa.co.jp/</loc><lastmod>2026-10-17</lastmod></url>
 
   <!-- 事業内容（入口＋4本柱） -->
   <url><loc>https://yaenowa.co.jp/business/</loc><lastmod>2026-09-04</lastmod></url>
   <url><loc>https://yaenowa.co.jp/business/requirements</loc><lastmod>2026-09-04</lastmod></url>
   <url><loc>https://yaenowa.co.jp/business/introduction</loc><lastmod>2026-09-04</lastmod></url>
   <url><loc>https://yaenowa.co.jp/business/ai</loc><lastmod>2026-09-04</lastmod></url>
-  <url><loc>https://yaenowa.co.jp/business/app</loc><lastmod>2026-09-03</lastmod></url>
+  <url><loc>https://yaenowa.co.jp/business/app</loc><lastmod>2026-10-17</lastmod></url>
 
   <!-- 会社案内 -->
   <url><loc>https://yaenowa.co.jp/about</loc><lastmod>2026-09-05</lastmod></url>
@@ -24,7 +24,7 @@
   <!-- 自社サービス -->
   <url><loc>https://yaenowa.co.jp/services/nippo</loc><lastmod>2026-08-22</lastmod></url>
   <url><loc>https://yaenowa.co.jp/services/nippo-slides</loc><lastmod>2026-08-22</lastmod></url>
-  <url><loc>https://yaenowa.co.jp/services/audio-guide</loc><lastmod>2026-09-01</lastmod></url>
+  <url><loc>https://yaenowa.co.jp/services/audio-guide</loc><lastmod>2026-10-17</lastmod></url>
 
   <!-- プライバシーポリシー -->
   <url><loc>https://yaenowa.co.jp/privacy</loc><lastmod>2026-06-30</lastmod></url>
