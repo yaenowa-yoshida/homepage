@@ -1,0 +1,48 @@
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/LOGO.png" alt="ヤエノワロゴ">
+    ヤエノワ
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li class="nav-has-sub">
+      <a href="/business/">事業内容</a>
+      <button class="nav-sub-toggle" type="button" aria-expanded="false"
+              aria-controls="nav-sub-business" data-label="事業内容" aria-label="事業内容の下層を開く"><svg width="12" height="12" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 6.5 L9 11.5 L14 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <ul class="nav-sub" id="nav-sub-business">
+        <li><a href="/business/requirements">要件定義・ディレクション支援</a></li>
+        <li><a href="/business/introduction">システム導入支援</a></li>
+        <li><a href="/business/ai">AIコンサルティング</a></li>
+        <li><a href="/business/app">アプリ開発</a></li>
+      </ul>
+    </li>
+    <li><a href="/about">会社について</a></li>
+    <li class="nav-has-sub">
+      <a href="/outlook/">今後の展望</a>
+      <button class="nav-sub-toggle" type="button" aria-expanded="false"
+              aria-controls="nav-sub-outlook" data-label="今後の展望" aria-label="今後の展望の下層を開く"><svg width="12" height="12" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 6.5 L9 11.5 L14 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <ul class="nav-sub" id="nav-sub-outlook">
+        <li><a href="/outlook/gx">GX</a></li>
+        <li><a href="/outlook/local">地域</a></li>
+        <li><a href="/outlook/academics">学び</a></li>
+        <li><a href="/outlook/sports">スポーツ</a></li>
+      </ul>
+    </li>
+    <li><a href="/#services">自社サービス</a></li>
+    <li><a href="/#contact">お問い合わせ</a></li>
+  </ul>
+  <div class="nav-ctrl">
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードに切り替え">
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.9 3.9l1.4 1.4M14.7 14.7l1.4 1.4M16.1 3.9l-1.4 1.4M5.3 14.7l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="nav-toggle" id="nav-toggle" aria-label="メニューを開く" aria-controls="nav-links" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-scrim" id="nav-scrim" aria-hidden="true"></div>
+</nav>

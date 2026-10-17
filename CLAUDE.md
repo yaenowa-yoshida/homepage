@@ -201,6 +201,7 @@
 | `privacy.html` | プライバシーポリシー。公開URLは拡張子なしの **`/privacy`**（リンク・canonical・og:url・sitemap を統一）。改定時は `dateModified` と sitemap の lastmod を更新。**実態（取得方法・利用目的・外部サービスの利用状況）と一致させる** |
 | `LOGO.png` / `og-image.png` / `favicon.ico` / `favicon-32.png` / `apple-touch-icon.png` | 画像アセット → **下記「ロゴ・ファビコン・OGP画像」** |
 | `robots.txt` / `sitemap.xml` | SEO |
+| `scripts/build_nav.py` / `scripts/nav.tmpl` | グローバルナビの原本（`nav.tmpl`）と、7ページへ書き出す生成スクリプト。`--check` で食い違いを検出し、CI が毎回実行する。依存なし → **下記「グローバルナビ」** |
 | `scripts/check_site.py` | 機械的な整合性チェック（9種）。CI から実行するが、手元でも `python3 scripts/check_site.py` で動く。**依存を増やさない**（標準ライブラリのみ）。住所そのものは書かない方針（検索語は住所が残っているファイルから実行時に組み立てる）。**grep の代替ではない** |
 | `.github/workflows/site-checks.yml` | 上記を push・PR ごとに走らせる |
 | `CNAME` | `yaenowa.co.jp`（apex） |
@@ -231,14 +232,18 @@
   **個別ページを直したら一覧側の症状も見直す**。
 - **4本柱を増減したら、次をすべて揃える**: トップの表示・JSON-LD の `hasOfferCatalog` と
   `/business/` の `hasPart`・症状の表・関係の図・`llms.txt`・sitemap・
-  グローバルナビの子項目（7ファイルの `#nav-sub-business`）。
+  グローバルナビの子項目（原本 `scripts/nav.tmpl` の `#nav-sub-business`）。
 - `business/ai` に「モデルの開発・ファインチューニング・AI製品の再販は行っていない」という
   **対応範囲の否定表現**があるため、その方針を変えるときはこの一文を必ず見直す
   （放置すると事実と異なる表示になる）。
 
-### グローバルナビ（`site.css` ＋ `site-nav.js` ＋ 7ファイルの `<ul class="nav-links">`）
+### グローバルナビ（`scripts/nav.tmpl` ＋ `scripts/build_nav.py` ＋ `site.css` ＋ `site-nav.js`）
 
-**同じ `<ul class="nav-links">` を7ファイルが持つ**（`index.html`・`about.html`・`business/` 配下5）。
+**ナビの原本は `scripts/nav.tmpl` の1つだけ。** 7ファイル（`index.html`・`about.html`・`business/` 配下5）の
+`<nav>` は、**`python3 scripts/build_nav.py` が原本から書き出したもの**で、**各ページの `<nav>` は直接編集しない**
+（直しても次の生成で消え、CI の「ナビが原本と一致しているか」が落ちる）。出力は静的HTMLのままで、JS で後から差し込まない。
+ページごとの違いは、現在のページへの `aria-current="page"` と、トップだけ同一ページ内リンク（`#services` など）にする点で、
+スクリプトが機械的に決める。**ナビの項目・順番・子項目を変えるときは、原本を直して `build_nav.py` を実行し、7ファイルの差分も一緒にコミットする。**
 `outlook/` `services/` `privacy.html` `audio-guide-privacy.html` は別のナビ構造
 （`.nav-right` ＋ `.nav-home`）で、この7ファイルには含まれない。
 
@@ -247,12 +252,12 @@
 自社サービス `#services` ／ お問い合わせ `#contact`。
 ハンバーガー内では4つ目の手前に区切り線を出して群の違いを見せている
 （`.nav-links > li:nth-child(4)`、1200px 以下のみ。**`>` を外すと `.nav-sub` の4番目にも当たる**）。
-**順番を変えるときは7ファイルとこの `nth-child` を必ず揃える**。
+**順番を変えるときは、原本とこの `nth-child` を揃える**。
 
 **事業内容と今後の展望は子項目を持つ**（`.nav-has-sub`）。デスクトップはドロップダウン、
 1200px 以下はアコーディオン。会社について は単一ページなので子を持たない。
 
-🔴 **ナビの子項目を増減したら、7ファイルの `<ul class="nav-sub">` をすべて揃える。**
+🔴 **ナビの子項目を増減したら、原本の `<ul class="nav-sub">` を直して `build_nav.py` を実行する。**
 
 - `business/` は4本柱と同じ集合。
 - `outlook/` は `outlook/nav.js` の THEMES から**「ジャーナル」だけを除いた4件**

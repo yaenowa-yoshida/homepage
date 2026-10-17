@@ -24,3 +24,6 @@ jobs:
       # setup-python も pip install も挟まない。
       - name: 整合性チェック
         run: python3 scripts/check_site.py
+      # ナビは scripts/nav.tmpl から生成する。手で直した結果が原本とずれていたら落とす。
+      - name: ナビが原本と一致しているか
+        run: python3 scripts/build_nav.py --check
