@@ -81,7 +81,7 @@
   - 技術構成: PowerShellスクリプト1ファイル（画面はWindows Forms）。動作環境は Windows + Windows PowerShell 5.1 で追加インストール・管理者権限は不要。ネットワーク通信を行わず、記録・設定はフォルダ内のCSVとテキストにのみ保存される
   - 配布: GitHub（https://github.com/yaenowa-yoshida/daily-report ）。紹介スライド（全24枚。仕組み・画面・データ形式と、AIと相談しながら作った経緯）は https://yaenowa.co.jp/services/nippo-slides
 
-- 歴史散歩音声ガイド（https://yaenowa.co.jp/services/audio-guide ）: スマートフォンの位置情報に応じて、その周辺にゆかりのある歴史上の出来事を音声で案内するアプリ。Android向けにGoogle Playで公開しており、東京23区の1万か所以上の歴史スポットを収録している（解説原稿は検証中の下書き）
+- 歴史散歩音声ガイド（https://yaenowa.co.jp/services/audio-guide ）: スマートフォンの位置情報に応じて、その周辺にゆかりのある歴史上の出来事を音声で案内するアプリ。Android向けにGoogle Playで公開しており、東京23区の1万か所以上の歴史スポットを収録している
   - 位置情報は端末内でのみ処理し当社サーバーへ送信しない（バックエンドを持たない構成）。移動履歴の蓄積・追跡もしない。音声合成も端末内で完結する
   - 自治体・公的機関との提携や監修に基づくものではない
   - 対象範囲はまず東京から。将来的に地域ごとの版へ広げることを検討。試作に追加した地点は更新履歴（https://yaenowa.co.jp/outlook/academics-guide-notes ）に日付つきで記録。企画の背景は「今後の展望」の企画案（https://yaenowa.co.jp/outlook/academics-guide ）にまとめている
