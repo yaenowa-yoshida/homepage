@@ -140,7 +140,7 @@
               "@id": "https://yaenowa.co.jp/business/app#service",
               "name": "アプリ開発（Windows・Android）",
               "url": "https://yaenowa.co.jp/business/app",
-              "description": "アプリの企画・要件定義から実装・配布までの一貫対応。同じ工程を自社プロダクトで通しています（Windows常駐ツールを無償公開、Androidアプリを開発中・試験版βを配布）。iOS やアプリストアでの公開は要相談。"
+              "description": "アプリの企画・要件定義から実装・配布までの一貫対応。同じ工程を自社プロダクトで通しています（Windows常駐ツールを無償公開、AndroidアプリをGoogle Playで公開）。iOS や Google Play 以外のアプリストアでの公開は要相談。"
             }
           }
         ]
@@ -175,8 +175,8 @@
       "url": "https://yaenowa.co.jp/services/audio-guide",
       "applicationCategory": "TravelApplication",
       "operatingSystem": "Android",
-      "description": "位置情報に応じて周辺にゆかりのある歴史上の出来事を音声で案内するアプリ。現在は開発中で、Android向けの試験版（β）を配布して検証している。位置情報は端末内で処理し外部へ送信しない。解説原稿は検証中の下書き。",
-      "downloadUrl": "https://github.com/yaenowa-yoshida/audio-guide-site/releases/download/beta-latest/guide-beta.apk",
+      "description": "位置情報に応じて周辺にゆかりのある歴史上の出来事を音声で案内するAndroidアプリ。Google Playで公開中。東京23区の1万か所以上の歴史スポットを収録。位置情報は端末内で処理し外部へ送信しない。解説原稿は検証中の下書き。",
+      "downloadUrl": "https://play.google.com/store/apps/details?id=jp.co.yaenowa.audioguide",
       "isAccessibleForFree": true,
       "author": {
         "@id": "https://yaenowa.co.jp/#organization"
@@ -284,7 +284,7 @@
 })();
 </script>
 
-<!-- NAV -->
+<!-- NAV: scripts/nav.tmpl から scripts/build_layout.py が生成。ここは直接編集しない -->
 <nav>
   <a href="#" class="nav-logo">
     <img src="LOGO.png" alt="ヤエノワロゴ">
@@ -608,7 +608,7 @@
           <div class="acc-panel-inner">
             <div class="acc-panel-content">
               <p class="work-desc">
-                アプリの受託開発に対応します。企画・要件定義から実装・配布までの工程を、まず自社のプロダクトで通しました（常駐ツールは公開済み、アプリは試験版を配布中）。実装の経験があるのは Windows デスクトップと Android です。
+                アプリの受託開発に対応します。企画・要件定義から実装・配布までの工程を、まず自社のプロダクトで通しました（常駐ツールもアプリも公開済み）。実装の経験があるのは Windows デスクトップと Android です。
               </p>
               <span class="work-value">使って、確かめて、直す。その往復で得た手ざわりを、ご依頼先の企画や要件定義にも持ち込みます。</span>
               <a class="work-link" href="/business/app">アプリ開発を詳しく見る →</a>
@@ -617,7 +617,7 @@
                 <span class="tech-tag">Windows・PowerShell</span>
                 <span class="tech-tag">Androidアプリ開発</span>
                 <span class="tech-tag">端末内処理を基本にした設計</span>
-                <span class="tech-tag">公開・配布（試験版βを含む）</span>
+                <span class="tech-tag">公開・配布（Google Play を含む）</span>
               </div>
             </div>
           </div>
@@ -658,14 +658,13 @@
     <a class="service-card" href="/services/audio-guide">
       <img class="service-shot" src="services/img/audio-guide-feature.png" width="1024" height="500" loading="lazy" decoding="async" alt="歴史散歩音声ガイドのイメージ。深緑の背景に白いピンと桜色の音声バー、サービス名「歴史散歩音声ガイド」">
       <div>
-        <p class="service-cat">歴史散歩音声ガイド（開発中）</p>
+        <p class="service-cat">歴史散歩音声ガイド</p>
         <h3 class="service-title">歩けば、まちに眠る歴史が聞こえる。</h3>
         <p class="service-desc">
-          その場所にゆかりのある歴史上の出来事を、音声で案内するアプリです。開発中で、Android 向けの試験版（β）を配布して検証しています。位置情報は端末内で処理し、外部へ送信しません。
+          その場所にゆかりのある歴史上の出来事を、音声で案内するアプリです。Android 向けに Google Play で公開し、東京23区の1万か所以上の歴史スポットを収録しています（解説原稿は検証中の下書きです）。位置情報は端末内で処理し、外部へ送信しません。
         </p>
         <div class="tech-tags">
-          <span class="tech-tag">開発中</span>
-          <span class="tech-tag">試験版（β）</span>
+          <span class="tech-tag">Google Play で公開中</span>
           <span class="tech-tag">Android</span>
           <span class="tech-tag">位置情報×音声</span>
           <span class="tech-tag">位置情報は端末内で処理</span>
@@ -954,7 +953,7 @@ function copyMail() {
 })();
 </script>
 
-<!-- FOOTER -->
+<!-- FOOTER: scripts/footer.tmpl から scripts/build_layout.py が生成。ここは直接編集しない -->
 <footer>
   <span class="footer-logo">株式会社ヤエノワ</span>
   <a href="/business/" class="footer-link">事業内容</a>

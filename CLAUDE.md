@@ -8,6 +8,22 @@
 - コンテンツを編集する前に **「必須ルール」** を読む。
 - **`outlook/` 配下を編集するときは `outlook/CLAUDE.md` も読む**（あちらに固有ルールがある）。
 
+## 設計の方針（所有者の理念 2026-10-17）
+
+**軽い・速い・壊れにくい・依存が少ない。** 素のHTML・CSS・JavaScript の静的サイトで、
+ビルド工程も外部ライブラリも持たないことが、この理念を支えている。
+
+- 🔴 **フレームワーク・ビルド工程（Node/npm・静的サイトジェネレーター・バンドラ等）・
+  外部ライブラリ・CDN・外部サービスを、所有者に確認せず導入しない。**
+  必要に見えるときは、導入せずに理由と代替案を示して所有者に確認する
+  （月次の自律セッションも同じ。迷ったら導入せず、報告で提案するにとどめる）。
+- **共通化したいときは、まず標準ライブラリだけの小さなスクリプトで足りるかを考える。**
+  例: ナビ・フッターは `scripts/build_layout.py`（Python 標準ライブラリのみ）が原本から静的HTMLを書き出す。
+- **出力は静的HTMLのままにする。** JS で後から差し込まない（検索エンジンや JS 無効の環境でも内容が見える）。
+- **`scripts/` も標準ライブラリだけ。** `pip install` や `npm install` を要する形にしない。
+- 実行時に読み込む外部リソースは Google Fonts だけ（プライバシーポリシーにも記載）。増やさない。
+- 軽さを損なうもの（巨大な画像・重いスクリプト・過剰な演出）も同様に避ける。
+
 ## 必須ルール（契約・法務）— コンテンツ編集時に厳守
 
 1. **実績・事例の書き方** 🔴
@@ -166,7 +182,10 @@
   canonical・OGP・sitemap・構造化データを統一する。
 - コンテンツを変更したら **`llms.txt` と JSON-LD を同期**する（`llms.txt` 冒頭の「最終更新」も）。
 - URLを増やしたら `sitemap.xml` と、必要に応じてナビ・FAQ構造化データを更新する
-  （本文を変えたら lastmod も）。
+  （本文を変えたら lastmod も）。**lastmod は「本文（表示テキスト・title・description）を
+  変えた日」**で、ナビ・ファビコン・配色など全ページ共通の変更では動かさない。
+  JSON-LD に `dateModified` を持つページは lastmod と同じ日に揃える。
+  sitemap は節ごとにまとめて並べ、`changefreq` / `priority` は書かない（主要検索エンジンが参照しない）。
 - **FAQ 等の構造化データは、表示されている内容と一致させる**（Googleポリシー）。
 - **`outlook/` 配下は noindex 運用で sitemap に載せない。** sitemap や `llms.txt` を
   横断的に見直すときも、この例外を崩さないこと（段階解除の方針は `outlook/CLAUDE.md`）。
@@ -198,6 +217,7 @@
 | `privacy.html` | プライバシーポリシー。公開URLは拡張子なしの **`/privacy`**（リンク・canonical・og:url・sitemap を統一）。改定時は `dateModified` と sitemap の lastmod を更新。**実態（取得方法・利用目的・外部サービスの利用状況）と一致させる** |
 | `LOGO.png` / `og-image.png` / `favicon.ico` / `favicon-32.png` / `apple-touch-icon.png` | 画像アセット → **下記「ロゴ・ファビコン・OGP画像」** |
 | `robots.txt` / `sitemap.xml` | SEO |
+| `scripts/build_layout.py` / `scripts/nav.tmpl` / `scripts/footer.tmpl` | グローバルナビとフッターの原本（`nav.tmpl`・`footer.tmpl`）と、7ページへ書き出す生成スクリプト。`--check` で食い違いを検出し、CI が毎回実行する。依存なし → **下記「グローバルナビ」「フッター」** |
 | `scripts/check_site.py` | 機械的な整合性チェック（9種）。CI から実行するが、手元でも `python3 scripts/check_site.py` で動く。**依存を増やさない**（標準ライブラリのみ）。住所そのものは書かない方針（検索語は住所が残っているファイルから実行時に組み立てる）。**grep の代替ではない** |
 | `.github/workflows/site-checks.yml` | 上記を push・PR ごとに走らせる |
 | `CNAME` | `yaenowa.co.jp`（apex） |
@@ -228,14 +248,18 @@
   **個別ページを直したら一覧側の症状も見直す**。
 - **4本柱を増減したら、次をすべて揃える**: トップの表示・JSON-LD の `hasOfferCatalog` と
   `/business/` の `hasPart`・症状の表・関係の図・`llms.txt`・sitemap・
-  グローバルナビの子項目（7ファイルの `#nav-sub-business`）。
+  グローバルナビの子項目（原本 `scripts/nav.tmpl` の `#nav-sub-business`）。
 - `business/ai` に「モデルの開発・ファインチューニング・AI製品の再販は行っていない」という
   **対応範囲の否定表現**があるため、その方針を変えるときはこの一文を必ず見直す
   （放置すると事実と異なる表示になる）。
 
-### グローバルナビ（`site.css` ＋ `site-nav.js` ＋ 7ファイルの `<ul class="nav-links">`）
+### グローバルナビ（`scripts/nav.tmpl` ＋ `scripts/build_layout.py` ＋ `site.css` ＋ `site-nav.js`）
 
-**同じ `<ul class="nav-links">` を7ファイルが持つ**（`index.html`・`about.html`・`business/` 配下5）。
+**ナビの原本は `scripts/nav.tmpl` の1つだけ。** 7ファイル（`index.html`・`about.html`・`business/` 配下5）の
+`<nav>` は、**`python3 scripts/build_layout.py` が原本から書き出したもの**で、**各ページの `<nav>` は直接編集しない**
+（直しても次の生成で消え、CI の「ナビとフッターが原本と一致しているか」が落ちる）。出力は静的HTMLのままで、JS で後から差し込まない。
+ページごとの違いは、現在のページへの `aria-current="page"` と、トップだけ同一ページ内リンク（`#services` など）にする点で、
+スクリプトが機械的に決める。**ナビの項目・順番・子項目を変えるときは、原本を直して `build_layout.py` を実行し、7ファイルの差分も一緒にコミットする。**
 `outlook/` `services/` `privacy.html` `audio-guide-privacy.html` は別のナビ構造
 （`.nav-right` ＋ `.nav-home`）で、この7ファイルには含まれない。
 
@@ -244,12 +268,12 @@
 自社サービス `#services` ／ お問い合わせ `#contact`。
 ハンバーガー内では4つ目の手前に区切り線を出して群の違いを見せている
 （`.nav-links > li:nth-child(4)`、1200px 以下のみ。**`>` を外すと `.nav-sub` の4番目にも当たる**）。
-**順番を変えるときは7ファイルとこの `nth-child` を必ず揃える**。
+**順番を変えるときは、原本とこの `nth-child` を揃える**。
 
 **事業内容と今後の展望は子項目を持つ**（`.nav-has-sub`）。デスクトップはドロップダウン、
 1200px 以下はアコーディオン。会社について は単一ページなので子を持たない。
 
-🔴 **ナビの子項目を増減したら、7ファイルの `<ul class="nav-sub">` をすべて揃える。**
+🔴 **ナビの子項目を増減したら、原本の `<ul class="nav-sub">` を直して `build_layout.py` を実行する。**
 
 - `business/` は4本柱と同じ集合。
 - `outlook/` は `outlook/nav.js` の THEMES から**「ジャーナル」だけを除いた4件**
@@ -267,6 +291,19 @@ SEO を理由にこの4件を減らす提案は、この行を根拠に据え置
 集約した**もの（`index.html` 側の実装＝aria-label の出し分け・Esc・幅が戻ったときの自動クローズ
 を正とした）。各ページのインラインJSに残っているのは `reveal` の演出など。
 **`outlook/nav.js` は「今後の展望」配下だけの回遊ナビで別物。**
+
+### フッター（`scripts/footer.tmpl` ＋ `scripts/build_layout.py`）
+
+**ナビと同じ7ファイル**（`index.html`・`about.html`・`business/` 配下5）の `<footer>` は、
+**`scripts/footer.tmpl` から `build_layout.py` が書き出したもの**で、**各ページの `<footer>` は直接編集しない**
+（CI の「ナビとフッターが原本と一致しているか」が落ちる）。**直すときは原本を直して `build_layout.py` を実行する。**
+ページごとの違いはスクリプトが決める: トップはロゴをリンクにせず文字にし、会社案内は「会社について」のリンクを出さない。
+
+**`outlook/`・`services/`・`privacy.html`・`audio-guide-privacy.html` のフッターは、生成の対象外**で、
+それぞれの文脈に合わせた内容を各ページに直接書く（`outlook/` は「GX構想」「ホームへ戻る」など配下の回遊、
+`services/` と2つのプライバシーポリシーは「自社サービス」「ホームへ戻る」など）。
+**共通のフッターに揃えようとしないこと**（戻り先が文脈ごとに違うため）。
+フッターに新しいページへのリンクを足すときは、原本（上の7ページ）と、必要なら対象外のページの両方を見る。
 
 ### ロゴ・ファビコン・OGP画像
 
