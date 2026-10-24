@@ -347,20 +347,23 @@ SEO を理由にこの4件を減らす提案は、この行を根拠に据え置
   `llms.txt` の3セクション）。
 
 - **歴史散歩音声ガイドの Apple App Store 展開（所有者方針 2026-10-20）**:
-  現在 `/services/audio-guide` で Android 向けの試験版（β）を配布しているが、
+  現在 `/services/audio-guide` は **Google Play で Android 版を配布**している（無料・広告表示あり）。
   **今後 Apple App Store への展開も目指す**。
   🔴 **実際に配信を開始するまで、サイトに iOS・iPhone・App Store を書かないこと。**
   予定を能力表示として先に出すと景表法の誤認表示にあたる（「対応できる」にも合理的根拠が要る）。
   **本行は方針の記録であって、掲載を許す根拠ではない。**
-  **配信を開始したら、次をまとめて揃える**:
-  - `services/audio-guide.html` … `keywords`・本文のプラットフォームのバッジ・
-    β配布の説明・APK 配布の案内・**JSON-LD の `operatingSystem`（現在 `"Android"`）**
+  **配信を開始したら、次をまとめて揃える**（プラットフォーム名がページの骨格に入っているため広い）:
+  - `services/audio-guide.html` … **`<title>` / `og:title` / `twitter:title` の「（Android）」**（4箇所）・
+    `keywords`・`description` 系・本文のバッジ・配布の案内とストアへのリンク・
+    **JSON-LD の `name` と `operatingSystem`（現在 `"Android"`）**
   - **「アプリ開発（Windows・Android）」の14箇所**
     （`business/app.html` 8・`business/index.html` 2・`index.html` 2・`llms.txt` 2）。
     グローバルナビのラベルは短縮形の `アプリ開発` なので影響しない
+  - `outlook/academics-guide.html` にもプラットフォームへの言及がある
   - `audio-guide-privacy.html` … App Store は**プライバシーポリシーのURLとプライバシーラベルの
-    申告**を求める。**申告内容とポリシーの実態を一致させる**（ポリシーの行の「実態と一致させる」と同じ趣旨）
-  - `app-ads.txt` … 現在の記述は **Google Play のデベロッパーサイト前提**。
+    申告**を求める。**申告内容とポリシーの実態（位置情報・広告）を一致させる**
+    （ポリシーの行の「実態と一致させる」と同じ趣旨）
+  - `app-ads.txt` … 現在の記述は **Google Play のデベロッパーサイト前提**（AdMob の在庫証明）。
     iOS でも広告を配信するなら記述を見直す
   - 4本柱の表示が変わるので、**「`business/` の構成」の節が挙げる同期先**もあわせて通す
   **無償配布のままなら特定商取引法の表記ページは不要**だが、**アプリ内課金・有料版を始めたら
