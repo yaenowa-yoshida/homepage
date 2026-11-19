@@ -27,20 +27,15 @@
      集約すればこのコンテナクエリも復旧する。
    - 見た目が変わる（狭幅で縮むようになる）ため、Playwright でのピクセル比較を必ず行う。
 5. **`services/` 配下のページ固有CSSの整理**（🔒 慎重に扱う・優先度低）
-   - `services/` 3ページは `.crumbs` などを各自の `<style>` に持っており、
+   - `services/` 2ページ（nippo・audio-guide）は `.crumbs` などを各自の `<style>` に持っており、
      `site.css` の SUBPAGE ブロックと重複している。
    - ただし `site.css` は `body` / `nav` / `section` / `p` / `footer` の
      **要素セレクタ**を持つため、`services/` に読み込ませると
      `section { padding: 7rem 4rem }` 等が波及して見た目が変わる。
-     とくに `nippo-slides.html` はスライド専用デザイン（theme.css は 2026-09-06 から読み込むが、site.css は読まない）。
    - 重複しているのは数行のため、**共有化の利は小さくリスクが大きい**。
      やるなら `.crumbs` だけを切り出した小さなファイルにする。
-6. **`services/nippo-slides.html` の `.text-link` 再定義を解消**（技術系・自動マージ可）
-   - ページ固有 `<style>` で `.text-link { color: var(--sakura-deep); … }` を再定義しており、
-     `theme.css` の共通定義（`--accent-gold`）と二重管理になっている。
-   - 2026-09-06 から当該ページも theme.css を読むので、削除すれば共通定義が効く。
-     ただし色が `--sakura-deep` → `--accent-gold` に変わるため、スライドの配色として
-     意図した差かどうかを確かめてから寄せる（見た目が変わる変更）。
+6. ~~`services/nippo-slides.html` の `.text-link` 再定義を解消~~ … 2026-11-19 に資料そのものを
+   登壇資料のページ（https://presentations.yaenowa.co.jp/2026-08/ ）へ移し、当該ページは移転スタブにしたため不要。
 7. **アクセス解析の導入**（🔒 ユーザー判断待ち・着手しない）
    - GA4 / Cloudflare Web Analytics 等。ユーザーのアカウント作業が必要。
    - 導入時は privacy.html 第8条・第9条の改定が必須（CLAUDE.md 法務メモ参照）

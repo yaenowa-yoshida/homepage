@@ -79,7 +79,7 @@
   - 自社の業務のために内製し日々使っているものを、そのままMITライセンスで無償公開している。動作保証・サポートを伴う商品ではない（現状有姿での提供）
   - 主な機能: 15分区切りで自動表示される入力ウィンドウ、長さを決めずに始められる休憩の記録、会議の時間帯を先に確保するMTG予約、1日分を表で直せる一覧編集（過去日も可）、案件・作業内容の選択肢を画面から編集する設定メンテナンス
   - 技術構成: PowerShellスクリプト1ファイル（画面はWindows Forms）。動作環境は Windows + Windows PowerShell 5.1 で追加インストール・管理者権限は不要。ネットワーク通信を行わず、記録・設定はフォルダ内のCSVとテキストにのみ保存される
-  - 配布: GitHub（https://github.com/yaenowa-yoshida/daily-report ）。紹介スライド（全24枚。仕組み・画面・データ形式と、AIと相談しながら作った経緯）は https://yaenowa.co.jp/services/nippo-slides
+  - 配布: GitHub（https://github.com/yaenowa-yoshida/daily-report ）。紹介スライド（仕組み・画面・データ形式と、AIと相談しながら作った経緯。2026年8月の登壇資料）は https://presentations.yaenowa.co.jp/2026-08/
 
 - 歴史散歩音声ガイド（https://yaenowa.co.jp/services/audio-guide ）: スマートフォンの位置情報に応じて、その周辺にゆかりのある歴史上の出来事を音声で案内するアプリ。Android向けにGoogle Playで公開しており、東京23区の1万か所以上の歴史スポットを収録している
   - 位置情報は端末内でのみ処理し当社サーバーへ送信しない（バックエンドを持たない構成）。移動履歴の蓄積・追跡もしない。音声合成も端末内で完結する
