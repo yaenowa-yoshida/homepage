@@ -3,6 +3,8 @@
    見た目は outlook/outlook.css の .outlook-subnav が受け持つ（本ファイルは構造のみ）。
    テーマページを増やしたら THEMES を更新すること（あわせて outlook/index.html の
    .topics 一覧と JSON-LD の hasPart も更新する。CLAUDE.md 参照）。
+   THEMES はグローバルナビの「今後の展望」の子項目の原本でもある。直したら
+   python3 scripts/build_layout.py を実行して7ページのナビへ反映する（CI が食い違いを検出する）。
    JS無効環境ではパンくず＋ハブ経由の回遊がそのまま残る（プログレッシブ・エンハンスメント）。 */
 (function () {
   'use strict';

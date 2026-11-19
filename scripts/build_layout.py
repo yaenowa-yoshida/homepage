@@ -23,14 +23,17 @@
 （それぞれの文脈に合わせた内容）で、ここの対象ではない。
 
 依存なし（標準ライブラリのみ）。項目・順番・子項目を変えるときは原本だけを直して、このスクリプトを
-実行する。outlook/nav.js の THEMES との対応（ナビの子項目）は引き続き手で揃える。
+実行する。ナビの「今後の展望」の子項目は nav.tmpl に書かず、outlook/nav.js の THEMES から生成する
+（THEMES が唯一の原本。「事業内容」の子項目は4本柱と同じ集合で、nav.tmpl に書く）。
 """
+import json
 import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 NAV_TEMPLATE = ROOT / "scripts" / "nav.tmpl"
+OUTLOOK_NAV_JS = ROOT / "outlook" / "nav.js"
 FOOTER_TEMPLATE = ROOT / "scripts" / "footer.tmpl"
 
 # 対象ページ → そのページの公開URL
@@ -57,8 +60,43 @@ NAV_BLOCK = re.compile(r"(?:<!-- NAV[^\n]*-->\n)?<nav>.*?</nav>", re.S)
 FOOTER_BLOCK = re.compile(r"(?:<!-- FOOTER[^\n]*-->\n)?<footer>.*?</footer>", re.S)
 
 
+def load_outlook_themes() -> list:
+    """outlook/nav.js の THEMES（今後の展望のテーマ一覧）を読む。
+
+    THEMES は「今後の展望」配下の回遊ナビが実行時に使うデータで、グローバルナビの
+    「今後の展望」の子項目もここから生成する（原本を1つにするため）。
+    JS のオブジェクトリテラルを、キーと引用符を直して JSON として読む（依存なし）。
+    """
+    js = OUTLOOK_NAV_JS.read_text(encoding="utf-8")
+    m = re.search(r"var THEMES = (\[.*?\n  \]);", js, re.S)
+    if not m:
+        raise SystemExit("✗ outlook/nav.js の THEMES を読めない（形式が変わった？）")
+    body = re.sub(r"//[^\n]*", "", m.group(1))               # 行コメントを除く
+    body = re.sub(r"([{,]\s*)([A-Za-z_]\w*)\s*:", r'\1"\2":', body)  # キーを引用符つきに
+    body = body.replace("'", '"')
+    return json.loads(body)
+
+
+def outlook_nav_items(template: str) -> str:
+    """グローバルナビの「今後の展望」の子項目（<li> の並び）。
+
+    THEMES のうち、親（/outlook/）と URL が重複する「ジャーナル」を除いた各テーマを並べる。
+    配下ページ（children）はグローバルナビには出さない。
+    """
+    items = [t for t in load_outlook_themes() if t["href"] != "/outlook/"]
+    return "\n".join(
+        '<li><a href="%s">%s</a></li>' % (t["href"], t["label"]) for t in items
+    )
+
+
 def render_nav(template: str, page: str, url: str) -> str:
     nav = template.strip("\n")
+    nav = re.sub(
+        r"^( *)\{\{OUTLOOK_THEMES\}\}$",
+        lambda m: "\n".join(m.group(1) + line for line in outlook_nav_items(template).split("\n")),
+        nav,
+        flags=re.M,
+    )
     if page == "index.html":
         # トップ内の移動は同一ページ内リンクにする（ロゴは先頭へスクロール）
         nav = nav.replace('<a href="/" class="nav-logo">', '<a href="#" class="nav-logo">')
