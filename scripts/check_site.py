@@ -24,7 +24,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# 住所を書いてよいファイル（CLAUDE.md「所在地」の7箇所と対応させる）。
+# 住所を書いてよいファイル（CLAUDE.md「所在地」の一覧と対応させる）。
 # 増減させたら CLAUDE.md の一覧も同時に直すこと。
 ADDRESS_FILES = {
     "about.html",
@@ -343,7 +343,7 @@ def check_outlook_noindex():
             fail("noindex", rel(p), "outlook 配下は noindex 運用（robots メタが無い）")
 
 
-# チェックを増減させたら、この数と CLAUDE.md の「9種」の記述も直すこと。
+# チェックを増減させたら、この数も直すこと。
 # CHECKS から1行消すだけで無言でチェックが消えるのを防ぐための歯止め
 # （赤くて困ったときに、いちばん通りやすい抜け道がここだった）。
 EXPECTED_CHECKS = 9
@@ -381,7 +381,7 @@ def main():
     if len(CHECKS) != EXPECTED_CHECKS:
         print(
             f"✗ チェックの数が想定と違う: {len(CHECKS)} 種（想定 {EXPECTED_CHECKS} 種）。"
-            "意図した増減なら EXPECTED_CHECKS と CLAUDE.md の件数も直すこと"
+            "意図した増減なら EXPECTED_CHECKS も直すこと"
         )
         return 1
 
