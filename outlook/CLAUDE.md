@@ -44,7 +44,9 @@
   ② index の `.topics` 一覧
   ③ index の JSON-LD `hasPart`
   ④ ハブのテーマカードと `hasPart`（ハブ配下のページの場合）
-  ⑤ **サイト全体のグローバルナビの子項目**（原本 `scripts/nav.tmpl` の `#nav-sub-outlook`。直して `python3 scripts/build_layout.py` を実行）。
+  ⑤ **サイト全体のグローバルナビの子項目**。**① の THEMES から自動生成される**ので、手で直さない。
+    THEMES を直したら **`python3 scripts/build_layout.py` を実行して、7ファイルの差分も一緒にコミットする**
+    （実行し忘れると CI の「ナビとフッターが原本と一致しているか」が落ちる）。
     ここに出すのは**トップレベルのテーマだけ**で、ハブ配下の子（`gx-pipeline` 等）は出さない
     （① の THEMES の `children` とは粒度が違う）。
     **① の「ジャーナル」だけは出さない**。親の「今後の展望」が同じ `/outlook/` を指しており、

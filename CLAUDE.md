@@ -276,7 +276,9 @@
 🔴 **ナビの子項目を増減したら、原本の `<ul class="nav-sub">` を直して `build_layout.py` を実行する。**
 
 - `business/` は4本柱と同じ集合。
-- `outlook/` は `outlook/nav.js` の THEMES から**「ジャーナル」だけを除いた4件**
+- `outlook/` は `outlook/nav.js` の THEMES から**自動生成される**（`build_layout.py` が THEMES を読んで
+  `scripts/nav.tmpl` の `{{OUTLOOK_THEMES}}` に展開する。**手で直さない**。`outlook/nav.js` の THEMES が
+  唯一の原本）。生成されるのは**「ジャーナル」だけを除いた4件**
   （親の `/outlook/` とURLが重複するため。理由は `outlook/CLAUDE.md` の⑤）。
 - **ナビのラベルだけ短くしている**ものがある（`アプリ開発`。他の箇所は `アプリ開発（Windows・Android）`）。
   横幅の都合による意図的な省略で、集合のずれではない。
