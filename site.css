@@ -1142,6 +1142,21 @@
     color: var(--ink-mid);
     line-height: 1.9;
   }
+  /* 図解（インラインSVG）。色は CSS 変数で当てるのでダークモードに追従する。
+     属性内の var() は解決できない環境があるため、塗りと線はクラスで指定する。 */
+  .biz-fig { margin: 2rem auto 0; max-width: 360px; }
+  .biz-fig svg { display: block; width: 100%; height: auto; }
+  .biz-fig figcaption { margin-top: 0.8rem; font-size: 0.8rem; color: var(--ink-light); line-height: 1.8; text-align: center; text-wrap: balance; }
+  .fig-box { fill: var(--surface-raised); stroke: var(--paper-dark); stroke-width: 1; }
+  .fig-key { fill: var(--surface-raised); stroke: var(--accent); stroke-width: 1.5; }
+  .fig-fill { fill: var(--accent); }
+  .fig-line { stroke: var(--ink-light); stroke-width: 1.2; fill: none; }
+  .fig-head { fill: var(--ink-light); }
+  .fig-t { fill: var(--ink); font-size: 14px; font-family: inherit; }
+  .fig-tb { font-weight: 700; }
+  .fig-ts { fill: var(--ink-light); font-size: 12px; font-family: inherit; }
+  .fig-ta { fill: var(--accent); font-size: 12px; font-weight: 700; font-family: inherit; }
+  .fig-tw { fill: var(--paper); font-size: 13px; font-weight: 700; font-family: inherit; }
   .biz-cta {
     margin-top: 4.5rem;
     padding-top: 2.2rem;
