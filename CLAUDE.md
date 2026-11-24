@@ -194,6 +194,9 @@
 | `about.html` | 会社案内。公開URLは拡張子なしの **`/about`**。社名の由来・代表紹介・会社概要・ビジョン。**代表の `Person` 構造化データはこのページにある**（表示と一致させるため） |
 | `site.css` | `index.html` / `about.html` / `business/` 配下が共有するスタイル（ナビ・フッター・セクション共通・演出・レスポンシブ）。**読み込み順は theme.css → site.css → ページ固有の `<style>`**。ナビ部分 → **下記「グローバルナビ」** |
 | `site-nav.js` | グローバルナビの共通処理（ハンバーガーの開閉＋子項目の展開）。`site.css` を使うページが `defer` で読む → **下記「グローバルナビ」** |
+| `site-reveal.js` | スクロール表示演出（`.reveal`）。`about.html` と `business/` 配下の全ページが `defer` で読む。トップは `index.html` 内に持つ |
+| `services/services.css` | `services/` 配下2ページ（nippo・audio-guide）が共有する固有スタイル。`site.css` は読まない（要素セレクタが波及するため）。**ページ固有の見た目はここを直す** |
+| `legal.css` | `privacy.html` と `audio-guide-privacy.html` が共有するスタイル |
 | `theme.css` / `theme.js` | 全ページ共通の基盤（カラーパレット・ダークモード・リセット・テーマ切替）。**色やテーマ挙動の変更はここだけを編集**し、各ページには書かない。theme.js は描画前に実行する必要があるため `<head>` で同期読み込み（**defer/async 禁止**） |
 | `llms.txt` | AIO用の会社サマリ。**`index.html` と同期する** |
 | `privacy.html` | プライバシーポリシー。公開URLは拡張子なしの **`/privacy`**（リンク・canonical・og:url・sitemap を統一）。改定時は `dateModified` と sitemap の lastmod を更新。**実態（取得方法・利用目的・外部サービスの利用状況）と一致させる** |
@@ -273,7 +276,8 @@ SEO を理由にこの4件を減らす提案は、この行を根拠に据え置
 
 `site-nav.js` は、**もとは各ページのインライン `<script>` にハンバーガー処理が重複していたものを
 集約した**もの（`index.html` 側の実装＝aria-label の出し分け・Esc・幅が戻ったときの自動クローズ
-を正とした）。各ページのインラインJSに残っているのは `reveal` の演出など。
+を正とした）。`reveal` の演出は、`about.html` と `business/` 配下が共有する `site-reveal.js`
+（`defer`）が担い、トップだけ `index.html` 内に持つ。
 **`outlook/nav.js` は「今後の展望」配下だけの回遊ナビで別物。**
 
 ### フッター（`scripts/footer.tmpl` ＋ `scripts/build_layout.py`）

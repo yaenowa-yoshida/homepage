@@ -26,16 +26,11 @@
      ソース順で後になるページ内 `<style>` が常に勝ち、**狭コンテナ時の縮小が効いていない**。
      集約すればこのコンテナクエリも復旧する。
    - 見た目が変わる（狭幅で縮むようになる）ため、Playwright でのピクセル比較を必ず行う。
-5. **`services/` 配下のページ固有CSSの整理**（🔒 慎重に扱う・優先度低）
-   - `services/` 2ページ（nippo・audio-guide）は `.crumbs` などを各自の `<style>` に持っており、
-     `site.css` の SUBPAGE ブロックと重複している。
-   - ただし `site.css` は `body` / `nav` / `section` / `p` / `footer` の
-     **要素セレクタ**を持つため、`services/` に読み込ませると
-     `section { padding: 7rem 4rem }` 等が波及して見た目が変わる。
-   - 重複しているのは数行のため、**共有化の利は小さくリスクが大きい**。
-     やるなら `.crumbs` だけを切り出した小さなファイルにする。
+5. ~~`services/` 配下のページ固有CSSの整理~~ … 2026-11-24 に、2ページで同一だった固有スタイルを
+   `services/services.css` へ集約した（`site.css` は読ませない方針のまま）。
 6. ~~`services/nippo-slides.html` の `.text-link` 再定義を解消~~ … 2026-11-19 に資料そのものを
    登壇資料のページ（https://presentations.yaenowa.co.jp/2026-08/ ）へ移し、当該ページは移転スタブにしたため不要。
+
 7. **アクセス解析の導入**（🔒 ユーザー判断待ち・着手しない）
    - GA4 / Cloudflare Web Analytics 等。ユーザーのアカウント作業が必要。
    - 導入時は privacy.html 第8条・第9条の改定が必須（CLAUDE.md 法務メモ参照）
@@ -79,3 +74,7 @@
   変更を表示テキストの差分で洗い直し、`services/audio-guide` だけ本文変更（9/1 の広告記載の取り下げ）
   が lastmod に反映されていなかったので 2026-09-01 に直した（JSON-LD の `dateModified` も同日に揃えた）。
   掲載対象は過不足なし（インデックス対象12ページ、noindex の outlook とリダイレクトスタブは除外）
+- 2026-11-24: 完全に同一だった重複を共有ファイルへ集約。`services/` 2ページのインライン `<style>`（約7.8KB）→ `services/services.css`、
+  `privacy.html` と `audio-guide-privacy.html` の `<style>`（約3.8KB）→ `legal.css`、`about.html` と `business/` 6ページの
+  同一のインライン `reveal` スクリプト → `site-reveal.js`。10ページ×ライト／ダーク×PC／スマホの40枚のスクリーンショットが、
+  変更前後でバイト単位で一致することを確認した（表示・文言は不変）
