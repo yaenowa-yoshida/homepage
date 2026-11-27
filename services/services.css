@@ -275,3 +275,8 @@ footer {
 .footer-link { color: var(--ink-mid); text-decoration: none; }
 .footer-link:hover { color: var(--accent); }
 .footer-copy { color: var(--ink-light); }
+
+/* 装飾画像（images/deco-*.svg）。意味を持たない飾りなので alt は空、操作の邪魔をしない。
+   色は固定の半透明の桜色で、ライト・ダークのどちらでも馴染む。 */
+.deco { display: block; width: 100%; max-width: 1000px; height: auto; margin: 3.5rem auto 0; pointer-events: none; user-select: none; }
+.deco-emblem { width: 110px; margin: 0 auto 1.6rem; }

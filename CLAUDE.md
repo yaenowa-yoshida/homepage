@@ -197,6 +197,7 @@
 | `site-reveal.js` | スクロール表示演出（`.reveal`）。`about.html` と `business/` 配下の全ページが `defer` で読む。トップは `index.html` 内に持つ |
 | `services/services.css` | `services/` 配下2ページ（nippo・audio-guide）が共有する固有スタイル。`site.css` は読まない（要素セレクタが波及するため）。**ページ固有の見た目はここを直す** |
 | `legal.css` | `privacy.html` と `audio-guide-privacy.html` が共有するスタイル |
+| `images/deco-band-a.svg` / `deco-band-b.svg` / `deco-flower.svg` | 意味を持たない装飾画像（八重の花・花びら・同心円。各3KB前後のSVG）。ロゴ・OGPの桜モチーフに合わせた固定色の半透明で、ライト・ダークの両方で馴染む。**`<img class="deco" alt="" aria-hidden="true" loading="lazy">` で置く**（`.deco` は `site.css` と `services/services.css`）。意味を持たせない・文字や案件を連想させる絵柄にしない（必須ルール1・2）。増やすときも軽さを保つ |
 | `theme.css` / `theme.js` | 全ページ共通の基盤（カラーパレット・ダークモード・リセット・テーマ切替）。**色やテーマ挙動の変更はここだけを編集**し、各ページには書かない。theme.js は描画前に実行する必要があるため `<head>` で同期読み込み（**defer/async 禁止**） |
 | `llms.txt` | AIO用の会社サマリ。**`index.html` と同期する** |
 | `privacy.html` | プライバシーポリシー。公開URLは拡張子なしの **`/privacy`**（リンク・canonical・og:url・sitemap を統一）。改定時は `dateModified` と sitemap の lastmod を更新。**実態（取得方法・利用目的・外部サービスの利用状況）と一致させる** |
